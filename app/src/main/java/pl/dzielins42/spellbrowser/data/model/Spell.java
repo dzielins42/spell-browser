@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Spell {
 
+    private Long mId;
     private String mName;
     private String mRulebook;
     private Integer mPage;
@@ -23,6 +24,14 @@ public class Spell {
     private FormattedString mFlavourText;
     private List<String> mDescriptors;
     private List<SourceLevelExtraTriplet> mSources;
+
+    public Long getId() {
+        return mId;
+    }
+
+    public void setId(Long id) {
+        mId = id;
+    }
 
     public String getName() {
         return mName;
@@ -179,7 +188,8 @@ public class Spell {
     @Override
     public String toString() {
         return "Spell{" +
-                "mName='" + mName + '\'' +
+                "mId=" + mId +
+                ", mName='" + mName + '\'' +
                 ", mRulebook='" + mRulebook + '\'' +
                 ", mPage=" + mPage +
                 ", mSchools=" + mSchools +
@@ -200,4 +210,5 @@ public class Spell {
                 ", mSources=" + mSources +
                 '}';
     }
+
 }

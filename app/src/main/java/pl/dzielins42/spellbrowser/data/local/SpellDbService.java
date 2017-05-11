@@ -26,6 +26,7 @@ public class SpellDbService {
         // Dummy spells
         // Fireball (D&D 5e SRD)
         spell = new Spell();
+        spell.setId(1L);
         spell.setName("Fireball");
         spell.setRulebook("System Reference Document 5.1");
         spell.setPage(144);
@@ -51,6 +52,7 @@ public class SpellDbService {
         DUMMY.add(spell);
         // Cure Wounds (D&D 5e SRD)
         spell = new Spell();
+        spell.setId(2L);
         spell.setName("Cure Wounds");
         spell.setRulebook("System Reference Document 5.1");
         spell.setPage(132);
