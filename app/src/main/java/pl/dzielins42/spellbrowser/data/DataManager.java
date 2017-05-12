@@ -28,4 +28,8 @@ public class DataManager {
         return mSpellDbService.getSpells();
     }
 
+    public Observable<Spell> getSpell(long id) {
+        return mSpellDbService.getSpell(id);
+    }
+
 }

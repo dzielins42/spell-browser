@@ -84,4 +84,14 @@ public class SpellDbService {
         return Observable.just(DUMMY);
     }
 
+    public Observable<Spell> getSpell(long id) {
+        for (Spell spell : DUMMY) {
+            if (spell.getId() == id) {
+                return Observable.just(spell);
+            }
+        }
+
+        return Observable.just(null);
+    }
+
 }
