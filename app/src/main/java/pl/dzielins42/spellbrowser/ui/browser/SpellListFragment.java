@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -18,8 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.dzielins42.masterdetailflowrevised.AbsMasterDetailActivity;
 import pl.dzielins42.spellbrowser.R;
-import pl.dzielins42.spellbrowser.data.local.SpellDbService;
 import pl.dzielins42.spellbrowser.data.model.Spell;
+import pl.dzielins42.toolkit.android.support.v7.widget.CompoundRecyclerView;
 
 public class SpellListFragment extends Fragment implements Browser.ListView,
         SpellListAdapter.SpellListAdapterListener {
@@ -30,7 +28,7 @@ public class SpellListFragment extends Fragment implements Browser.ListView,
     private SpellListAdapter mAdapter;
 
     @BindView(R.id.spell_list)
-    RecyclerView mRecyclerView;
+    CompoundRecyclerView mRecyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -56,20 +54,23 @@ public class SpellListFragment extends Fragment implements Browser.ListView,
         super.onDestroyView();
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+    private void setupRecyclerView(@NonNull CompoundRecyclerView recyclerView) {
+        // Set adapter...
         mAdapter = new SpellListAdapter(this);
         recyclerView.setAdapter(mAdapter);
         mAdapter.clear();
+        // ...and hide it immediately
+        recyclerView.setRecyclerShownNoAnimation(false);
     }
 
     @Override
     public void showLoading() {
-
+        mRecyclerView.setRecyclerShown(false);
     }
 
     @Override
     public void showContent() {
-
+        mRecyclerView.setRecyclerShown(true);
     }
 
     @Override
