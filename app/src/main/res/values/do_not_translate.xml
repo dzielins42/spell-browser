@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stub_spell_name">Spell Name</string>
+    <string name="stub_spell_school">School</string>
+    <string name="stub_spell_subschool">Subschool</string>
+    <string name="stub_spell_descriptor">Descriptor</string>
+    <string name="stub_spell_level">Level</string>
+</resources>

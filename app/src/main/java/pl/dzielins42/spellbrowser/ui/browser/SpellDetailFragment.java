@@ -2,8 +2,8 @@ package pl.dzielins42.spellbrowser.ui.browser;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +22,37 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView{
     @Inject
     SpellDetailPresenter mPresenter;
 
-    @BindView(R.id.spell_detail)
-    TextView mSpellDetail;
+    @BindView(R.id.tv_spell_name)
+    TextView mTVName;
+    @BindView(R.id.tv_spell_schools)
+    TextView mTVSchools;
+    @BindView(R.id.tv_spell_subschools)
+    TextView mTVSubschools;
+    @BindView(R.id.tv_spell_descriptors)
+    TextView mTVDescriptors;
+    @BindView(R.id.tv_spell_levels)
+    TextView mTVLevels;
+    @BindView(R.id.tv_spell_components)
+    TextView mTVComponents;
+    @BindView(R.id.tv_spell_casting_time)
+    TextView mTVCastingTime;
+    @BindView(R.id.tv_spell_range)
+    TextView mTVRange;
+    @BindView(R.id.tv_spell_target)
+    TextView mTVTarget;
+    @BindView(R.id.tv_spell_effect)
+    TextView mTVEffect;
+    @BindView(R.id.tv_spell_duration)
+    TextView mTVDuration;
+    @BindView(R.id.tv_spell_saving_throw)
+    TextView mTVSavingThrow;
+    @BindView(R.id.tv_spell_spell_resistance)
+    TextView mTVSpellResistance;
+    @BindView(R.id.tv_spell_spell_flavour_text)
+    TextView mTVFlavourText;
+    @BindView(R.id.tv_spell_description)
+    TextView mTVDescription;
+
 
     public static final String ARG_ITEM_ID = "item_id";
 
@@ -81,7 +110,21 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView{
 
     @Override
     public void setData(Spell data) {
-        mSpellDetail.setText(data.getName());
+        mTVName.setText(data.getName());
+        //mTVSchools.setText();
+        //mTVSubschools.setText();
+        //mTVDescriptors.setText();
+        //mTVLevels.setText();
+        //mTVComponents.setText();
+        mTVCastingTime.setText(data.getCastingTime());
+        mTVRange.setText(data.getRange());
+        mTVTarget.setText(data.getTarget());
+        mTVEffect.setText(data.getEffect());
+        mTVDuration.setText(data.getDuration());
+        mTVSavingThrow.setText(data.getSavingThrow());
+        mTVSpellResistance.setText(data.getSpellResistance());
+        //mTVFlavourText.setText();
+        mTVDescription.setText(Html.fromHtml(data.getDescription().getFormatted()));
 
         Activity activity = getActivity();
         if (activity != null && activity instanceof AbsMasterDetailActivity) {
