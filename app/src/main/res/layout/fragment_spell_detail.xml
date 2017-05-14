@@ -24,10 +24,10 @@
                 android:textIsSelectable="true"/>
 
             <!--Schools, subschools, descriptors container-->
-            <LinearLayout
+            <com.wefika.flowlayout.FlowLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="start|top">
 
                 <TextView
                     android:id="@+id/tv_spell_schools"
@@ -52,23 +52,32 @@
                     android:layout_height="wrap_content"
                     android:text="@string/stub_spell_descriptor"
                     android:textIsSelectable="true"/>
-            </LinearLayout>
+            </com.wefika.flowlayout.FlowLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_levels"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:captionText="@string/label_spell_detail_level">
 
-                <TextView
-                    android:id="@+id/tv_spell_levels"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/container_spell_levels"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
+                    android:gravity="start|top">
+
+                    <TextView
+                        android:id="@+id/tv_spell_levels"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </com.wefika.flowlayout.FlowLayout>
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_components"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,6 +92,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_casting_time"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,6 +107,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_range"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,6 +122,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_target"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,6 +137,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_effect"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,6 +152,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_duration"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,6 +167,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_saving_throw"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,6 +182,7 @@
             </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
             <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                android:id="@+id/cl_spell_spell_resistance"
                 style="@style/Widget.Toolkit.CaptionLayout.Browser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -52,4 +52,6 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     // Master-Detail flow revisited
     compile 'com.github.dzielins42:master-detail-flow-revised:-SNAPSHOT'
+    // FlowLayout
+    compile "com.wefika:flowlayout:0.4.1"
 }
