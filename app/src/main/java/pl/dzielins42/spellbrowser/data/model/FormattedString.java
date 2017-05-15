@@ -27,7 +27,11 @@ public class FormattedString {
         this.formatted = formatted;
     }
 
-    public static FormattedString plain(String text){
+    public String getFormattedOrPlain() {
+        return formatted == null ? plain : formatted;
+    }
+
+    public static FormattedString plain(String text) {
         return new FormattedString(text, null);
     }
 

@@ -32,6 +32,10 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView 
     @Inject
     SpellDetailPresenter mPresenter;
 
+    @BindView(R.id.toolkit_container_progress)
+    ViewGroup mContainerProgress;
+    @BindView(R.id.toolkit_container_content)
+    ViewGroup mContainerContent;
     @BindView(R.id.container_spell_levels)
     ViewGroup mContainerLevels;
     @BindView(R.id.tv_spell_name)
@@ -125,12 +129,14 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView 
 
     @Override
     public void showLoading() {
-
+        mContainerProgress.setVisibility(View.VISIBLE);
+        mContainerContent.setVisibility(View.GONE);
     }
 
     @Override
     public void showContent() {
-
+        mContainerProgress.setVisibility(View.GONE);
+        mContainerContent.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -158,7 +164,6 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView 
         }
         // Levels / Sources
         if (data.getSources() != null && !data.getSources().isEmpty()) {
-
             StringBuilder sb;
             SourceLevelExtraTriplet slet;
             List<String> sources = new ArrayList<>(data.getSources().size());
@@ -169,7 +174,6 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView 
                 if (!TextUtils.isEmpty(slet.getExtra())) {
                     sb.append(" (").append(slet.getExtra()).append(")");
                 }
-
                 sources.add(sb.toString());
             }
 
@@ -206,9 +210,28 @@ public class SpellDetailFragment extends Fragment implements Browser.DetailView 
         setSectionTextorHide(mCLSavingThrow, mTVSavingThrow, data.getSavingThrow());
         // Spell Resistance
         setSectionTextorHide(mCLSpellResistance, mTVSpellResistance, data.getSpellResistance());
-        //mTVFlavourText.setText();
+        // Flavour Text
+        if (data.getFlavourText() != null) {
+            String flavourText = data.getFlavourText().getFormattedOrPlain();
+            if (TextUtils.isEmpty(flavourText)) {
+                mTVFlavourText.setVisibility(View.GONE);
+            } else {
+                mTVFlavourText.setText(Html.fromHtml(flavourText));
+            }
+        } else {
+            mTVFlavourText.setVisibility(View.GONE);
+        }
         // Description
-        mTVDescription.setText(Html.fromHtml(data.getDescription().getFormatted()));
+        if (data.getDescription() != null) {
+            String descriptionText = data.getDescription().getFormattedOrPlain();
+            if (TextUtils.isEmpty(descriptionText)) {
+                mTVDescription.setVisibility(View.GONE);
+            } else {
+                mTVDescription.setText(Html.fromHtml(descriptionText));
+            }
+        } else {
+            mTVDescription.setVisibility(View.GONE);
+        }
 
         Activity activity = getActivity();
         if (activity != null && activity instanceof AbsMasterDetailActivity) {

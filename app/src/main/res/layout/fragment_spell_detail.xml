@@ -1,214 +1,220 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <ScrollView
+    <include layout="@layout/toolkit_content_progress"/>
+
+    <RelativeLayout
+        android:id="@id/toolkit.container.content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_spell_name"
-                style="?android:attr/textAppearanceLarge"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/stub_spell_name"
-                android:textIsSelectable="true"/>
-
-            <!--Schools, subschools, descriptors container-->
-            <com.wefika.flowlayout.FlowLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|top">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tv_spell_schools"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_spell_name"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/stub_spell_school"
+                    android:text="@string/stub_spell_name"
                     android:textIsSelectable="true"/>
 
-                <TextView
-                    android:id="@+id/tv_spell_subschools"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stub_spell_subschool"
-                    android:textIsSelectable="true"/>
-
-                <TextView
-                    android:id="@+id/tv_spell_descriptors"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stub_spell_descriptor"
-                    android:textIsSelectable="true"/>
-            </com.wefika.flowlayout.FlowLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_levels"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_level">
-
+                <!--Schools, subschools, descriptors container-->
                 <com.wefika.flowlayout.FlowLayout
-                    android:id="@+id/container_spell_levels"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|top">
 
                     <TextView
-                        android:id="@+id/tv_spell_levels"
+                        android:id="@+id/tv_spell_schools"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stub_spell_school"
+                        android:textIsSelectable="true"/>
+
+                    <TextView
+                        android:id="@+id/tv_spell_subschools"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stub_spell_subschool"
+                        android:textIsSelectable="true"/>
+
+                    <TextView
+                        android:id="@+id/tv_spell_descriptors"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stub_spell_descriptor"
+                        android:textIsSelectable="true"/>
+                </com.wefika.flowlayout.FlowLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_levels"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_level">
+
+                    <com.wefika.flowlayout.FlowLayout
+                        android:id="@+id/container_spell_levels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top">
+
+                        <TextView
+                            android:id="@+id/tv_spell_levels"
+                            style="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textIsSelectable="true"/>
+                    </com.wefika.flowlayout.FlowLayout>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_components"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_components">
+
+                    <TextView
+                        android:id="@+id/tv_spell_components"
                         style="?android:attr/textAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textIsSelectable="true"/>
-                </com.wefika.flowlayout.FlowLayout>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_components"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_components">
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_casting_time"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_casting_time">
+
+                    <TextView
+                        android:id="@+id/tv_spell_casting_time"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_range"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_range">
+
+                    <TextView
+                        android:id="@+id/tv_spell_range"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_target"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_target">
+
+                    <TextView
+                        android:id="@+id/tv_spell_target"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_effect"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_effect">
+
+                    <TextView
+                        android:id="@+id/tv_spell_effect"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_duration"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_duration">
+
+                    <TextView
+                        android:id="@+id/tv_spell_duration"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_saving_throw"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_saving_throw">
+
+                    <TextView
+                        android:id="@+id/tv_spell_saving_throw"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
+
+                <pl.dzielins42.toolkit.android.widget.CaptionLayout
+                    android:id="@+id/cl_spell_spell_resistance"
+                    style="@style/Widget.Toolkit.CaptionLayout.Browser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:captionText="@string/label_spell_detail_spell_resistance">
+
+                    <TextView
+                        android:id="@+id/tv_spell_spell_resistance"
+                        style="?android:attr/textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"/>
+                </pl.dzielins42.toolkit.android.widget.CaptionLayout>
 
                 <TextView
-                    android:id="@+id/tv_spell_components"
+                    android:id="@+id/tv_spell_spell_flavour_text"
                     style="?android:attr/textAppearanceSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_casting_time"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_casting_time">
 
                 <TextView
-                    android:id="@+id/tv_spell_casting_time"
+                    android:id="@+id/tv_spell_description"
                     style="?android:attr/textAppearanceSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_range"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_range">
-
-                <TextView
-                    android:id="@+id/tv_spell_range"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_target"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_target">
-
-                <TextView
-                    android:id="@+id/tv_spell_target"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_effect"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_effect">
-
-                <TextView
-                    android:id="@+id/tv_spell_effect"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_duration"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_duration">
-
-                <TextView
-                    android:id="@+id/tv_spell_duration"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_saving_throw"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_saving_throw">
-
-                <TextView
-                    android:id="@+id/tv_spell_saving_throw"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <pl.dzielins42.toolkit.android.widget.CaptionLayout
-                android:id="@+id/cl_spell_spell_resistance"
-                style="@style/Widget.Toolkit.CaptionLayout.Browser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:captionText="@string/label_spell_detail_spell_resistance">
-
-                <TextView
-                    android:id="@+id/tv_spell_spell_resistance"
-                    style="?android:attr/textAppearanceSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"/>
-            </pl.dzielins42.toolkit.android.widget.CaptionLayout>
-
-            <TextView
-                android:id="@+id/tv_spell_spell_flavour_text"
-                style="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textIsSelectable="true"/>
-
-            <TextView
-                android:id="@+id/tv_spell_description"
-                style="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textIsSelectable="true"/>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</FrameLayout>

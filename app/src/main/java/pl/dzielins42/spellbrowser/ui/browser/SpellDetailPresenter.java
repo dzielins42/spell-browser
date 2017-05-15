@@ -34,7 +34,7 @@ public class SpellDetailPresenter extends BasePresenter<Browser.DetailView> impl
         getView().showLoading();
         // Get data
         mDataManager.getSpell(id)
-                //.delay(5, TimeUnit.SECONDS)
+                .delay(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Spell>() {
