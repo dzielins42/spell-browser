@@ -1,0 +1,30 @@
+{
+   "fields":[
+      {
+         "name":"spell_id",
+         "type":"Long",
+         "nullable":false,
+         "index":false,
+         "foreignKey":{
+            "table":"spell",
+            "onDelete":"CASCADE"
+         }
+      },
+      {
+         "name":"school_id",
+         "type":"Long",
+         "nullable":false,
+         "index":false,
+         "foreignKey":{
+            "table":"school",
+            "onDelete":"CASCADE"
+         }
+      }
+   ],
+   "constraints":[
+      {
+         "name":"unique_pair",
+         "definition":"UNIQUE (spell_id, school_id) ON CONFLICT IGNORE"
+      }
+   ]
+}

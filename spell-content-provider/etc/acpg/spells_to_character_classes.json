@@ -1,0 +1,42 @@
+{
+   "fields":[
+      {
+         "name":"spell_id",
+         "type":"Long",
+         "nullable":false,
+         "index":false,
+         "foreignKey":{
+            "table":"spell",
+            "onDelete":"CASCADE"
+         }
+      },
+      {
+         "name":"character_class_id",
+         "type":"Long",
+         "nullable":false,
+         "index":false,
+         "foreignKey":{
+            "table":"character_class",
+            "onDelete":"CASCADE"
+         }
+      },
+      {
+         "name":"level",
+         "type":"Integer",
+         "nullable":false,
+         "index":false
+      },
+      {
+         "name":"extra",
+         "type":"String",
+         "nullable":true,
+         "index":false
+      }
+   ],
+   "constraints":[
+      {
+         "name":"unique_four",
+         "definition":"UNIQUE (spell_id, character_class_id, level, extra) ON CONFLICT IGNORE"
+      }
+   ]
+}
