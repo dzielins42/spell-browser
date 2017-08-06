@@ -25,11 +25,14 @@ public class DataManager {
     }
 
     public Observable<List<Spell>> getSpells() {
-        return mSpellDbService.getSpells();
+        return mSpellDbService.getSpells().toList();
     }
 
     public Observable<Spell> getSpell(long id) {
         return mSpellDbService.getSpell(id);
     }
 
+    public Observable<Spell> saveSpell(final Spell spell) {
+        return mSpellDbService.saveSpell(spell);
+    }
 }
