@@ -19,12 +19,22 @@
             "table":"school",
             "onDelete":"CASCADE"
          }
+      },
+      {
+         "name":"sub_school_id",
+         "type":"Long",
+         "nullable":true,
+         "index":false,
+         "foreignKey":{
+            "table":"sub_school",
+            "onDelete":"CASCADE"
+         }
       }
    ],
    "constraints":[
       {
          "name":"unique_pair",
-         "definition":"UNIQUE (spell_id, school_id) ON CONFLICT IGNORE"
+         "definition":"UNIQUE (spell_id, school_id, sub_school_id) ON CONFLICT IGNORE"
       }
    ]
 }
