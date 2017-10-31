@@ -12,7 +12,7 @@ import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolColumns;
 
 @RunWith(AndroidJUnit4.class)
-public class SpellDaoTest_School extends SpellDaoTest {
+public class SchoolDaoTest extends DaoTest {
 
     @Before
     @Override
@@ -31,7 +31,7 @@ public class SpellDaoTest_School extends SpellDaoTest {
         SchoolBean bean = new SchoolBean();
         bean.setName("Test school");
 
-        SpellDao.save(mMockResolver, bean);
+        SchoolDao.save(mMockResolver, bean);
 
         assertEquals(
                 1,
@@ -48,7 +48,7 @@ public class SpellDaoTest_School extends SpellDaoTest {
         SchoolBean bean = new SchoolBean();
 
         bean.setName("Test school A");
-        SpellDao.save(mMockResolver, bean);
+        SchoolDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 SchoolColumns.TABLE_NAME, null, null, null, null, null, null
@@ -59,7 +59,7 @@ public class SpellDaoTest_School extends SpellDaoTest {
         id = bean.getId();
 
         bean.setName("Test school B");
-        SpellDao.save(mMockResolver, bean);
+        SchoolDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 SchoolColumns.TABLE_NAME, null, null, null, null, null, null

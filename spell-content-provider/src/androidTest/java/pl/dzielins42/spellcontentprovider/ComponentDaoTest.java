@@ -12,7 +12,7 @@ import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentColumns;
 
 @RunWith(AndroidJUnit4.class)
-public class SpellDaoTest_Component extends SpellDaoTest {
+public class ComponentDaoTest extends DaoTest {
 
     @Before
     @Override
@@ -31,7 +31,7 @@ public class SpellDaoTest_Component extends SpellDaoTest {
         ComponentBean bean = new ComponentBean();
         bean.setName("Test component");
 
-        SpellDao.save(mMockResolver, bean);
+        ComponentDao.save(mMockResolver, bean);
 
         assertEquals(
                 1,
@@ -48,7 +48,7 @@ public class SpellDaoTest_Component extends SpellDaoTest {
         ComponentBean bean = new ComponentBean();
 
         bean.setName("Test component A");
-        SpellDao.save(mMockResolver, bean);
+        ComponentDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 ComponentColumns.TABLE_NAME, null, null, null, null, null, null
@@ -59,7 +59,7 @@ public class SpellDaoTest_Component extends SpellDaoTest {
         id = bean.getId();
 
         bean.setName("Test component B");
-        SpellDao.save(mMockResolver, bean);
+        ComponentDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 ComponentColumns.TABLE_NAME, null, null, null, null, null, null

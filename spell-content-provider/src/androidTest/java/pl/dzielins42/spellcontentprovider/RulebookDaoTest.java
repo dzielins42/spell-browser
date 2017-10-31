@@ -12,7 +12,7 @@ import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookColumns;
 
 @RunWith(AndroidJUnit4.class)
-public class SpellDaoTest_Rulebook extends SpellDaoTest {
+public class RulebookDaoTest extends DaoTest {
 
     @Before
     @Override
@@ -31,7 +31,7 @@ public class SpellDaoTest_Rulebook extends SpellDaoTest {
         RulebookBean bean = new RulebookBean();
         bean.setName("Test rulebook");
 
-        SpellDao.save(mMockResolver, bean);
+        RulebookDao.save(mMockResolver, bean);
 
         assertEquals(
                 1,
@@ -48,7 +48,7 @@ public class SpellDaoTest_Rulebook extends SpellDaoTest {
         RulebookBean bean = new RulebookBean();
 
         bean.setName("Test rulebook A");
-        SpellDao.save(mMockResolver, bean);
+        RulebookDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 RulebookColumns.TABLE_NAME, null, null, null, null, null, null
@@ -59,7 +59,7 @@ public class SpellDaoTest_Rulebook extends SpellDaoTest {
         id = bean.getId();
 
         bean.setName("Test rulebook B");
-        SpellDao.save(mMockResolver, bean);
+        RulebookDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 RulebookColumns.TABLE_NAME, null, null, null, null, null, null

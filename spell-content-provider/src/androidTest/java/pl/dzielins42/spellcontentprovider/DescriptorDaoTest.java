@@ -12,7 +12,7 @@ import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorColumns;
 
 @RunWith(AndroidJUnit4.class)
-public class SpellDaoTest_Descriptor extends SpellDaoTest {
+public class DescriptorDaoTest extends DaoTest {
 
     @Before
     @Override
@@ -31,7 +31,7 @@ public class SpellDaoTest_Descriptor extends SpellDaoTest {
         DescriptorBean bean = new DescriptorBean();
         bean.setName("Test descriptor");
 
-        SpellDao.save(mMockResolver, bean);
+        DescriptorDao.save(mMockResolver, bean);
 
         assertEquals(
                 1,
@@ -48,7 +48,7 @@ public class SpellDaoTest_Descriptor extends SpellDaoTest {
         DescriptorBean bean = new DescriptorBean();
 
         bean.setName("Test descriptor A");
-        SpellDao.save(mMockResolver, bean);
+        DescriptorDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 DescriptorColumns.TABLE_NAME, null, null, null, null, null, null
@@ -59,7 +59,7 @@ public class SpellDaoTest_Descriptor extends SpellDaoTest {
         id = bean.getId();
 
         bean.setName("Test descriptor B");
-        SpellDao.save(mMockResolver, bean);
+        DescriptorDao.save(mMockResolver, bean);
 
         cursor = getReadableDatabase().query(
                 DescriptorColumns.TABLE_NAME, null, null, null, null, null, null

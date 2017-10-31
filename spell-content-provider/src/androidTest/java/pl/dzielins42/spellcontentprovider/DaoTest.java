@@ -17,12 +17,12 @@ import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptor
 import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsColumns;
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolColumns;
 
-public class SpellDaoTest extends ProviderTestCase2<SpellContentProvider> {
+public class DaoTest extends ProviderTestCase2<SpellContentProvider> {
 
     protected MockContentResolver mMockResolver;
     protected SpellContentProviderSQLiteOpenHelper mSQLiteOpenHelper;
 
-    public SpellDaoTest() {
+    public DaoTest() {
         super(SpellContentProvider.class, SpellContentProvider.AUTHORITY);
     }
 
