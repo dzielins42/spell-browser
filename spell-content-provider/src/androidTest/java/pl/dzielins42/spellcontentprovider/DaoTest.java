@@ -19,8 +19,8 @@ import pl.dzielins42.spellcontentprovider.subschool.SubschoolColumns;
 
 public class DaoTest extends ProviderTestCase2<SpellContentProvider> {
 
-    protected MockContentResolver mMockResolver;
-    protected SpellContentProviderSQLiteOpenHelper mSQLiteOpenHelper;
+    MockContentResolver mMockResolver;
+    private SpellContentProviderSQLiteOpenHelper mSQLiteOpenHelper;
 
     public DaoTest() {
         super(SpellContentProvider.class, SpellContentProvider.AUTHORITY);
@@ -53,11 +53,11 @@ public class DaoTest extends ProviderTestCase2<SpellContentProvider> {
         db.delete(SpellColumns.TABLE_NAME, null, null);
     }
 
-    protected SQLiteDatabase getReadableDatabase(){
+    SQLiteDatabase getReadableDatabase(){
         return mSQLiteOpenHelper.getReadableDatabase();
     }
 
-    protected SQLiteDatabase getWritableDatabase() {
+    SQLiteDatabase getWritableDatabase() {
         return mSQLiteOpenHelper.getWritableDatabase();
     }
 

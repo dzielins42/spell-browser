@@ -55,6 +55,7 @@ public class DescriptorDaoTest extends DaoTest {
         );
         cursor.moveToFirst();
         assertEquals("Test descriptor A", cursor.getString(cursor.getColumnIndexOrThrow(DescriptorColumns.NAME)));
+        cursor.close();
 
         id = bean.getId();
 
@@ -67,6 +68,7 @@ public class DescriptorDaoTest extends DaoTest {
         cursor.moveToFirst();
         assertEquals("Test descriptor B", cursor.getString(cursor.getColumnIndexOrThrow(DescriptorColumns.NAME)));
         assertEquals(id, cursor.getLong(cursor.getColumnIndexOrThrow(DescriptorColumns._ID)));
+        cursor.close();
     }
 
 }

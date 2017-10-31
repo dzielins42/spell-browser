@@ -55,6 +55,7 @@ public class CharacterClassDaoTest extends DaoTest {
         );
         cursor.moveToFirst();
         assertEquals("Test class A", cursor.getString(cursor.getColumnIndexOrThrow(CharacterClassColumns.NAME)));
+        cursor.close();
 
         id = bean.getId();
 
@@ -67,6 +68,7 @@ public class CharacterClassDaoTest extends DaoTest {
         cursor.moveToFirst();
         assertEquals("Test class B", cursor.getString(cursor.getColumnIndexOrThrow(CharacterClassColumns.NAME)));
         assertEquals(id, cursor.getLong(cursor.getColumnIndexOrThrow(CharacterClassColumns._ID)));
+        cursor.close();
     }
 
 }

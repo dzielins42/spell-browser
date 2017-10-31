@@ -55,6 +55,7 @@ public class RulebookDaoTest extends DaoTest {
         );
         cursor.moveToFirst();
         assertEquals("Test rulebook A", cursor.getString(cursor.getColumnIndexOrThrow(RulebookColumns.NAME)));
+        cursor.close();
 
         id = bean.getId();
 
@@ -67,6 +68,7 @@ public class RulebookDaoTest extends DaoTest {
         cursor.moveToFirst();
         assertEquals("Test rulebook B", cursor.getString(cursor.getColumnIndexOrThrow(RulebookColumns.NAME)));
         assertEquals(id, cursor.getLong(cursor.getColumnIndexOrThrow(RulebookColumns._ID)));
+        cursor.close();
     }
 
 }

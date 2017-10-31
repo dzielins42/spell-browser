@@ -55,6 +55,7 @@ public class SchoolDaoTest extends DaoTest {
         );
         cursor.moveToFirst();
         assertEquals("Test school A", cursor.getString(cursor.getColumnIndexOrThrow(SchoolColumns.NAME)));
+        cursor.close();
 
         id = bean.getId();
 
@@ -67,6 +68,7 @@ public class SchoolDaoTest extends DaoTest {
         cursor.moveToFirst();
         assertEquals("Test school B", cursor.getString(cursor.getColumnIndexOrThrow(SchoolColumns.NAME)));
         assertEquals(id, cursor.getLong(cursor.getColumnIndexOrThrow(SchoolColumns._ID)));
+        cursor.close();
     }
 
 }

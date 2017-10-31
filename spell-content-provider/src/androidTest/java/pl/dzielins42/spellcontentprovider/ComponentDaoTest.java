@@ -55,6 +55,7 @@ public class ComponentDaoTest extends DaoTest {
         );
         cursor.moveToFirst();
         assertEquals("Test component A", cursor.getString(cursor.getColumnIndexOrThrow(ComponentColumns.NAME)));
+        cursor.close();
 
         id = bean.getId();
 
@@ -67,6 +68,7 @@ public class ComponentDaoTest extends DaoTest {
         cursor.moveToFirst();
         assertEquals("Test component B", cursor.getString(cursor.getColumnIndexOrThrow(ComponentColumns.NAME)));
         assertEquals(id, cursor.getLong(cursor.getColumnIndexOrThrow(ComponentColumns._ID)));
+        cursor.close();
     }
 
 }
