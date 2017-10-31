@@ -1,7 +1,7 @@
 {
    "fields":[
       {
-         "name":"spell_id",
+         "name":"fr_spell_id",
          "type":"Long",
          "nullable":false,
          "index":false,
@@ -11,7 +11,7 @@
          }
       },
       {
-         "name":"school_id",
+         "name":"fr_school_id",
          "type":"Long",
          "nullable":false,
          "index":false,
@@ -21,12 +21,12 @@
          }
       },
       {
-         "name":"sub_school_id",
+         "name":"fr_subschool_id",
          "type":"Long",
          "nullable":true,
          "index":false,
          "foreignKey":{
-            "table":"sub_school",
+            "table":"subschool",
             "onDelete":"CASCADE"
          }
       }
@@ -34,7 +34,7 @@
    "constraints":[
       {
          "name":"unique_pair",
-         "definition":"UNIQUE (spell_id, school_id, sub_school_id) ON CONFLICT IGNORE"
+         "definition":"UNIQUE (fr_spell_id, fr_school_id, fr_subschool_id) ON CONFLICT IGNORE"
       }
    ]
 }
