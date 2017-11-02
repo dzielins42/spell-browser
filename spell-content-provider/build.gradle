@@ -29,10 +29,14 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+    // RxJava
+    compile 'io.reactivex:rxjava:1.1.6'
+    // SQL Brite
+    compile 'com.squareup.sqlbrite2:sqlbrite:2.0.0'
 }
 
 acpg {
-    entitiesDir file('/etc/acpg')
+    entitiesDir file('./etc/acpg')
     providerJavaPackage 'pl.dzielins42.spellcontentprovider'
     authority 'pl.dzielins42.spellcontentprovider.SpellContentProvider'
     providerClassName 'SpellContentProvider'
