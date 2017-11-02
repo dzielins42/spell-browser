@@ -6,144 +6,94 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassContentValues;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassSelection;
-import pl.dzielins42.spellcontentprovider.component.ComponentBean;
-import pl.dzielins42.spellcontentprovider.component.ComponentContentValues;
-import pl.dzielins42.spellcontentprovider.component.ComponentSelection;
-import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
-import pl.dzielins42.spellcontentprovider.descriptor.DescriptorContentValues;
-import pl.dzielins42.spellcontentprovider.descriptor.DescriptorSelection;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookContentValues;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookSelection;
-import pl.dzielins42.spellcontentprovider.school.SchoolBean;
-import pl.dzielins42.spellcontentprovider.school.SchoolContentValues;
-import pl.dzielins42.spellcontentprovider.school.SchoolSelection;
 import pl.dzielins42.spellcontentprovider.spell.SpellBean;
+import pl.dzielins42.spellcontentprovider.spell.SpellColumns;
 import pl.dzielins42.spellcontentprovider.spell.SpellContentValues;
+import pl.dzielins42.spellcontentprovider.spell.SpellCursor;
 import pl.dzielins42.spellcontentprovider.spell.SpellSelection;
-import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesBean;
-import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesContentValues;
-import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesSelection;
-import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsBean;
-import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsContentValues;
-import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsSelection;
-import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsBean;
-import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsContentValues;
-import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsSelection;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsBean;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsContentValues;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsSelection;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolContentValues;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolSelection;
 
 public class SpellDao {
+
+    public static List<SpellBean> get(
+            @NonNull Context context,
+            @NonNull SpellSelection selection
+    ) {
+        return get(context.getContentResolver(), selection);
+    }
+
+    public static List<SpellBean> get(
+            @NonNull ContentResolver contentResolver,
+            @NonNull SpellSelection selection
+    ) {
+        SpellCursor cursor = selection.query(
+                contentResolver, SpellColumns.ALL_COLUMNS
+        );
+
+        if (cursor.getCount() <= 0) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<SpellBean> list = new ArrayList<>(cursor.getCount());
+        while (cursor.moveToNext()) {
+            list.add(SpellBean.copy(cursor));
+        }
+
+        return list;
+    }
+
+    public static void remove(
+            @NonNull Context context,
+            @NonNull SpellBean bean
+    ) {
+        remove(context.getContentResolver(), bean);
+    }
+
+    public static void remove(
+            @NonNull ContentResolver contentResolver,
+            @NonNull SpellBean bean
+    ) {
+        remove(contentResolver, new SpellSelection().id(bean.getId()));
+    }
+
+    public static void remove(
+            @NonNull Context context,
+            @NonNull SpellSelection selection
+    ) {
+        remove(context.getContentResolver(), selection);
+    }
+
+    public static void remove(
+            @NonNull ContentResolver contentResolver,
+            @NonNull SpellSelection selection
+    ) {
+        selection.delete(contentResolver);
+    }
+
     public static void save(
             @NonNull Context context,
-            @NonNull SpellBean spellBean,
-            @NonNull Set<SpellsToCharacterClassesBean> spellsToCharacterClassesBeans,
-            @NonNull Set<SpellsToComponentsBean> spellsToComponentsBeans,
-            @NonNull Set<SpellsToDescriptorsBean> spellsToDescriptorsBeans,
-            @NonNull Set<SpellsToSchoolsBean> spellsToSchoolsBeans
+            @NonNull SpellBean bean
     ) {
-        save(
-                context.getContentResolver(),
-                spellBean,
-                spellsToCharacterClassesBeans,
-                spellsToComponentsBeans,
-                spellsToDescriptorsBeans,
-                spellsToSchoolsBeans
-        );
+        save(context.getContentResolver(), bean);
     }
 
     public static void save(
             @NonNull ContentResolver contentResolver,
-            @NonNull SpellBean spellBean,
-            @NonNull Set<SpellsToCharacterClassesBean> spellsToCharacterClassesBeans,
-            @NonNull Set<SpellsToComponentsBean> spellsToComponentsBeans,
-            @NonNull Set<SpellsToDescriptorsBean> spellsToDescriptorsBeans,
-            @NonNull Set<SpellsToSchoolsBean> spellsToSchoolsBeans
+            @NonNull SpellBean bean
     ) {
-        final long spellId = spellBean.getId();
-        final boolean isUpdate = spellId > 0;
+        final boolean isUpdate = bean.getId() > 0;
 
-        SpellContentValues spellContentValues = ContentValuesUtils.beanToContentValues(spellBean);
-
-        if (isUpdate) {
-            // Remove records from bridge tables for given spell
-            new SpellsToCharacterClassesSelection().spellId(spellId).delete(contentResolver);
-            new SpellsToComponentsSelection().spellId(spellId).delete(contentResolver);
-            new SpellsToDescriptorsSelection().spellId(spellId).delete(contentResolver);
-            new SpellsToSchoolsSelection().frSpellId(spellId).delete(contentResolver);
-        }
+        SpellContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
 
         if (isUpdate) {
-            spellContentValues.update(contentResolver, new SpellSelection().id(spellBean.getId()));
+            contentValues.update(contentResolver, new SpellSelection().id(bean.getId()));
         } else {
-            spellContentValues.insert(contentResolver);
+            Uri uri = contentValues.insert(contentResolver);
+            bean.setId(ContentUris.parseId(uri));
         }
-
-        if (spellsToCharacterClassesBeans != null && !spellsToCharacterClassesBeans.isEmpty()) {
-            for (SpellsToCharacterClassesBean bean : spellsToCharacterClassesBeans) {
-                save(contentResolver, bean);
-            }
-        }
-        if (spellsToComponentsBeans != null && !spellsToComponentsBeans.isEmpty()) {
-            for (SpellsToComponentsBean bean : spellsToComponentsBeans) {
-                save(contentResolver, bean);
-            }
-        }
-        if (spellsToDescriptorsBeans != null && !spellsToDescriptorsBeans.isEmpty()) {
-            for (SpellsToDescriptorsBean bean : spellsToDescriptorsBeans) {
-                save(contentResolver, bean);
-            }
-        }
-        if (spellsToSchoolsBeans != null && !spellsToSchoolsBeans.isEmpty()) {
-            for (SpellsToSchoolsBean bean : spellsToSchoolsBeans) {
-                save(contentResolver, bean);
-            }
-        }
-    }
-
-    private static void save(
-            @NonNull ContentResolver contentResolver,
-            @NonNull SpellsToCharacterClassesBean bean
-    ) {
-        final SpellsToCharacterClassesContentValues contentValues =
-                ContentValuesUtils.beanToContentValues(bean);
-        contentValues.insert(contentResolver);
-    }
-
-    private static void save(
-            @NonNull ContentResolver contentResolver,
-            @NonNull SpellsToComponentsBean bean
-    ) {
-        final SpellsToComponentsContentValues contentValues =
-                ContentValuesUtils.beanToContentValues(bean);
-        contentValues.insert(contentResolver);
-    }
-
-    private static void save(
-            @NonNull ContentResolver contentResolver,
-            @NonNull SpellsToDescriptorsBean bean
-    ) {
-        final SpellsToDescriptorsContentValues contentValues =
-                ContentValuesUtils.beanToContentValues(bean);
-        contentValues.insert(contentResolver);
-    }
-
-    private static void save(
-            @NonNull ContentResolver contentResolver,
-            @NonNull SpellsToSchoolsBean bean
-    ) {
-        final SpellsToSchoolsContentValues contentValues =
-                ContentValuesUtils.beanToContentValues(bean);
-        contentValues.insert(contentResolver);
     }
 
 }

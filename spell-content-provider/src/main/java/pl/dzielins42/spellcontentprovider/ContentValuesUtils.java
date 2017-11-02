@@ -25,9 +25,9 @@ import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsContent
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolContentValues;
 
-class ContentValuesUtils {
+public class ContentValuesUtils {
 
-    static CharacterClassContentValues beanToContentValues(@NonNull CharacterClassBean bean) {
+    public static CharacterClassContentValues beanToContentValues(@NonNull CharacterClassBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -38,7 +38,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static ComponentContentValues beanToContentValues(@NonNull ComponentBean bean) {
+    public static ComponentContentValues beanToContentValues(@NonNull ComponentBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -49,7 +49,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static DescriptorContentValues beanToContentValues(@NonNull DescriptorBean bean) {
+    public static DescriptorContentValues beanToContentValues(@NonNull DescriptorBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -60,7 +60,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static RulebookContentValues beanToContentValues(@NonNull RulebookBean bean) {
+    public static RulebookContentValues beanToContentValues(@NonNull RulebookBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -71,7 +71,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SchoolContentValues beanToContentValues(@NonNull SchoolBean bean) {
+    public static SchoolContentValues beanToContentValues(@NonNull SchoolBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -82,7 +82,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SpellContentValues beanToContentValues(@NonNull SpellBean bean) {
+    public static SpellContentValues beanToContentValues(@NonNull SpellBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -109,7 +109,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SubschoolContentValues beanToContentValues(@NonNull SubschoolBean bean) {
+    public static SubschoolContentValues beanToContentValues(@NonNull SubschoolBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -121,7 +121,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SpellsToCharacterClassesContentValues beanToContentValues(@NonNull SpellsToCharacterClassesBean bean) {
+    public static SpellsToCharacterClassesContentValues beanToContentValues(@NonNull SpellsToCharacterClassesBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -135,7 +135,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SpellsToComponentsContentValues beanToContentValues(@NonNull SpellsToComponentsBean bean) {
+    public static SpellsToComponentsContentValues beanToContentValues(@NonNull SpellsToComponentsBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -147,7 +147,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SpellsToDescriptorsContentValues beanToContentValues(@NonNull SpellsToDescriptorsBean bean) {
+    public static SpellsToDescriptorsContentValues beanToContentValues(@NonNull SpellsToDescriptorsBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
@@ -159,7 +159,7 @@ class ContentValuesUtils {
         return contentValues;
     }
 
-    static SpellsToSchoolsContentValues beanToContentValues(@NonNull SpellsToSchoolsBean bean) {
+    public static SpellsToSchoolsContentValues beanToContentValues(@NonNull SpellsToSchoolsBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
