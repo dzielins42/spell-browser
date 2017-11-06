@@ -15,7 +15,11 @@ import java.util.Set;
 
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
+import pl.dzielins42.spellcontentprovider.component.ComponentJsonSerializer;
+import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
+import pl.dzielins42.spellcontentprovider.descriptor.DescriptorJsonSerializer;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
+import pl.dzielins42.spellcontentprovider.rulebook.RulebookJsonSerializer;
 import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 
 import static org.junit.Assert.*;
@@ -26,7 +30,12 @@ public class GsonExportTest {
 
     @Before
     public void setUp() throws Exception {
-        mGson = new GsonBuilder().setPrettyPrinting().create();
+        mGson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(DescriptorBean.class, new DescriptorJsonSerializer())
+                .registerTypeAdapter(RulebookBean.class, new RulebookJsonSerializer())
+                .registerTypeAdapter(ComponentBean.class, new ComponentJsonSerializer())
+                .create();
     }
 
     @After
