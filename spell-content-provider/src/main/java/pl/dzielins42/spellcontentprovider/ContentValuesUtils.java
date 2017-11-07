@@ -96,6 +96,7 @@ public class ContentValuesUtils {
         contentValues.putEffect(bean.getEffect());
         contentValues.putFlavourTextFormatted(bean.getFlavourTextFormatted());
         contentValues.putFlavourTextPlain(bean.getFlavourTextPlain());
+        contentValues.putIsRitual(bean.getIsRitual());
         contentValues.putName(bean.getName());
         contentValues.putPage(bean.getPage());
         contentValues.putRange(bean.getRange());

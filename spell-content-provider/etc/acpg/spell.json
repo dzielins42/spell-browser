@@ -105,6 +105,13 @@
          "type":"String",
          "nullable":true,
          "index":false
+      },
+      {
+         "name":"is_ritual",
+         "type":"Boolean",
+         "nullable":false,
+         "index":false,
+         "defaultValue":false
       }
    ]
 }

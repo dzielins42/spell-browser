@@ -70,7 +70,8 @@ public class GsonExportTest {
                 "#shortDescriptionPlain#",
                 "#shortDescriptionFormatted#",
                 "#flavourTextPlain#",
-                "#flavourTextFormatted#"
+                "#flavourTextFormatted#",
+                false
         );
 
         Set<CharacterClassLevelExtraBean> classesLevels = new HashSet<>();

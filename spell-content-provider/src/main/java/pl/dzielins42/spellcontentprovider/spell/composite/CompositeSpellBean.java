@@ -29,6 +29,7 @@ public class CompositeSpellBean implements SpellModel {
     private String mShortDescriptionFormatted;
     private String mFlavourTextPlain;
     private String mFlavourTextFormatted;
+    private boolean mIsRitual;
 
     private Set<CharacterClassLevelExtraBean> mClassesLevels;
     private Set<SchoolSubschoolBean> mSchools;
@@ -225,6 +226,15 @@ public class CompositeSpellBean implements SpellModel {
         mFlavourTextFormatted = flavourTextFormatted;
     }
 
+    @Override
+    public boolean getIsRitual() {
+        return mIsRitual;
+    }
+
+    public void setIsRitual(boolean mIsRitual) {
+        this.mIsRitual = mIsRitual;
+    }
+
     //TODO nullable or not?
 
     public Set<CharacterClassLevelExtraBean> getClassesLevels() {
@@ -276,7 +286,7 @@ public class CompositeSpellBean implements SpellModel {
      * Instantiate a new SpellBean with specified values.
      */
     @NonNull
-    public static CompositeSpellBean newInstance(long id, @NonNull String name, @NonNull RulebookBean rulebook, int page, @NonNull String castingTime, @NonNull String range, @NonNull String target, @NonNull String effect, @Nullable String area, @NonNull String duration, @Nullable String savingThrow, @Nullable String spellResistance, @Nullable String descriptionPlain, @Nullable String descriptionFormatted, @Nullable String shortDescriptionPlain, @Nullable String shortDescriptionFormatted, @Nullable String flavourTextPlain, @Nullable String flavourTextFormatted) {
+    public static CompositeSpellBean newInstance(long id, @NonNull String name, @NonNull RulebookBean rulebook, int page, @NonNull String castingTime, @NonNull String range, @NonNull String target, @NonNull String effect, @Nullable String area, @NonNull String duration, @Nullable String savingThrow, @Nullable String spellResistance, @Nullable String descriptionPlain, @Nullable String descriptionFormatted, @Nullable String shortDescriptionPlain, @Nullable String shortDescriptionFormatted, @Nullable String flavourTextPlain, @Nullable String flavourTextFormatted, boolean isRitual) {
         if (name == null) throw new IllegalArgumentException("name must not be null");
         if (rulebook == null) throw new IllegalArgumentException("rulebook must not be null");
         if (castingTime == null) throw new IllegalArgumentException("castingTime must not be null");
@@ -303,6 +313,7 @@ public class CompositeSpellBean implements SpellModel {
         res.mShortDescriptionFormatted = shortDescriptionFormatted;
         res.mFlavourTextPlain = flavourTextPlain;
         res.mFlavourTextFormatted = flavourTextFormatted;
+        res.mIsRitual = isRitual;
         return res;
     }
 
@@ -330,6 +341,7 @@ public class CompositeSpellBean implements SpellModel {
         res.mShortDescriptionFormatted = from.getShortDescriptionFormatted();
         res.mFlavourTextPlain = from.getFlavourTextPlain();
         res.mFlavourTextFormatted = from.getFlavourTextFormatted();
+        res.mIsRitual = from.getIsRitual();
         return res;
     }
 
@@ -431,6 +443,11 @@ public class CompositeSpellBean implements SpellModel {
 
         public CompositeSpellBean.Builder flavourTextFormatted(@Nullable String flavourTextFormatted) {
             mRes.mFlavourTextFormatted = flavourTextFormatted;
+            return this;
+        }
+
+        public CompositeSpellBean.Builder isRitual(boolean isRitual) {
+            mRes.mIsRitual = isRitual;
             return this;
         }
 
