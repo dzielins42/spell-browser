@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassColumns;
+import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassDao;
 
 @RunWith(AndroidJUnit4.class)
 public class CharacterClassDaoTest extends DaoTest {

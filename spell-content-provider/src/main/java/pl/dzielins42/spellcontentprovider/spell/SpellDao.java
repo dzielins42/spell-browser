@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider;
+package pl.dzielins42.spellcontentprovider.spell;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -10,36 +10,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolColumns;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolContentValues;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolCursor;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolSelection;
 
-public class SubschoolDao {
+import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
+import pl.dzielins42.spellcontentprovider.spell.SpellBean;
+import pl.dzielins42.spellcontentprovider.spell.SpellColumns;
+import pl.dzielins42.spellcontentprovider.spell.SpellContentValues;
+import pl.dzielins42.spellcontentprovider.spell.SpellCursor;
+import pl.dzielins42.spellcontentprovider.spell.SpellSelection;
 
-    public static List<SubschoolBean> get(
+public class SpellDao {
+
+    public static List<SpellBean> get(
             @NonNull Context context,
-            @NonNull SubschoolSelection selection
+            @NonNull SpellSelection selection
     ) {
         return get(context.getContentResolver(), selection);
     }
 
-    public static List<SubschoolBean> get(
+    public static List<SpellBean> get(
             @NonNull ContentResolver contentResolver,
-            @NonNull SubschoolSelection selection
+            @NonNull SpellSelection selection
     ) {
-        SubschoolCursor cursor = selection.query(
-                contentResolver, SubschoolColumns.ALL_COLUMNS
+        SpellCursor cursor = selection.query(
+                contentResolver, SpellColumns.ALL_COLUMNS
         );
 
         if (cursor.getCount() <= 0) {
             return Collections.EMPTY_LIST;
         }
 
-        List<SubschoolBean> list = new ArrayList<>(cursor.getCount());
+        List<SpellBean> list = new ArrayList<>(cursor.getCount());
         while (cursor.moveToNext()) {
-            list.add(SubschoolBean.copy(cursor));
+            list.add(SpellBean.copy(cursor));
         }
 
         return list;
@@ -47,49 +49,49 @@ public class SubschoolDao {
 
     public static void remove(
             @NonNull Context context,
-            @NonNull SubschoolBean bean
+            @NonNull SpellBean bean
     ) {
         remove(context.getContentResolver(), bean);
     }
 
     public static void remove(
             @NonNull ContentResolver contentResolver,
-            @NonNull SubschoolBean bean
+            @NonNull SpellBean bean
     ) {
-        remove(contentResolver, new SubschoolSelection().id(bean.getId()));
+        remove(contentResolver, new SpellSelection().id(bean.getId()));
     }
 
     public static void remove(
             @NonNull Context context,
-            @NonNull SubschoolSelection selection
+            @NonNull SpellSelection selection
     ) {
         remove(context.getContentResolver(), selection);
     }
 
     public static void remove(
             @NonNull ContentResolver contentResolver,
-            @NonNull SubschoolSelection selection
+            @NonNull SpellSelection selection
     ) {
         selection.delete(contentResolver);
     }
 
     public static void save(
             @NonNull Context context,
-            @NonNull SubschoolBean bean
+            @NonNull SpellBean bean
     ) {
         save(context.getContentResolver(), bean);
     }
 
     public static void save(
             @NonNull ContentResolver contentResolver,
-            @NonNull SubschoolBean bean
+            @NonNull SpellBean bean
     ) {
         final boolean isUpdate = bean.getId() > 0;
 
-        SubschoolContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
+        SpellContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
 
         if (isUpdate) {
-            contentValues.update(contentResolver, new SubschoolSelection().id(bean.getId()));
+            contentValues.update(contentResolver, new SpellSelection().id(bean.getId()));
         } else {
             Uri uri = contentValues.insert(contentResolver);
             bean.setId(ContentUris.parseId(uri));

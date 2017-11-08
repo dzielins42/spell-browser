@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookColumns;
+import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
 
 @RunWith(AndroidJUnit4.class)
 public class RulebookDaoTest extends DaoTest {

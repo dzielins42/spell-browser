@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorColumns;
+import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
 
 @RunWith(AndroidJUnit4.class)
 public class DescriptorDaoTest extends DaoTest {

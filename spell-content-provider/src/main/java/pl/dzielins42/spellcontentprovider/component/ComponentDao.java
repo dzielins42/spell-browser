@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider;
+package pl.dzielins42.spellcontentprovider.component;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentColumns;
 import pl.dzielins42.spellcontentprovider.component.ComponentContentValues;

@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider;
+package pl.dzielins42.spellcontentprovider.subschool;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -10,36 +10,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.dzielins42.spellcontentprovider.school.SchoolBean;
-import pl.dzielins42.spellcontentprovider.school.SchoolColumns;
-import pl.dzielins42.spellcontentprovider.school.SchoolContentValues;
-import pl.dzielins42.spellcontentprovider.school.SchoolCursor;
-import pl.dzielins42.spellcontentprovider.school.SchoolSelection;
 
-public class SchoolDao {
+import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
+import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
+import pl.dzielins42.spellcontentprovider.subschool.SubschoolColumns;
+import pl.dzielins42.spellcontentprovider.subschool.SubschoolContentValues;
+import pl.dzielins42.spellcontentprovider.subschool.SubschoolCursor;
+import pl.dzielins42.spellcontentprovider.subschool.SubschoolSelection;
 
-    public static List<SchoolBean> get(
+public class SubschoolDao {
+
+    public static List<SubschoolBean> get(
             @NonNull Context context,
-            @NonNull SchoolSelection selection
+            @NonNull SubschoolSelection selection
     ) {
         return get(context.getContentResolver(), selection);
     }
 
-    public static List<SchoolBean> get(
+    public static List<SubschoolBean> get(
             @NonNull ContentResolver contentResolver,
-            @NonNull SchoolSelection selection
+            @NonNull SubschoolSelection selection
     ) {
-        SchoolCursor cursor = selection.query(
-                contentResolver, SchoolColumns.ALL_COLUMNS
+        SubschoolCursor cursor = selection.query(
+                contentResolver, SubschoolColumns.ALL_COLUMNS
         );
 
         if (cursor.getCount() <= 0) {
             return Collections.EMPTY_LIST;
         }
 
-        List<SchoolBean> list = new ArrayList<>(cursor.getCount());
+        List<SubschoolBean> list = new ArrayList<>(cursor.getCount());
         while (cursor.moveToNext()) {
-            list.add(SchoolBean.copy(cursor));
+            list.add(SubschoolBean.copy(cursor));
         }
 
         return list;
@@ -47,49 +49,49 @@ public class SchoolDao {
 
     public static void remove(
             @NonNull Context context,
-            @NonNull SchoolBean bean
+            @NonNull SubschoolBean bean
     ) {
         remove(context.getContentResolver(), bean);
     }
 
     public static void remove(
             @NonNull ContentResolver contentResolver,
-            @NonNull SchoolBean bean
+            @NonNull SubschoolBean bean
     ) {
-        remove(contentResolver, new SchoolSelection().id(bean.getId()));
+        remove(contentResolver, new SubschoolSelection().id(bean.getId()));
     }
 
     public static void remove(
             @NonNull Context context,
-            @NonNull SchoolSelection selection
+            @NonNull SubschoolSelection selection
     ) {
         remove(context.getContentResolver(), selection);
     }
 
     public static void remove(
             @NonNull ContentResolver contentResolver,
-            @NonNull SchoolSelection selection
+            @NonNull SubschoolSelection selection
     ) {
         selection.delete(contentResolver);
     }
 
     public static void save(
             @NonNull Context context,
-            @NonNull SchoolBean bean
+            @NonNull SubschoolBean bean
     ) {
         save(context.getContentResolver(), bean);
     }
 
     public static void save(
             @NonNull ContentResolver contentResolver,
-            @NonNull SchoolBean bean
+            @NonNull SubschoolBean bean
     ) {
         final boolean isUpdate = bean.getId() > 0;
 
-        SchoolContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
+        SubschoolContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
 
         if (isUpdate) {
-            contentValues.update(contentResolver, new SchoolSelection().id(bean.getId()));
+            contentValues.update(contentResolver, new SubschoolSelection().id(bean.getId()));
         } else {
             Uri uri = contentValues.insert(contentResolver);
             bean.setId(ContentUris.parseId(uri));

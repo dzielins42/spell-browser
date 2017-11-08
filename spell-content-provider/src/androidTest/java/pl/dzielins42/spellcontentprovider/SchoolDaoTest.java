@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolColumns;
+import pl.dzielins42.spellcontentprovider.school.SchoolDao;
 
 @RunWith(AndroidJUnit4.class)
 public class SchoolDaoTest extends DaoTest {

@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider;
+package pl.dzielins42.spellcontentprovider.school;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -10,36 +10,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookColumns;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookContentValues;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookCursor;
-import pl.dzielins42.spellcontentprovider.rulebook.RulebookSelection;
 
-public class RulebookDao {
+import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
+import pl.dzielins42.spellcontentprovider.school.SchoolBean;
+import pl.dzielins42.spellcontentprovider.school.SchoolColumns;
+import pl.dzielins42.spellcontentprovider.school.SchoolContentValues;
+import pl.dzielins42.spellcontentprovider.school.SchoolCursor;
+import pl.dzielins42.spellcontentprovider.school.SchoolSelection;
 
-    public static List<RulebookBean> get(
+public class SchoolDao {
+
+    public static List<SchoolBean> get(
             @NonNull Context context,
-            @NonNull RulebookSelection selection
+            @NonNull SchoolSelection selection
     ) {
         return get(context.getContentResolver(), selection);
     }
 
-    public static List<RulebookBean> get(
+    public static List<SchoolBean> get(
             @NonNull ContentResolver contentResolver,
-            @NonNull RulebookSelection selection
+            @NonNull SchoolSelection selection
     ) {
-        RulebookCursor cursor = selection.query(
-                contentResolver, RulebookColumns.ALL_COLUMNS
+        SchoolCursor cursor = selection.query(
+                contentResolver, SchoolColumns.ALL_COLUMNS
         );
 
         if (cursor.getCount() <= 0) {
             return Collections.EMPTY_LIST;
         }
 
-        List<RulebookBean> list = new ArrayList<>(cursor.getCount());
+        List<SchoolBean> list = new ArrayList<>(cursor.getCount());
         while (cursor.moveToNext()) {
-            list.add(RulebookBean.copy(cursor));
+            list.add(SchoolBean.copy(cursor));
         }
 
         return list;
@@ -47,49 +49,49 @@ public class RulebookDao {
 
     public static void remove(
             @NonNull Context context,
-            @NonNull RulebookBean bean
+            @NonNull SchoolBean bean
     ) {
         remove(context.getContentResolver(), bean);
     }
 
     public static void remove(
             @NonNull ContentResolver contentResolver,
-            @NonNull RulebookBean bean
+            @NonNull SchoolBean bean
     ) {
-        remove(contentResolver, new RulebookSelection().id(bean.getId()));
+        remove(contentResolver, new SchoolSelection().id(bean.getId()));
     }
 
     public static void remove(
             @NonNull Context context,
-            @NonNull RulebookSelection selection
+            @NonNull SchoolSelection selection
     ) {
         remove(context.getContentResolver(), selection);
     }
 
     public static void remove(
             @NonNull ContentResolver contentResolver,
-            @NonNull RulebookSelection selection
+            @NonNull SchoolSelection selection
     ) {
         selection.delete(contentResolver);
     }
 
     public static void save(
             @NonNull Context context,
-            @NonNull RulebookBean bean
+            @NonNull SchoolBean bean
     ) {
         save(context.getContentResolver(), bean);
     }
 
     public static void save(
             @NonNull ContentResolver contentResolver,
-            @NonNull RulebookBean bean
+            @NonNull SchoolBean bean
     ) {
         final boolean isUpdate = bean.getId() > 0;
 
-        RulebookContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
+        SchoolContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
 
         if (isUpdate) {
-            contentValues.update(contentResolver, new RulebookSelection().id(bean.getId()));
+            contentValues.update(contentResolver, new SchoolSelection().id(bean.getId()));
         } else {
             Uri uri = contentValues.insert(contentResolver);
             bean.setId(ContentUris.parseId(uri));

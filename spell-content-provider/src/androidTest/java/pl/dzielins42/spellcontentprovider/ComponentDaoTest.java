@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentColumns;
+import pl.dzielins42.spellcontentprovider.component.ComponentDao;
 
 @RunWith(AndroidJUnit4.class)
 public class ComponentDaoTest extends DaoTest {
