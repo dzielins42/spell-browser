@@ -95,9 +95,9 @@ public class GsonExportTest {
         bean.setSchools(schools);
 
         Set<ComponentBean> components = new HashSet<>();
-        components.add(ComponentBean.newInstance(0L, "verbal"));
-        components.add(ComponentBean.newInstance(1L, "somatic"));
-        components.add(ComponentBean.newInstance(2L, "material"));
+        components.add(ComponentBean.newInstance(0L, "verbal", null));
+        components.add(ComponentBean.newInstance(1L, "somatic", null));
+        components.add(ComponentBean.newInstance(2L, "material", "a tiny ball of bat guano and sulfur"));
         bean.setComponents(components);
 
         bean.setDescriptors(Collections.EMPTY_SET);

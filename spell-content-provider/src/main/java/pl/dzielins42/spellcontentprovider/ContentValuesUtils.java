@@ -45,6 +45,7 @@ public class ContentValuesUtils {
 
         ComponentContentValues contentValues = new ComponentContentValues();
         contentValues.putName(bean.getName());
+        contentValues.putExtra(bean.getExtra());
 
         return contentValues;
     }
