@@ -282,6 +282,35 @@ public class CompositeSpellBean implements SpellModel {
         return (int) (mId ^ (mId >>> 32));
     }
 
+    @Override
+    public String toString() {
+        return "CompositeSpellBean{" +
+                "mId=" + mId +
+                ", mName='" + mName + '\'' +
+                ", mRulebook=" + mRulebook +
+                ", mPage=" + mPage +
+                ", mCastingTime='" + mCastingTime + '\'' +
+                ", mRange='" + mRange + '\'' +
+                ", mTarget='" + mTarget + '\'' +
+                ", mEffect='" + mEffect + '\'' +
+                ", mArea='" + mArea + '\'' +
+                ", mDuration='" + mDuration + '\'' +
+                ", mSavingThrow='" + mSavingThrow + '\'' +
+                ", mSpellResistance='" + mSpellResistance + '\'' +
+                ", mDescriptionPlain='" + mDescriptionPlain + '\'' +
+                ", mDescriptionFormatted='" + mDescriptionFormatted + '\'' +
+                ", mShortDescriptionPlain='" + mShortDescriptionPlain + '\'' +
+                ", mShortDescriptionFormatted='" + mShortDescriptionFormatted + '\'' +
+                ", mFlavourTextPlain='" + mFlavourTextPlain + '\'' +
+                ", mFlavourTextFormatted='" + mFlavourTextFormatted + '\'' +
+                ", mIsRitual=" + mIsRitual +
+                ", mClassesLevels=" + mClassesLevels +
+                ", mSchools=" + mSchools +
+                ", mComponents=" + mComponents +
+                ", mDescriptors=" + mDescriptors +
+                '}';
+    }
+
     /**
      * Instantiate a new SpellBean with specified values.
      */
