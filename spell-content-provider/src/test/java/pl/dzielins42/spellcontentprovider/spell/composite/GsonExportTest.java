@@ -3,15 +3,13 @@ package pl.dzielins42.spellcontentprovider.spell.composite;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.List;
 
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassJsonSerializer;
@@ -25,8 +23,6 @@ import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolJsonSerializer;
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolJsonSerializer;
-
-import static org.junit.Assert.*;
 
 public class GsonExportTest {
 
@@ -74,7 +70,7 @@ public class GsonExportTest {
                 false
         );
 
-        Set<CharacterClassLevelExtraBean> classesLevels = new HashSet<>();
+        List<CharacterClassLevelExtraBean> classesLevels = new ArrayList<>();
         classesLevels.add(CharacterClassLevelExtraBean.newInstance(
                 CharacterClassBean.newInstance(0L, "sorcerer"),
                 null,
@@ -87,20 +83,20 @@ public class GsonExportTest {
         ));
         bean.setClassesLevels(classesLevels);
 
-        Set<SchoolSubschoolBean> schools = new HashSet<>();
+        List<SchoolSubschoolBean> schools = new ArrayList<>();
         schools.add(SchoolSubschoolBean.newInstance(
                 SchoolBean.newInstance(0L, "evocation"),
                 null
         ));
         bean.setSchools(schools);
 
-        Set<ComponentBean> components = new HashSet<>();
+        List<ComponentBean> components = new ArrayList<>();
         components.add(ComponentBean.newInstance(0L, "verbal", null));
         components.add(ComponentBean.newInstance(1L, "somatic", null));
         components.add(ComponentBean.newInstance(2L, "material", "a tiny ball of bat guano and sulfur"));
         bean.setComponents(components);
 
-        bean.setDescriptors(Collections.EMPTY_SET);
+        bean.setDescriptors(Collections.EMPTY_LIST);
 
         String json = mGson.toJson(bean);
 

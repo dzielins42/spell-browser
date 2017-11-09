@@ -3,7 +3,7 @@ package pl.dzielins42.spellcontentprovider.spell.composite;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.Set;
+import java.util.List;
 
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
@@ -31,10 +31,10 @@ public class CompositeSpellBean implements SpellModel {
     private String mFlavourTextFormatted;
     private boolean mIsRitual;
 
-    private Set<CharacterClassLevelExtraBean> mClassesLevels;
-    private Set<SchoolSubschoolBean> mSchools;
-    private Set<ComponentBean> mComponents;
-    private Set<DescriptorBean> mDescriptors;
+    private List<CharacterClassLevelExtraBean> mClassesLevels;
+    private List<SchoolSubschoolBean> mSchools;
+    private List<ComponentBean> mComponents;
+    private List<DescriptorBean> mDescriptors;
 
     @Override
     public long getId() {
@@ -237,35 +237,35 @@ public class CompositeSpellBean implements SpellModel {
 
     //TODO nullable or not?
 
-    public Set<CharacterClassLevelExtraBean> getClassesLevels() {
+    public List<CharacterClassLevelExtraBean> getClassesLevels() {
         return mClassesLevels;
     }
 
-    public void setClassesLevels(Set<CharacterClassLevelExtraBean> classesLevels) {
+    public void setClassesLevels(List<CharacterClassLevelExtraBean> classesLevels) {
         this.mClassesLevels = classesLevels;
     }
 
-    public Set<SchoolSubschoolBean> getSchools() {
+    public List<SchoolSubschoolBean> getSchools() {
         return mSchools;
     }
 
-    public void setSchools(Set<SchoolSubschoolBean> schools) {
+    public void setSchools(List<SchoolSubschoolBean> schools) {
         this.mSchools = schools;
     }
 
-    public Set<ComponentBean> getComponents() {
+    public List<ComponentBean> getComponents() {
         return mComponents;
     }
 
-    public void setComponents(Set<ComponentBean> components) {
+    public void setComponents(List<ComponentBean> components) {
         this.mComponents = components;
     }
 
-    public Set<DescriptorBean> getDescriptors() {
+    public List<DescriptorBean> getDescriptors() {
         return mDescriptors;
     }
 
-    public void setDescriptors(Set<DescriptorBean> descriptors) {
+    public void setDescriptors(List<DescriptorBean> descriptors) {
         this.mDescriptors = descriptors;
     }
 
