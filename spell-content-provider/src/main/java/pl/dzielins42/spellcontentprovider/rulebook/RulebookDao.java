@@ -14,7 +14,7 @@ import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 
 public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
 
-    protected RulebookDao(@NonNull Context context) {
+    public RulebookDao(@NonNull Context context) {
         super(context);
     }
 

@@ -14,7 +14,7 @@ import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 
 public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClassSelection> {
 
-    protected CharacterClassDao(@NonNull Context context) {
+    public CharacterClassDao(@NonNull Context context) {
         super(context);
     }
 

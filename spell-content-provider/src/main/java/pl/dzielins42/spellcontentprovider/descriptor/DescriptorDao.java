@@ -14,7 +14,7 @@ import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 
 public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
 
-    protected DescriptorDao(@NonNull Context context) {
+    public DescriptorDao(@NonNull Context context) {
         super(context);
     }
 

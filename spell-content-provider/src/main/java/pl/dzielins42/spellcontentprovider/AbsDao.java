@@ -12,7 +12,7 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
 
     private final Context mContext;
 
-    protected AbsDao(@NonNull Context context) {
+    public AbsDao(@NonNull Context context) {
         if (context == null) {
             throw new IllegalArgumentException("context cannot be null");
         }

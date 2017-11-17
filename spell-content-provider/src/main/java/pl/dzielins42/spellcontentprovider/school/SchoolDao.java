@@ -14,7 +14,7 @@ import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 
 public class SchoolDao extends AbsDao<SchoolBean, SchoolSelection> {
 
-    protected SchoolDao(@NonNull Context context) {
+    public SchoolDao(@NonNull Context context) {
         super(context);
     }
 

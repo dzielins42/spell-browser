@@ -14,7 +14,7 @@ import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 
 public class SpellDao extends AbsDao<SpellBean, SpellSelection> {
 
-    protected SpellDao(@NonNull Context context) {
+    public SpellDao(@NonNull Context context) {
         super(context);
     }
 

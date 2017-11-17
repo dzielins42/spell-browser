@@ -16,7 +16,7 @@ import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
 
 public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
 
-    protected ComponentDao(@NonNull Context context) {
+    public ComponentDao(@NonNull Context context) {
         super(context);
     }
 
