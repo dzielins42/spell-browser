@@ -1,38 +1,28 @@
 package pl.dzielins42.spellcontentprovider.component;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
+import pl.dzielins42.spellcontentprovider.AbsDao;
 import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
-import pl.dzielins42.spellcontentprovider.component.ComponentBean;
-import pl.dzielins42.spellcontentprovider.component.ComponentColumns;
-import pl.dzielins42.spellcontentprovider.component.ComponentContentValues;
-import pl.dzielins42.spellcontentprovider.component.ComponentCursor;
-import pl.dzielins42.spellcontentprovider.component.ComponentSelection;
 
-public class ComponentDao {
+public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
 
-    public static List<ComponentBean> get(
-            @NonNull Context context,
-            @NonNull ComponentSelection selection
-    ) {
-        return get(context.getContentResolver(), selection);
+    protected ComponentDao(@NonNull Context context) {
+        super(context);
     }
 
-    public static List<ComponentBean> get(
-            @NonNull ContentResolver contentResolver,
-            @NonNull ComponentSelection selection
-    ) {
+    public List<ComponentBean> get(@NonNull ComponentSelection selection) {
         ComponentCursor cursor = selection.query(
-                contentResolver, ComponentColumns.ALL_COLUMNS
+                getContentResolver(), ComponentColumns.ALL_COLUMNS
         );
 
         if (cursor.getCount() <= 0) {
@@ -47,53 +37,23 @@ public class ComponentDao {
         return list;
     }
 
-    public static void remove(
-            @NonNull Context context,
-            @NonNull ComponentBean bean
-    ) {
-        remove(context.getContentResolver(), bean);
+    public void remove(@NonNull ComponentBean bean) {
+        remove(new ComponentSelection().id(bean.getId()));
     }
 
-    public static void remove(
-            @NonNull ContentResolver contentResolver,
-            @NonNull ComponentBean bean
-    ) {
-        remove(contentResolver, new ComponentSelection().id(bean.getId()));
+    public void remove(@NonNull ComponentSelection selection) {
+        selection.delete(getContentResolver());
     }
 
-    public static void remove(
-            @NonNull Context context,
-            @NonNull ComponentSelection selection
-    ) {
-        remove(context.getContentResolver(), selection);
-    }
-
-    public static void remove(
-            @NonNull ContentResolver contentResolver,
-            @NonNull ComponentSelection selection
-    ) {
-        selection.delete(contentResolver);
-    }
-
-    public static void save(
-            @NonNull Context context,
-            @NonNull ComponentBean bean
-    ) {
-        save(context.getContentResolver(), bean);
-    }
-
-    public static void save(
-            @NonNull ContentResolver contentResolver,
-            @NonNull ComponentBean bean
-    ) {
+    public void save(@NonNull ComponentBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         ComponentContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
 
         if (isUpdate) {
-            contentValues.update(contentResolver, new ComponentSelection().id(bean.getId()));
+            contentValues.update(getContentResolver(), new ComponentSelection().id(bean.getId()));
         } else {
-            Uri uri = contentValues.insert(contentResolver);
+            Uri uri = contentValues.insert(getContentResolver());
             bean.setId(ContentUris.parseId(uri));
         }
     }

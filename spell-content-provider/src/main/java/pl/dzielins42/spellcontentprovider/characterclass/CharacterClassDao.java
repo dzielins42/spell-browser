@@ -1,6 +1,5 @@
 package pl.dzielins42.spellcontentprovider.characterclass;
 
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.net.Uri;
@@ -10,29 +9,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+import pl.dzielins42.spellcontentprovider.AbsDao;
 import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassColumns;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassContentValues;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassCursor;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassSelection;
 
-public class CharacterClassDao {
+public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClassSelection> {
 
-    public static List<CharacterClassBean> get(
-            @NonNull Context context,
-            @NonNull CharacterClassSelection selection
-    ) {
-        return get(context.getContentResolver(), selection);
+    protected CharacterClassDao(@NonNull Context context) {
+        super(context);
     }
 
-    public static List<CharacterClassBean> get(
-            @NonNull ContentResolver contentResolver,
-            @NonNull CharacterClassSelection selection
-    ) {
+    public List<CharacterClassBean> get(@NonNull CharacterClassSelection selection) {
         CharacterClassCursor cursor = selection.query(
-                contentResolver, CharacterClassColumns.ALL_COLUMNS
+                getContentResolver(), CharacterClassColumns.ALL_COLUMNS
         );
 
         if (cursor.getCount() <= 0) {
@@ -47,53 +35,25 @@ public class CharacterClassDao {
         return list;
     }
 
-    public static void remove(
-            @NonNull Context context,
-            @NonNull CharacterClassBean bean
-    ) {
-        remove(context.getContentResolver(), bean);
+    public void remove(@NonNull CharacterClassBean bean) {
+        remove(new CharacterClassSelection().id(bean.getId()));
     }
 
-    public static void remove(
-            @NonNull ContentResolver contentResolver,
-            @NonNull CharacterClassBean bean
-    ) {
-        remove(contentResolver, new CharacterClassSelection().id(bean.getId()));
+    public void remove(@NonNull CharacterClassSelection selection) {
+        selection.delete(getContentResolver());
     }
 
-    public static void remove(
-            @NonNull Context context,
-            @NonNull CharacterClassSelection selection
-    ) {
-        remove(context.getContentResolver(), selection);
-    }
-
-    public static void remove(
-            @NonNull ContentResolver contentResolver,
-            @NonNull CharacterClassSelection selection
-    ) {
-        selection.delete(contentResolver);
-    }
-
-    public static void save(
-            @NonNull Context context,
-            @NonNull CharacterClassBean bean
-    ) {
-        save(context.getContentResolver(), bean);
-    }
-
-    public static void save(
-            @NonNull ContentResolver contentResolver,
-            @NonNull CharacterClassBean bean
-    ) {
+    public void save(@NonNull CharacterClassBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         CharacterClassContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
 
         if (isUpdate) {
-            contentValues.update(contentResolver, new CharacterClassSelection().id(bean.getId()));
+            contentValues.update(
+                    getContentResolver(), new CharacterClassSelection().id(bean.getId())
+            );
         } else {
-            Uri uri = contentValues.insert(contentResolver);
+            Uri uri = contentValues.insert(getContentResolver());
             bean.setId(ContentUris.parseId(uri));
         }
     }
