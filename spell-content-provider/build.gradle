@@ -20,6 +20,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -37,6 +47,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     // Apache Commons Lang
     compile 'org.apache.commons:commons-lang3:3.6'
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:3.5.1"
 }
 
 acpg {
