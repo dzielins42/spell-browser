@@ -62,54 +62,62 @@ public class CompositeSpellJsonSerializerDeserializer
         JsonObject jsonObject = json.getAsJsonObject();
         CompositeSpellBean bean = new CompositeSpellBean();
 
-        bean.setName(jsonObject.get(NAME).getAsString());
-        bean.setRulebook(deserializeRulebook(jsonObject.get(RULEBOOK)));
-        bean.setPage(jsonObject.get(PAGE).getAsInt());
-        bean.setCastingTime(jsonObject.get(CASTING_TIME).getAsString());
-        bean.setRange(jsonObject.get(RANGE).getAsString());
-        bean.setTarget(jsonObject.get(TARGET).getAsString());
-        bean.setEffect(jsonObject.get(EFFECT).getAsString());
-        bean.setArea(jsonObject.get(AREA).getAsString());
-        bean.setDuration(jsonObject.get(DURATION).getAsString());
-        bean.setSavingThrow(jsonObject.get(SAVING_THROW).getAsString());
-        bean.setSpellResistance(jsonObject.get(SPELL_RESISTANCE).getAsString());
-        bean.setDescriptionPlain(jsonObject.get(DESCRIPTION_PLAIN).getAsString());
-        bean.setDescriptionFormatted(jsonObject.get(DESCRIPTION_FORMATTED).getAsString());
-        bean.setShortDescriptionPlain(jsonObject.get(SHORT_DESCRIPTION_PLAIN).getAsString());
-        bean.setShortDescriptionFormatted(jsonObject.get(SHORT_DESCRIPTION_FORMATTED).getAsString());
-        bean.setFlavourTextPlain(jsonObject.get(FLAVOUR_TEXT_PLAIN).getAsString());
-        bean.setFlavourTextFormatted(jsonObject.get(FLAVOUR_TEXT_FORMATTED).getAsString());
-        bean.setIsRitual(jsonObject.get(IS_RITUAL).getAsBoolean());
+        bean.setName(jsonObject.has(NAME) ? jsonObject.get(NAME).getAsString() : null);
+        bean.setRulebook(jsonObject.has(RULEBOOK) ? deserializeRulebook(jsonObject.get(RULEBOOK)) : null);
+        bean.setPage(jsonObject.has(PAGE) ? jsonObject.get(PAGE).getAsInt() : null);
+        bean.setCastingTime(jsonObject.has(CASTING_TIME) ? jsonObject.get(CASTING_TIME).getAsString() : null);
+        bean.setRange(jsonObject.has(RANGE) ? jsonObject.get(RANGE).getAsString() : null);
+        bean.setTarget(jsonObject.has(TARGET) ? jsonObject.get(TARGET).getAsString() : null);
+        bean.setEffect(jsonObject.has(EFFECT) ? jsonObject.get(EFFECT).getAsString() : null);
+        bean.setArea(jsonObject.has(AREA) ? jsonObject.get(AREA).getAsString() : null);
+        bean.setDuration(jsonObject.has(DURATION) ? jsonObject.get(DURATION).getAsString() : null);
+        bean.setSavingThrow(jsonObject.has(SAVING_THROW) ? jsonObject.get(SAVING_THROW).getAsString() : null);
+        bean.setSpellResistance(jsonObject.has(SPELL_RESISTANCE) ? jsonObject.get(SPELL_RESISTANCE).getAsString() : null);
+        bean.setDescriptionPlain(jsonObject.has(DESCRIPTION_PLAIN) ? jsonObject.get(DESCRIPTION_PLAIN).getAsString() : null);
+        bean.setDescriptionFormatted(jsonObject.has(DESCRIPTION_FORMATTED) ? jsonObject.get(DESCRIPTION_FORMATTED).getAsString() : null);
+        bean.setShortDescriptionPlain(jsonObject.has(SHORT_DESCRIPTION_PLAIN) ? jsonObject.get(SHORT_DESCRIPTION_PLAIN).getAsString() : null);
+        bean.setShortDescriptionFormatted(jsonObject.has(SHORT_DESCRIPTION_FORMATTED) ? jsonObject.get(SHORT_DESCRIPTION_FORMATTED).getAsString() : null);
+        bean.setFlavourTextPlain(jsonObject.has(FLAVOUR_TEXT_PLAIN) ? jsonObject.get(FLAVOUR_TEXT_PLAIN).getAsString() : null);
+        bean.setFlavourTextFormatted(jsonObject.has(FLAVOUR_TEXT_FORMATTED) ? jsonObject.get(FLAVOUR_TEXT_FORMATTED).getAsString() : null);
+        bean.setIsRitual(jsonObject.has(IS_RITUAL) ? jsonObject.get(IS_RITUAL).getAsBoolean() : null);
 
         JsonArray jsonArray;
 
-        List<CharacterClassLevelExtraBean> classes = new ArrayList<>();
-        jsonArray = jsonObject.get(CLASSES).getAsJsonArray();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            classes.add(deserializeClass(jsonArray.get(i)));
+        if (jsonObject.has(CLASSES)) {
+            List<CharacterClassLevelExtraBean> classes = new ArrayList<>();
+            jsonArray = jsonObject.get(CLASSES).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                classes.add(deserializeClass(jsonArray.get(i)));
+            }
+            bean.setClassesLevels(classes);
         }
-        bean.setClassesLevels(classes);
 
-        List<SchoolSubschoolBean> schools = new ArrayList<>();
-        jsonArray = jsonObject.get(SCHOOLS).getAsJsonArray();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            schools.add(deserializeSchool(jsonArray.get(i)));
+        if(jsonObject.has(SCHOOLS)) {
+            List<SchoolSubschoolBean> schools = new ArrayList<>();
+            jsonArray = jsonObject.get(SCHOOLS).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                schools.add(deserializeSchool(jsonArray.get(i)));
+            }
+            bean.setSchools(schools);
         }
-        bean.setSchools(schools);
 
-        List<ComponentBean> components = new ArrayList<>();
-        jsonArray = jsonObject.get(COMPONENTS).getAsJsonArray();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            components.add(deserializeComponent(jsonArray.get(i)));
+        if(jsonObject.has(COMPONENTS)) {
+            List<ComponentBean> components = new ArrayList<>();
+            jsonArray = jsonObject.get(COMPONENTS).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                components.add(deserializeComponent(jsonArray.get(i)));
+            }
+            bean.setComponents(components);
         }
-        bean.setComponents(components);
 
-        List<DescriptorBean> descriptors = new ArrayList<>();
-        jsonArray = jsonObject.get(DESCRIPTORS).getAsJsonArray();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            descriptors.add(deserializeDescriptor(jsonArray.get(i)));
+        if(jsonObject.has(DESCRIPTORS)) {
+            List<DescriptorBean> descriptors = new ArrayList<>();
+            jsonArray = jsonObject.get(DESCRIPTORS).getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                descriptors.add(deserializeDescriptor(jsonArray.get(i)));
+            }
+            bean.setDescriptors(descriptors);
         }
-        bean.setDescriptors(descriptors);
 
         return bean;
     }

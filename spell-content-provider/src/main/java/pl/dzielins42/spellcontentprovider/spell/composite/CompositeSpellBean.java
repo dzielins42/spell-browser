@@ -103,25 +103,21 @@ public class CompositeSpellBean implements SpellModel {
         mRange = range;
     }
 
-    @NonNull
     @Override
     public String getTarget() {
         return mTarget;
     }
 
-    public void setTarget(@NonNull String target) {
-        if (target == null) throw new IllegalArgumentException("target must not be null");
+    public void setTarget(String target) {
         mTarget = target;
     }
 
-    @NonNull
     @Override
     public String getEffect() {
         return mEffect;
     }
 
-    public void setEffect(@NonNull String effect) {
-        if (effect == null) throw new IllegalArgumentException("effect must not be null");
+    public void setEffect(String effect) {
         mEffect = effect;
     }
 

@@ -64,7 +64,7 @@ public class CharacterClassLevelExtraBean {
     @NonNull
     public static CharacterClassLevelExtraBean newInstance(@NonNull CharacterClassBean characterClass, @Nullable String extra, int level) {
         if (characterClass == null) throw new IllegalArgumentException("characterClass must not be null");
-        if (level <= 0) throw new IllegalArgumentException("level must not be less or equal 0");
+        if (level < 0) throw new IllegalArgumentException("level must not be less than 0");
         CharacterClassLevelExtraBean res = new CharacterClassLevelExtraBean();
         res.mCharacterClass = characterClass;
         res.mExtra = extra;
