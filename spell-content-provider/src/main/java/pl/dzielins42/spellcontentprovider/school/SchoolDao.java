@@ -18,6 +18,7 @@ public class SchoolDao extends AbsDao<SchoolBean, SchoolSelection> {
         super(context);
     }
 
+    @Override
     public List<SchoolBean> get(@NonNull SchoolSelection selection) {
         SchoolCursor cursor = selection.query(getContentResolver(), SchoolColumns.ALL_COLUMNS);
 
@@ -33,14 +34,12 @@ public class SchoolDao extends AbsDao<SchoolBean, SchoolSelection> {
         return list;
     }
 
+    @Override
     public void remove(@NonNull SchoolBean bean) {
         remove(new SchoolSelection().id(bean.getId()));
     }
 
-    public void remove(@NonNull SchoolSelection selection) {
-        selection.delete(getContentResolver());
-    }
-
+    @Override
     public void save(@NonNull SchoolBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 

@@ -20,6 +20,7 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
         super(context);
     }
 
+    @Override
     public List<ComponentBean> get(@NonNull ComponentSelection selection) {
         ComponentCursor cursor = selection.query(
                 getContentResolver(), ComponentColumns.ALL_COLUMNS
@@ -37,14 +38,12 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
         return list;
     }
 
+    @Override
     public void remove(@NonNull ComponentBean bean) {
         remove(new ComponentSelection().id(bean.getId()));
     }
 
-    public void remove(@NonNull ComponentSelection selection) {
-        selection.delete(getContentResolver());
-    }
-
+    @Override
     public void save(@NonNull ComponentBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 

@@ -29,11 +29,15 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         return mContext.getContentResolver();
     }
 
+    public void remove(@NonNull SELECTION selection) {
+        if (selection!=null){
+            selection.delete(getContentResolver());
+        }
+    }
+
     public abstract List<BEAN> get(@NonNull SELECTION selection);
 
     public abstract void remove(@NonNull BEAN bean);
-
-    public abstract void remove(@NonNull SELECTION selection);
 
     public abstract void save(@NonNull BEAN bean);
 

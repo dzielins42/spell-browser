@@ -18,6 +18,7 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
         super(context);
     }
 
+    @Override
     public List<DescriptorBean> get(@NonNull DescriptorSelection selection) {
         DescriptorCursor cursor = selection.query(
                 getContentResolver(), DescriptorColumns.ALL_COLUMNS
@@ -35,14 +36,12 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
         return list;
     }
 
+    @Override
     public void remove(@NonNull DescriptorBean bean) {
         remove(new DescriptorSelection().id(bean.getId()));
     }
 
-    public void remove(@NonNull DescriptorSelection selection) {
-        selection.delete(getContentResolver());
-    }
-
+    @Override
     public void save(@NonNull DescriptorBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 

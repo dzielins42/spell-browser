@@ -18,6 +18,7 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
         super(context);
     }
 
+    @Override
     public List<RulebookBean> get(@NonNull RulebookSelection selection) {
         RulebookCursor cursor = selection.query(getContentResolver(), RulebookColumns.ALL_COLUMNS);
 
@@ -33,14 +34,12 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
         return list;
     }
 
+    @Override
     public void remove(@NonNull RulebookBean bean) {
         remove(new RulebookSelection().id(bean.getId()));
     }
 
-    public void remove(@NonNull RulebookSelection selection) {
-        selection.delete(getContentResolver());
-    }
-
+    @Override
     public void save(@NonNull RulebookBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 

@@ -18,6 +18,7 @@ public class SubschoolDao extends AbsDao<SubschoolBean, SubschoolSelection> {
         super(context);
     }
 
+    @Override
     public List<SubschoolBean> get(@NonNull SubschoolSelection selection) {
         SubschoolCursor cursor = selection.query(
                 getContentResolver(), SubschoolColumns.ALL_COLUMNS
@@ -35,14 +36,12 @@ public class SubschoolDao extends AbsDao<SubschoolBean, SubschoolSelection> {
         return list;
     }
 
+    @Override
     public void remove(@NonNull SubschoolBean bean) {
         remove(new SubschoolSelection().id(bean.getId()));
     }
 
-    public void remove(@NonNull SubschoolSelection selection) {
-        selection.delete(getContentResolver());
-    }
-
+    @Override
     public void save(@NonNull SubschoolBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 

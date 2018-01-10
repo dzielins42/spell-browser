@@ -18,6 +18,7 @@ public class SpellDao extends AbsDao<SpellBean, SpellSelection> {
         super(context);
     }
 
+    @Override
     public List<SpellBean> get(@NonNull SpellSelection selection) {
         SpellCursor cursor = selection.query(getContentResolver(), SpellColumns.ALL_COLUMNS);
 
@@ -33,14 +34,12 @@ public class SpellDao extends AbsDao<SpellBean, SpellSelection> {
         return list;
     }
 
+    @Override
     public void remove(@NonNull SpellBean bean) {
         remove(new SpellSelection().id(bean.getId()));
     }
 
-    public void remove(@NonNull SpellSelection selection) {
-        selection.delete(getContentResolver());
-    }
-
+    @Override
     public void save(@NonNull SpellBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
