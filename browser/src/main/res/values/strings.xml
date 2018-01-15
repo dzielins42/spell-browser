@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Spell Browser</string>
+    <string name="title_activity_spell_list">SpellListActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
