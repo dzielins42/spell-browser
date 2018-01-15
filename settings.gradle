@@ -1,1 +1,1 @@
-include ':app', ':spell-content-provider'
+include ':app', ':spell-content-provider', ':browser'
