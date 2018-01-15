@@ -2,19 +2,31 @@ package pl.dzielins42.spells.browser.view.spell.list;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hannesdorfmann.mosby3.mvi.MviFragment;
+
+import dagger.android.support.AndroidSupportInjection;
+import io.reactivex.Observable;
+import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassDao;
+import pl.dzielins42.spellcontentprovider.component.ComponentDao;
 import pl.dzielins42.spells.browser.R;
+import pl.dzielins42.spells.browser.data.local.FragmentHelloService;
 import pl.dzielins42.spells.browser.view.spell.list.dummy.DummyContent;
 import pl.dzielins42.spells.browser.view.spell.list.dummy.DummyContent.DummyItem;
+import timber.log.Timber;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * A fragment representing a list of Items.
@@ -22,12 +34,15 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class SpellListFragment extends Fragment {
+public class SpellListFragment
+        extends MviFragment<SpellListView, SpellListPresenter>
+        implements SpellListView {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    @Inject
+    FragmentHelloService mFragmentHelloService;
+    //@Inject
+    SpellListPresenter mPresenter;
+
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -37,23 +52,15 @@ public class SpellListFragment extends Fragment {
     public SpellListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static SpellListFragment newInstance(int columnCount) {
         SpellListFragment fragment = new SpellListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -67,11 +74,7 @@ public class SpellListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(new MySpellRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
@@ -80,6 +83,7 @@ public class SpellListFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -87,9 +91,39 @@ public class SpellListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d(
+                "SpellListFragment",
+                "onResume: " + (mFragmentHelloService != null ? mFragmentHelloService.hello() : "FragmentHelloService is null")
+        );
+        Log.d(
+                "SpellListFragment",
+                "onResume: mPresenter=" + String.valueOf(mPresenter)
+        );
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @NonNull
+    @Override
+    public SpellListPresenter createPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void render(SpellListState state) {
+        Timber.d("render: "+String.valueOf(state));
+    }
+
+    @Override
+    public Observable<Boolean> loadIntent() {
+        return Observable.just(true);
     }
 
     /**
