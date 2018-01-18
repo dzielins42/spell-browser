@@ -19,7 +19,7 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
     }
 
     @Override
-    public List<DescriptorBean> get(@NonNull DescriptorSelection selection) {
+    protected List<DescriptorBean> getInternal(@NonNull final DescriptorSelection selection) {
         DescriptorCursor cursor = selection.query(
                 getContentResolver(), DescriptorColumns.ALL_COLUMNS
         );
@@ -37,12 +37,12 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
     }
 
     @Override
-    public void remove(@NonNull DescriptorBean bean) {
-        remove(new DescriptorSelection().id(bean.getId()));
+    protected boolean removeInternal(@NonNull final DescriptorBean bean) {
+        return removeInternal(new DescriptorSelection().id(bean.getId())) == 1;
     }
 
     @Override
-    public void save(@NonNull DescriptorBean bean) {
+    protected boolean saveInternal(@NonNull final DescriptorBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         DescriptorContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -53,6 +53,8 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
             Uri uri = contentValues.insert(getContentResolver());
             bean.setId(ContentUris.parseId(uri));
         }
+
+        return true;
     }
 
 }

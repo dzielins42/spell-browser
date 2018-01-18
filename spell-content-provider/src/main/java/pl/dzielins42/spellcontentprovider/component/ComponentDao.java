@@ -5,11 +5,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 import pl.dzielins42.spellcontentprovider.AbsDao;
 import pl.dzielins42.spellcontentprovider.ContentValuesUtils;
@@ -21,7 +19,7 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
     }
 
     @Override
-    public List<ComponentBean> get(@NonNull ComponentSelection selection) {
+    protected List<ComponentBean> getInternal(@NonNull final ComponentSelection selection) {
         ComponentCursor cursor = selection.query(
                 getContentResolver(), ComponentColumns.ALL_COLUMNS
         );
@@ -39,12 +37,12 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
     }
 
     @Override
-    public void remove(@NonNull ComponentBean bean) {
-        remove(new ComponentSelection().id(bean.getId()));
+    protected boolean removeInternal(@NonNull final ComponentBean bean) {
+        return removeInternal(new ComponentSelection().id(bean.getId())) == 1;
     }
 
     @Override
-    public void save(@NonNull ComponentBean bean) {
+    protected boolean saveInternal(@NonNull final ComponentBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         ComponentContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -55,6 +53,8 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
             Uri uri = contentValues.insert(getContentResolver());
             bean.setId(ContentUris.parseId(uri));
         }
+
+        return true;
     }
 
 }

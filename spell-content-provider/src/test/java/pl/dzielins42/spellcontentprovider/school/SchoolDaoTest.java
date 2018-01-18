@@ -38,7 +38,7 @@ public class SchoolDaoTest extends AbsDaoTest {
         SchoolBean bean = new SchoolBean();
         bean.setName("Test school");
 
-        mDao.save(bean);
+        mDao.save(bean).blockingFirst();
 
         SQLiteDatabase db = getReadableDatabase();
         assertEquals(

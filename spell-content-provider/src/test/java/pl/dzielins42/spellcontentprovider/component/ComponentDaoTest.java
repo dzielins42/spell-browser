@@ -35,7 +35,7 @@ public class ComponentDaoTest extends AbsDaoTest {
         ComponentBean bean = new ComponentBean();
         bean.setName("Test component");
 
-        mDao.save(bean);
+        mDao.save(bean).blockingFirst();
 
         SQLiteDatabase db = getReadableDatabase();
         assertEquals(

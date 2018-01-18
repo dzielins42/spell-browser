@@ -19,7 +19,9 @@ public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClass
     }
 
     @Override
-    public List<CharacterClassBean> get(@NonNull CharacterClassSelection selection) {
+    protected List<CharacterClassBean> getInternal(
+            @NonNull final CharacterClassSelection selection
+    ) {
         CharacterClassCursor cursor = selection.query(
                 getContentResolver(), CharacterClassColumns.ALL_COLUMNS
         );
@@ -37,12 +39,12 @@ public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClass
     }
 
     @Override
-    public void remove(@NonNull CharacterClassBean bean) {
-        remove(new CharacterClassSelection().id(bean.getId()));
+    protected boolean removeInternal(@NonNull final CharacterClassBean bean) {
+        return removeInternal(new CharacterClassSelection().id(bean.getId())) == 1;
     }
 
     @Override
-    public void save(@NonNull CharacterClassBean bean) {
+    protected boolean saveInternal(@NonNull final CharacterClassBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         CharacterClassContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -55,6 +57,8 @@ public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClass
             Uri uri = contentValues.insert(getContentResolver());
             bean.setId(ContentUris.parseId(uri));
         }
+
+        return true;
     }
 
 }

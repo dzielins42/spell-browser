@@ -19,7 +19,7 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
     }
 
     @Override
-    public List<RulebookBean> get(@NonNull RulebookSelection selection) {
+    protected List<RulebookBean> getInternal(@NonNull final RulebookSelection selection) {
         RulebookCursor cursor = selection.query(getContentResolver(), RulebookColumns.ALL_COLUMNS);
 
         if (cursor.getCount() <= 0) {
@@ -35,12 +35,12 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
     }
 
     @Override
-    public void remove(@NonNull RulebookBean bean) {
-        remove(new RulebookSelection().id(bean.getId()));
+    protected boolean removeInternal(@NonNull final RulebookBean bean) {
+        return removeInternal(new RulebookSelection().id(bean.getId())) == 1;
     }
 
     @Override
-    public void save(@NonNull RulebookBean bean) {
+    protected boolean saveInternal(@NonNull final RulebookBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         RulebookContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -51,6 +51,8 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
             Uri uri = contentValues.insert(getContentResolver());
             bean.setId(ContentUris.parseId(uri));
         }
+
+        return true;
     }
 
 }

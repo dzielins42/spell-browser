@@ -35,7 +35,7 @@ public class CharacterClassDaoTest extends AbsDaoTest {
         CharacterClassBean bean = new CharacterClassBean();
         bean.setName("Test class");
 
-        mDao.save(bean);
+        mDao.save(bean).blockingFirst();
 
         SQLiteDatabase db = getReadableDatabase();
         assertEquals(
