@@ -42,7 +42,7 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
     }
 
     @Override
-    protected boolean saveInternal(@NonNull final DescriptorBean bean) {
+    protected long saveInternal(@NonNull final DescriptorBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         DescriptorContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -54,7 +54,7 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
             bean.setId(ContentUris.parseId(uri));
         }
 
-        return true;
+        return bean.getId();
     }
 
 }

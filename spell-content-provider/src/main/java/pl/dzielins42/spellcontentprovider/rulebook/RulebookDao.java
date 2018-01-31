@@ -40,7 +40,7 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
     }
 
     @Override
-    protected boolean saveInternal(@NonNull final RulebookBean bean) {
+    protected long saveInternal(@NonNull final RulebookBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         RulebookContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -52,7 +52,7 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
             bean.setId(ContentUris.parseId(uri));
         }
 
-        return true;
+        return bean.getId();
     }
 
 }

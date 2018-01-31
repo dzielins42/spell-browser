@@ -42,7 +42,7 @@ public class SubschoolDao extends AbsDao<SubschoolBean, SubschoolSelection> {
     }
 
     @Override
-    protected boolean saveInternal(@NonNull final SubschoolBean bean) {
+    protected long saveInternal(@NonNull final SubschoolBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         SubschoolContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -54,7 +54,7 @@ public class SubschoolDao extends AbsDao<SubschoolBean, SubschoolSelection> {
             bean.setId(ContentUris.parseId(uri));
         }
 
-        return true;
+        return bean.getId();
     }
 
 }

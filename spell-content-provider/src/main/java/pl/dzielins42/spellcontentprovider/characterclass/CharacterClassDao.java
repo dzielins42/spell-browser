@@ -44,7 +44,7 @@ public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClass
     }
 
     @Override
-    protected boolean saveInternal(@NonNull final CharacterClassBean bean) {
+    protected long saveInternal(@NonNull final CharacterClassBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         CharacterClassContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -58,7 +58,7 @@ public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClass
             bean.setId(ContentUris.parseId(uri));
         }
 
-        return true;
+        return bean.getId();
     }
 
 }

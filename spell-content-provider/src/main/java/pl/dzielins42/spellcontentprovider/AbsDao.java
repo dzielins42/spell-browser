@@ -58,10 +58,10 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         });
     }
 
-    public Observable<Boolean> save(@NonNull final BEAN bean) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Observable<Long> save(@NonNull final BEAN bean) {
+        return Observable.fromCallable(new Callable<Long>() {
             @Override
-            public Boolean call() throws Exception {
+            public Long call() throws Exception {
                 return saveInternal(bean);
             }
         });
@@ -75,6 +75,6 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
 
     protected abstract boolean removeInternal(@NonNull final BEAN bean);
 
-    protected abstract boolean saveInternal(@NonNull final BEAN bean);
+    protected abstract long saveInternal(@NonNull final BEAN bean);
 
 }

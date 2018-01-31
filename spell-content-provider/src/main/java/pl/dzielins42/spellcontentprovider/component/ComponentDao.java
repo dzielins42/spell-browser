@@ -42,7 +42,7 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
     }
 
     @Override
-    protected boolean saveInternal(@NonNull final ComponentBean bean) {
+    protected long saveInternal(@NonNull final ComponentBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         ComponentContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -54,7 +54,7 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
             bean.setId(ContentUris.parseId(uri));
         }
 
-        return true;
+        return bean.getId();
     }
 
 }

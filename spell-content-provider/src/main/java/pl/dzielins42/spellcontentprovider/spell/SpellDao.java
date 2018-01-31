@@ -40,7 +40,7 @@ public class SpellDao extends AbsDao<SpellBean, SpellSelection> {
     }
 
     @Override
-    protected boolean saveInternal(@NonNull final SpellBean bean) {
+    protected long saveInternal(@NonNull final SpellBean bean) {
         final boolean isUpdate = bean.getId() > 0;
 
         SpellContentValues contentValues = ContentValuesUtils.beanToContentValues(bean);
@@ -52,7 +52,7 @@ public class SpellDao extends AbsDao<SpellBean, SpellSelection> {
             bean.setId(ContentUris.parseId(uri));
         }
 
-        return true;
+        return bean.getId();
     }
 
 }
