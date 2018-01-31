@@ -1,50 +1,49 @@
 package pl.dzielins42.spellcontentprovider.component;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import pl.dzielins42.spellcontentprovider.AbsDaoTest;
-
-import static org.junit.Assert.assertEquals;
+import pl.dzielins42.spellcontentprovider.SimpleDaoTest;
 
 @RunWith(RobolectricTestRunner.class)
-public class ComponentDaoTest extends AbsDaoTest {
+public class ComponentDaoTest
+        extends SimpleDaoTest<ComponentBean, ComponentSelection, ComponentDao, ComponentColumns> {
 
-    private ComponentDao mDao;
-
-    @Before
-    public void setup() throws Exception {
-        super.setUp();
-        mDao = new ComponentDao(RuntimeEnvironment.application);
+    @Override
+    protected ComponentBean[] testBeans() {
+        return new ComponentBean[]{
+                ComponentBean.newBuilder().name("Test1").build(),
+                ComponentBean.newBuilder().name("Test2").build(),
+                ComponentBean.newBuilder().name("Test3").build(),
+                ComponentBean.newBuilder().name("Test4").build(),
+                ComponentBean.newBuilder().name("Test5").build(),
+        };
     }
 
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @Override
+    protected ComponentSelection selectionForSingleTestBean() {
+        return new ComponentSelection().name("Test1");
     }
 
-    @Test
-    public void save_insert() throws Exception {
-        ComponentBean bean = new ComponentBean();
-        bean.setName("Test component");
+    @Override
+    protected ComponentSelection selectionForThreeTestBeans() {
+        return new ComponentSelection().name("Test1", "Test2", "Test3");
+    }
 
-        mDao.save(bean).blockingFirst();
+    @Override
+    protected String tableName() {
+        return ComponentColumns.TABLE_NAME;
+    }
 
-        SQLiteDatabase db = getReadableDatabase();
-        assertEquals(
-                1,
-                db.query(
-                        ComponentColumns.TABLE_NAME, null, null, null, null, null, null
-                ).getCount()
-        );
-        db.close();
+    @Override
+    protected void modifyBean(ComponentBean componentBean) {
+        componentBean.setName(componentBean.getName() + "_changed");
+    }
+
+    @Override
+    protected ComponentDao dao() {
+        return new ComponentDao(RuntimeEnvironment.application);
     }
 
 }

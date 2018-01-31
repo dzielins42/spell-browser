@@ -1,50 +1,49 @@
 package pl.dzielins42.spellcontentprovider.rulebook;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import pl.dzielins42.spellcontentprovider.AbsDaoTest;
-
-import static org.junit.Assert.assertEquals;
+import pl.dzielins42.spellcontentprovider.SimpleDaoTest;
 
 @RunWith(RobolectricTestRunner.class)
-public class RulebookDaoTest extends AbsDaoTest {
+public class RulebookDaoTest
+        extends SimpleDaoTest<RulebookBean, RulebookSelection, RulebookDao, RulebookColumns> {
 
-    private RulebookDao mDao;
-
-    @Before
-    public void setup() throws Exception {
-        super.setUp();
-        mDao = new RulebookDao(RuntimeEnvironment.application);
+    @Override
+    protected RulebookBean[] testBeans() {
+        return new RulebookBean[]{
+                RulebookBean.newBuilder().name("Test1").build(),
+                RulebookBean.newBuilder().name("Test2").build(),
+                RulebookBean.newBuilder().name("Test3").build(),
+                RulebookBean.newBuilder().name("Test4").build(),
+                RulebookBean.newBuilder().name("Test5").build(),
+        };
     }
 
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @Override
+    protected RulebookSelection selectionForSingleTestBean() {
+        return new RulebookSelection().name("Test1");
     }
 
-    @Test
-    public void save_insert() throws Exception {
-        RulebookBean bean = new RulebookBean();
-        bean.setName("Test rulebook");
+    @Override
+    protected RulebookSelection selectionForThreeTestBeans() {
+        return new RulebookSelection().name("Test1", "Test2", "Test3");
+    }
 
-        mDao.save(bean).blockingFirst();
+    @Override
+    protected String tableName() {
+        return RulebookColumns.TABLE_NAME;
+    }
 
-        SQLiteDatabase db = getReadableDatabase();
-        assertEquals(
-                1,
-                db.query(
-                        RulebookColumns.TABLE_NAME, null, null, null, null, null, null
-                ).getCount()
-        );
-        db.close();
+    @Override
+    protected void modifyBean(RulebookBean rulebookBean) {
+        rulebookBean.setName(rulebookBean.getName() + "_changed");
+    }
+
+    @Override
+    protected RulebookDao dao() {
+        return new RulebookDao(RuntimeEnvironment.application);
     }
 
 }

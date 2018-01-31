@@ -1,53 +1,49 @@
 package pl.dzielins42.spellcontentprovider.school;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-
-import pl.dzielins42.spellcontentprovider.AbsDaoTest;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassDao;
-
-import static org.junit.Assert.*;
+import pl.dzielins42.spellcontentprovider.SimpleDaoTest;
 
 @RunWith(RobolectricTestRunner.class)
-public class SchoolDaoTest extends AbsDaoTest {
+public class SchoolDaoTest
+        extends SimpleDaoTest<SchoolBean, SchoolSelection, SchoolDao, SchoolColumns> {
 
-    private SchoolDao mDao;
-
-    @Before
-    public void setup() throws Exception {
-        super.setUp();
-        mDao = new SchoolDao(RuntimeEnvironment.application);
+    @Override
+    protected SchoolBean[] testBeans() {
+        return new SchoolBean[]{
+                SchoolBean.newBuilder().name("Test1").build(),
+                SchoolBean.newBuilder().name("Test2").build(),
+                SchoolBean.newBuilder().name("Test3").build(),
+                SchoolBean.newBuilder().name("Test4").build(),
+                SchoolBean.newBuilder().name("Test5").build(),
+        };
     }
 
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @Override
+    protected SchoolSelection selectionForSingleTestBean() {
+        return new SchoolSelection().name("Test1");
     }
 
-    @Test
-    public void save_insert() throws Exception {
-        SchoolBean bean = new SchoolBean();
-        bean.setName("Test school");
+    @Override
+    protected SchoolSelection selectionForThreeTestBeans() {
+        return new SchoolSelection().name("Test1", "Test2", "Test3");
+    }
 
-        mDao.save(bean).blockingFirst();
+    @Override
+    protected String tableName() {
+        return SchoolColumns.TABLE_NAME;
+    }
 
-        SQLiteDatabase db = getReadableDatabase();
-        assertEquals(
-                1,
-                db.query(
-                        SchoolColumns.TABLE_NAME, null, null, null, null, null, null
-                ).getCount()
-        );
-        db.close();
+    @Override
+    protected void modifyBean(SchoolBean schoolBean) {
+        schoolBean.setName(schoolBean.getName() + "_changed");
+    }
+
+    @Override
+    protected SchoolDao dao() {
+        return new SchoolDao(RuntimeEnvironment.application);
     }
 
 }

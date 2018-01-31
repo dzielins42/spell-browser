@@ -1,50 +1,52 @@
 package pl.dzielins42.spellcontentprovider.characterclass;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import pl.dzielins42.spellcontentprovider.AbsDaoTest;
+import pl.dzielins42.spellcontentprovider.SimpleDaoTest;
 
-import static org.junit.Assert.assertEquals;
+public class CharacterClassDaoTest
+        extends SimpleDaoTest<CharacterClassBean, CharacterClassSelection, CharacterClassDao, CharacterClassColumns> {
 
-@RunWith(RobolectricTestRunner.class)
-public class CharacterClassDaoTest extends AbsDaoTest {
-
-    private CharacterClassDao mDao;
-
-    @Before
-    public void setup() throws Exception {
-        super.setUp();
-        mDao = new CharacterClassDao(RuntimeEnvironment.application);
+    @Override
+    protected CharacterClassBean[] testBeans() {
+        return new CharacterClassBean[]{
+                CharacterClassBean.newBuilder().name("Test1").build(),
+                CharacterClassBean.newBuilder().name("Test2").build(),
+                CharacterClassBean.newBuilder().name("Test3").build(),
+                CharacterClassBean.newBuilder().name("Test4").build(),
+                CharacterClassBean.newBuilder().name("Test5").build(),
+        };
     }
 
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @Override
+    protected CharacterClassSelection selectionForSingleTestBean() {
+        CharacterClassSelection selection = new CharacterClassSelection();
+        selection.name("Test1");
+
+        return selection;
     }
 
-    @Test
-    public void save_insert() throws Exception {
-        CharacterClassBean bean = new CharacterClassBean();
-        bean.setName("Test class");
+    @Override
+    protected CharacterClassSelection selectionForThreeTestBeans() {
+        CharacterClassSelection selection = new CharacterClassSelection();
+        selection.name("Test1", "Test2", "Test3");
 
-        mDao.save(bean).blockingFirst();
+        return selection;
+    }
 
-        SQLiteDatabase db = getReadableDatabase();
-        assertEquals(
-                1,
-                db.query(
-                        CharacterClassColumns.TABLE_NAME, null, null, null, null, null, null
-                ).getCount()
-        );
-        db.close();
+    @Override
+    protected String tableName() {
+        return CharacterClassColumns.TABLE_NAME;
+    }
+
+    @Override
+    protected void modifyBean(CharacterClassBean characterClassBean) {
+        characterClassBean.setName(characterClassBean.getName() + "_changed");
+    }
+
+    @Override
+    protected CharacterClassDao dao() {
+        return new CharacterClassDao(RuntimeEnvironment.application);
     }
 
 }

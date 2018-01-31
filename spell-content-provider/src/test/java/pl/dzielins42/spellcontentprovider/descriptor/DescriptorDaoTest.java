@@ -1,50 +1,49 @@
 package pl.dzielins42.spellcontentprovider.descriptor;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import pl.dzielins42.spellcontentprovider.AbsDaoTest;
-
-import static org.junit.Assert.assertEquals;
+import pl.dzielins42.spellcontentprovider.SimpleDaoTest;
 
 @RunWith(RobolectricTestRunner.class)
-public class DescriptorDaoTest extends AbsDaoTest {
+public class DescriptorDaoTest
+        extends SimpleDaoTest<DescriptorBean, DescriptorSelection, DescriptorDao, DescriptorColumns> {
 
-    private DescriptorDao mDao;
-
-    @Before
-    public void setup() throws Exception {
-        super.setUp();
-        mDao = new DescriptorDao(RuntimeEnvironment.application);
+    @Override
+    protected DescriptorBean[] testBeans() {
+        return new DescriptorBean[]{
+                DescriptorBean.newBuilder().name("Test1").build(),
+                DescriptorBean.newBuilder().name("Test2").build(),
+                DescriptorBean.newBuilder().name("Test3").build(),
+                DescriptorBean.newBuilder().name("Test4").build(),
+                DescriptorBean.newBuilder().name("Test5").build(),
+        };
     }
 
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
+    @Override
+    protected DescriptorSelection selectionForSingleTestBean() {
+        return new DescriptorSelection().name("Test1");
     }
 
-    @Test
-    public void save_insert() throws Exception {
-        DescriptorBean bean = new DescriptorBean();
-        bean.setName("Test descriptor");
+    @Override
+    protected DescriptorSelection selectionForThreeTestBeans() {
+        return new DescriptorSelection().name("Test1", "Test2", "Test3");
+    }
 
-        mDao.save(bean).blockingFirst();
+    @Override
+    protected String tableName() {
+        return DescriptorColumns.TABLE_NAME;
+    }
 
-        SQLiteDatabase db = getReadableDatabase();
-        assertEquals(
-                1,
-                db.query(
-                        DescriptorColumns.TABLE_NAME, null, null, null, null, null, null
-                ).getCount()
-        );
-        db.close();
+    @Override
+    protected void modifyBean(DescriptorBean descriptorBean) {
+        descriptorBean.setName(descriptorBean.getName() + "_changed");
+    }
+
+    @Override
+    protected DescriptorDao dao() {
+        return new DescriptorDao(RuntimeEnvironment.application);
     }
 
 }
