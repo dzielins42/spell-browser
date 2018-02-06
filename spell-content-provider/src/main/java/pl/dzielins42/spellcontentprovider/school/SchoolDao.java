@@ -55,4 +55,9 @@ public class SchoolDao extends AbsDao<SchoolBean, SchoolSelection> {
         return bean.getId();
     }
 
+    @Override
+    protected SchoolSelection instantiateSelectAll() {
+        return new SchoolSelection();
+    }
+
 }

@@ -55,4 +55,9 @@ public class SpellDao extends AbsDao<SpellBean, SpellSelection> {
         return bean.getId();
     }
 
+    @Override
+    protected SpellSelection instantiateSelectAll() {
+        return new SpellSelection();
+    }
+
 }

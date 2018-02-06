@@ -67,6 +67,20 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         });
     }
 
+    public Observable<Integer> count() {
+        SELECTION selection = instantiateSelectAll();
+        return count(selection);
+    }
+
+    public Observable<Integer> count(@NonNull final SELECTION selection) {
+        return Observable.fromCallable(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return selection.count(getContentResolver());
+            }
+        });
+    }
+
     protected int removeInternal(@NonNull final SELECTION selection) {
         return selection.delete(getContentResolver());
     }
@@ -76,5 +90,7 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
     protected abstract boolean removeInternal(@NonNull final BEAN bean);
 
     protected abstract long saveInternal(@NonNull final BEAN bean);
+
+    protected abstract SELECTION instantiateSelectAll();
 
 }

@@ -61,4 +61,9 @@ public class CharacterClassDao extends AbsDao<CharacterClassBean, CharacterClass
         return bean.getId();
     }
 
+    @Override
+    protected CharacterClassSelection instantiateSelectAll() {
+        return new CharacterClassSelection();
+    }
+
 }

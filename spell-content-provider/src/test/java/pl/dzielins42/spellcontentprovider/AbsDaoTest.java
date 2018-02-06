@@ -66,6 +66,12 @@ public abstract class AbsDaoTest {
     @Test
     public abstract void remove_bean() throws Exception;
 
+    @Test
+    public abstract void count_all() throws Exception;
+
+    @Test
+    public abstract void count_selection() throws Exception;
+
     protected abstract void clearAllData(SQLiteDatabase db);
 
 }

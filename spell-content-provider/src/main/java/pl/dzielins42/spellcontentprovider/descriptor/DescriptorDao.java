@@ -57,4 +57,9 @@ public class DescriptorDao extends AbsDao<DescriptorBean, DescriptorSelection> {
         return bean.getId();
     }
 
+    @Override
+    protected DescriptorSelection instantiateSelectAll() {
+        return new DescriptorSelection();
+    }
+
 }

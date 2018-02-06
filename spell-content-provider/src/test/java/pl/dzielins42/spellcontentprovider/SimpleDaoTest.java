@@ -133,6 +133,20 @@ public abstract class SimpleDaoTest<
         db.close();
     }
 
+    @Override
+    public void count_all() throws Exception {
+        insertTestBeans();
+        int count = mDao.count().blockingFirst();
+        assertEquals(testBeans().length, count);
+    }
+
+    @Override
+    public void count_selection() throws Exception {
+        insertTestBeans();
+        int count = mDao.count(selectionForThreeTestBeans()).blockingFirst();
+        assertEquals(3, count);
+    }
+
     protected void insertTestBeans() {
         for (int i = 0; i < testBeans().length; i++) {
             mDao.save(testBeans()[i]).blockingFirst();

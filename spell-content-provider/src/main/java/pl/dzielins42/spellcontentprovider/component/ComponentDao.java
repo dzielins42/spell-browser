@@ -57,4 +57,9 @@ public class ComponentDao extends AbsDao<ComponentBean, ComponentSelection> {
         return bean.getId();
     }
 
+    @Override
+    protected ComponentSelection instantiateSelectAll() {
+        return new ComponentSelection();
+    }
+
 }

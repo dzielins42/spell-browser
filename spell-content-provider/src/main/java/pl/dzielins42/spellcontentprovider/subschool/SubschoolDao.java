@@ -57,4 +57,9 @@ public class SubschoolDao extends AbsDao<SubschoolBean, SubschoolSelection> {
         return bean.getId();
     }
 
+    @Override
+    protected SubschoolSelection instantiateSelectAll() {
+        return new SubschoolSelection();
+    }
+
 }

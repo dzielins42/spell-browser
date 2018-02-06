@@ -55,4 +55,9 @@ public class RulebookDao extends AbsDao<RulebookBean, RulebookSelection> {
         return bean.getId();
     }
 
+    @Override
+    protected RulebookSelection instantiateSelectAll() {
+        return new RulebookSelection();
+    }
+
 }
