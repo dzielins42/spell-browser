@@ -12,8 +12,8 @@ import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookContentValues;
 import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolContentValues;
-import pl.dzielins42.spellcontentprovider.spell.SpellBean;
-import pl.dzielins42.spellcontentprovider.spell.SpellContentValues;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseBean;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseContentValues;
 import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesBean;
 import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesContentValues;
 import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsBean;
@@ -83,12 +83,12 @@ public class ContentValuesUtils {
         return contentValues;
     }
 
-    public static SpellContentValues beanToContentValues(@NonNull SpellBean bean) {
+    public static SpellBaseContentValues beanToContentValues(@NonNull SpellBaseBean bean) {
         if (bean == null) {
             throw new IllegalArgumentException("bean cannot be null");
         }
 
-        SpellContentValues contentValues = new SpellContentValues();
+        SpellBaseContentValues contentValues = new SpellBaseContentValues();
         contentValues.putArea(bean.getArea());
         contentValues.putCastingTime(bean.getCastingTime());
         contentValues.putDescriptionFormatted(bean.getDescriptionFormatted());

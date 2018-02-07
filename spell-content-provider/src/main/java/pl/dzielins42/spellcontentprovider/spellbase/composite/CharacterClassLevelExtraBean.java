@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider.spell.composite;
+package pl.dzielins42.spellcontentprovider.spellbase.composite;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

@@ -6,7 +6,7 @@
          "nullable":false,
          "index":false,
          "foreignKey":{
-            "table":"spell",
+            "table":"spell_base",
             "onDelete":"CASCADE"
          }
       },

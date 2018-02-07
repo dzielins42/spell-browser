@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider.spell.composite;
+package pl.dzielins42.spellcontentprovider.spellbase.composite;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,9 +8,9 @@ import java.util.List;
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
-import pl.dzielins42.spellcontentprovider.spell.SpellModel;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseModel;
 
-public class CompositeSpellBean implements SpellModel {
+public class CompositeSpellBean implements SpellBaseModel {
     private long mId;
     private String mName;
     private RulebookBean mRulebook;

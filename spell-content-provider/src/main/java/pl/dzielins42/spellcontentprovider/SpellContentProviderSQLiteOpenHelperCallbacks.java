@@ -3,12 +3,10 @@ package pl.dzielins42.spellcontentprovider;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import pl.dzielins42.spellcontentprovider.base.BaseSQLiteOpenHelperCallbacks;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassColumns;
@@ -17,7 +15,7 @@ import pl.dzielins42.spellcontentprovider.compositespell.CompositeSpellColumns;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorColumns;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookColumns;
 import pl.dzielins42.spellcontentprovider.school.SchoolColumns;
-import pl.dzielins42.spellcontentprovider.spell.SpellColumns;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseColumns;
 import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesColumns;
 import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsColumns;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsColumns;
@@ -42,27 +40,27 @@ public class SpellContentProviderSQLiteOpenHelperCallbacks extends BaseSQLiteOpe
         sb.append("SELECT ");
 
         List<String> aliasedColumns = new ArrayList<>();
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns._ID, CompositeSpellColumns._ID));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns._ID, CompositeSpellColumns.SPELL__ID));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.NAME, CompositeSpellColumns.SPELL_NAME));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns._ID, CompositeSpellColumns._ID));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns._ID, CompositeSpellColumns.SPELL__ID));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.NAME, CompositeSpellColumns.SPELL_NAME));
         aliasedColumns.add(createAlias(RulebookColumns.TABLE_NAME, RulebookColumns._ID, CompositeSpellColumns.RULEBOOK__ID));
         aliasedColumns.add(createAlias(RulebookColumns.TABLE_NAME, RulebookColumns.NAME, CompositeSpellColumns.RULEBOOK_NAME));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.PAGE, CompositeSpellColumns.SPELL_PAGE));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.CASTING_TIME, CompositeSpellColumns.SPELL_CASTING_TIME));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.RANGE, CompositeSpellColumns.SPELL_RANGE));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.TARGET, CompositeSpellColumns.SPELL_TARGET));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.EFFECT, CompositeSpellColumns.SPELL_EFFECT));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.AREA, CompositeSpellColumns.SPELL_AREA));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.DURATION, CompositeSpellColumns.SPELL_DURATION));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.SAVING_THROW, CompositeSpellColumns.SPELL_SAVING_THROW));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.SPELL_RESISTANCE, CompositeSpellColumns.SPELL_SPELL_RESISTANCE));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.DESCRIPTION_PLAIN, CompositeSpellColumns.SPELL_DESCRIPTION_PLAIN));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.DESCRIPTION_FORMATTED, CompositeSpellColumns.SPELL_DESCRIPTION_FORMATTED));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.SHORT_DESCRIPTION_PLAIN, CompositeSpellColumns.SPELL_SHORT_DESCRIPTION_PLAIN));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.SHORT_DESCRIPTION_FORMATTED, CompositeSpellColumns.SPELL_SHORT_DESCRIPTION_FORMATTED));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.FLAVOUR_TEXT_PLAIN, CompositeSpellColumns.SPELL_FLAVOUR_TEXT_PLAIN));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.FLAVOUR_TEXT_FORMATTED, CompositeSpellColumns.SPELL_FLAVOUR_TEXT_FORMATTED));
-        aliasedColumns.add(createAlias(SpellColumns.TABLE_NAME, SpellColumns.IS_RITUAL, CompositeSpellColumns.SPELL_IS_RITUAL));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.PAGE, CompositeSpellColumns.SPELL_PAGE));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.CASTING_TIME, CompositeSpellColumns.SPELL_CASTING_TIME));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.RANGE, CompositeSpellColumns.SPELL_RANGE));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.TARGET, CompositeSpellColumns.SPELL_TARGET));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.EFFECT, CompositeSpellColumns.SPELL_EFFECT));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.AREA, CompositeSpellColumns.SPELL_AREA));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.DURATION, CompositeSpellColumns.SPELL_DURATION));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.SAVING_THROW, CompositeSpellColumns.SPELL_SAVING_THROW));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.SPELL_RESISTANCE, CompositeSpellColumns.SPELL_SPELL_RESISTANCE));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.DESCRIPTION_PLAIN, CompositeSpellColumns.SPELL_DESCRIPTION_PLAIN));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.DESCRIPTION_FORMATTED, CompositeSpellColumns.SPELL_DESCRIPTION_FORMATTED));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.SHORT_DESCRIPTION_PLAIN, CompositeSpellColumns.SPELL_SHORT_DESCRIPTION_PLAIN));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.SHORT_DESCRIPTION_FORMATTED, CompositeSpellColumns.SPELL_SHORT_DESCRIPTION_FORMATTED));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.FLAVOUR_TEXT_PLAIN, CompositeSpellColumns.SPELL_FLAVOUR_TEXT_PLAIN));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.FLAVOUR_TEXT_FORMATTED, CompositeSpellColumns.SPELL_FLAVOUR_TEXT_FORMATTED));
+        aliasedColumns.add(createAlias(SpellBaseColumns.TABLE_NAME, SpellBaseColumns.IS_RITUAL, CompositeSpellColumns.SPELL_IS_RITUAL));
         aliasedColumns.add(createAlias(CharacterClassColumns.TABLE_NAME, CharacterClassColumns._ID, CompositeSpellColumns.CHARACTER_CLASS__ID));
         aliasedColumns.add(createAlias(CharacterClassColumns.TABLE_NAME, CharacterClassColumns.NAME, CompositeSpellColumns.CHARACTER_CLASS_NAME));
         aliasedColumns.add(createAlias(SpellsToCharacterClassesColumns.TABLE_NAME, SpellsToCharacterClassesColumns.LEVEL, CompositeSpellColumns.CHARACTER_CLASS_LEVEL));
@@ -80,23 +78,23 @@ public class SpellContentProviderSQLiteOpenHelperCallbacks extends BaseSQLiteOpe
 
         sb.append(" FROM ");
 
-        sb.append(SpellColumns.TABLE_NAME)
+        sb.append(SpellBaseColumns.TABLE_NAME)
                 .append(" LEFT OUTER JOIN ").append(RulebookColumns.TABLE_NAME)
-                .append(" ON ").append(SpellColumns.TABLE_NAME).append(".").append(SpellColumns.RULEBOOK_ID).append(" = ").append(RulebookColumns.TABLE_NAME).append(".").append(RulebookColumns._ID)
+                .append(" ON ").append(SpellBaseColumns.TABLE_NAME).append(".").append(SpellBaseColumns.RULEBOOK_ID).append(" = ").append(RulebookColumns.TABLE_NAME).append(".").append(RulebookColumns._ID)
                 .append(" LEFT OUTER JOIN ").append(SpellsToCharacterClassesColumns.TABLE_NAME)
-                .append(" ON ").append(SpellColumns.TABLE_NAME).append(".").append(SpellColumns._ID).append(" = ").append(SpellsToCharacterClassesColumns.TABLE_NAME).append(".").append(SpellsToCharacterClassesColumns.SPELL_ID)
+                .append(" ON ").append(SpellBaseColumns.TABLE_NAME).append(".").append(SpellBaseColumns._ID).append(" = ").append(SpellsToCharacterClassesColumns.TABLE_NAME).append(".").append(SpellsToCharacterClassesColumns.SPELL_ID)
                 .append(" LEFT OUTER JOIN ").append(CharacterClassColumns.TABLE_NAME)
                 .append(" ON ").append(CharacterClassColumns.TABLE_NAME).append(".").append(CharacterClassColumns._ID).append(" = ").append(SpellsToCharacterClassesColumns.TABLE_NAME).append(".").append(SpellsToCharacterClassesColumns.CHARACTER_CLASS_ID)
                 .append(" LEFT OUTER JOIN ").append(SpellsToComponentsColumns.TABLE_NAME)
-                .append(" ON ").append(SpellColumns.TABLE_NAME).append(".").append(SpellColumns._ID).append(" = ").append(SpellsToComponentsColumns.TABLE_NAME).append(".").append(SpellsToComponentsColumns.SPELL_ID)
+                .append(" ON ").append(SpellBaseColumns.TABLE_NAME).append(".").append(SpellBaseColumns._ID).append(" = ").append(SpellsToComponentsColumns.TABLE_NAME).append(".").append(SpellsToComponentsColumns.SPELL_ID)
                 .append(" LEFT OUTER JOIN ").append(ComponentColumns.TABLE_NAME)
                 .append(" ON ").append(ComponentColumns.TABLE_NAME).append(".").append(ComponentColumns._ID).append(" = ").append(SpellsToComponentsColumns.TABLE_NAME).append(".").append(SpellsToComponentsColumns.COMPONENT_ID)
                 .append(" LEFT OUTER JOIN ").append(SpellsToDescriptorsColumns.TABLE_NAME)
-                .append(" ON ").append(SpellColumns.TABLE_NAME).append(".").append(SpellColumns._ID).append(" = ").append(SpellsToComponentsColumns.TABLE_NAME).append(".").append(SpellsToDescriptorsColumns.SPELL_ID)
+                .append(" ON ").append(SpellBaseColumns.TABLE_NAME).append(".").append(SpellBaseColumns._ID).append(" = ").append(SpellsToComponentsColumns.TABLE_NAME).append(".").append(SpellsToDescriptorsColumns.SPELL_ID)
                 .append(" LEFT OUTER JOIN ").append(DescriptorColumns.TABLE_NAME)
                 .append(" ON ").append(DescriptorColumns.TABLE_NAME).append(".").append(DescriptorColumns._ID).append(" = ").append(SpellsToDescriptorsColumns.TABLE_NAME).append(".").append(SpellsToDescriptorsColumns.DESCRIPTOR_ID)
                 .append(" LEFT OUTER JOIN ").append(SpellsToSchoolsColumns.TABLE_NAME)
-                .append(" ON ").append(SpellColumns.TABLE_NAME).append(".").append(SpellColumns._ID).append(" = ").append(SpellsToSchoolsColumns.TABLE_NAME).append(".").append(SpellsToSchoolsColumns.FR_SPELL_ID)
+                .append(" ON ").append(SpellBaseColumns.TABLE_NAME).append(".").append(SpellBaseColumns._ID).append(" = ").append(SpellsToSchoolsColumns.TABLE_NAME).append(".").append(SpellsToSchoolsColumns.FR_SPELL_ID)
                 .append(" LEFT OUTER JOIN ").append(SchoolColumns.TABLE_NAME)
                 .append(" ON ").append(SchoolColumns.TABLE_NAME).append(".").append(SchoolColumns._ID).append(" = ").append(SpellsToSchoolsColumns.TABLE_NAME).append(".").append(SpellsToSchoolsColumns.FR_SCHOOL_ID)
                 .append(" LEFT OUTER JOIN ").append(SubschoolColumns.TABLE_NAME)

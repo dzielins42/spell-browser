@@ -1,4 +1,4 @@
-package pl.dzielins42.spellcontentprovider.spell.composite;
+package pl.dzielins42.spellcontentprovider.spellbase.composite;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;

@@ -12,8 +12,8 @@ import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookCursor;
 import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolCursor;
-import pl.dzielins42.spellcontentprovider.spell.SpellBean;
-import pl.dzielins42.spellcontentprovider.spell.SpellCursor;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseBean;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseCursor;
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
 import pl.dzielins42.spellcontentprovider.subschool.SubschoolCursor;
 
@@ -80,12 +80,12 @@ public class CursorUtils {
     }
 
     @NonNull
-    static SpellBean cursorToBean(@NonNull SpellCursor cursor) {
+    static SpellBaseBean cursorToBean(@NonNull SpellBaseCursor cursor) {
         if (cursor == null) {
             throw new IllegalArgumentException("cursor cannot be null");
         }
 
-        SpellBean.Builder builder = SpellBean.newBuilder();
+        SpellBaseBean.Builder builder = SpellBaseBean.newBuilder();
         builder.id(cursor.getId()).area(cursor.getArea()).castingTime(cursor.getCastingTime())
                 .descriptionFormatted(cursor.getDescriptionFormatted())
                 .descriptionPlain(cursor.getDescriptionPlain()).duration(cursor.getDuration())
