@@ -10,7 +10,8 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import pl.dzielins42.spellcontentprovider.base.AbstractSelection;
 
-public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
+public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection>
+        implements Dao<BEAN, SELECTION> {
 
     private final Context mContext;
 
@@ -27,10 +28,12 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         return mContext;
     }
 
-    public ContentResolver getContentResolver() {
+    @NonNull
+    protected ContentResolver getContentResolver() {
         return mContext.getContentResolver();
     }
 
+    @Override
     public Observable<Integer> remove(@NonNull final SELECTION selection) {
         return Observable.fromCallable(new Callable<Integer>() {
             @Override
@@ -40,6 +43,7 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         });
     }
 
+    @Override
     public Observable<List<BEAN>> get(@NonNull final SELECTION selection) {
         return Observable.fromCallable(new Callable<List<BEAN>>() {
             @Override
@@ -49,6 +53,7 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         });
     }
 
+    @Override
     public Observable<Boolean> remove(@NonNull final BEAN bean) {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
@@ -58,6 +63,7 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         });
     }
 
+    @Override
     public Observable<Long> save(@NonNull final BEAN bean) {
         return Observable.fromCallable(new Callable<Long>() {
             @Override
@@ -67,11 +73,13 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection> {
         });
     }
 
+    @Override
     public Observable<Integer> count() {
         SELECTION selection = instantiateSelectAll();
         return count(selection);
     }
 
+    @Override
     public Observable<Integer> count(@NonNull final SELECTION selection) {
         return Observable.fromCallable(new Callable<Integer>() {
             @Override

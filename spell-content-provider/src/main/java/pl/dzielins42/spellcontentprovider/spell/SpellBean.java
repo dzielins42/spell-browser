@@ -3,6 +3,8 @@ package pl.dzielins42.spellcontentprovider.spell;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseModel;
+
 public class SpellBean implements SpellModel {
     private long mId;
     private long mSpellId;

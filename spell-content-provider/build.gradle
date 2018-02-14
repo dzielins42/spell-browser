@@ -45,6 +45,8 @@ dependencies {
     compile 'com.squareup.sqlbrite2:sqlbrite:2.0.0'
     // Gson
     compile 'com.google.code.gson:gson:2.8.2'
+    // Guava
+    compile 'com.google.guava:guava:24.0-android'
     // Apache Commons Lang
     compile 'org.apache.commons:commons-lang3:3.6'
     // Robolectric

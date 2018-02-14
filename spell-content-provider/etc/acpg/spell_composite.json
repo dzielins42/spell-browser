@@ -160,13 +160,13 @@
       {
          "name":"descriptor__id",
          "type":"Long",
-         "nullable":false,
+         "nullable":true,
          "index":false
       },
       {
          "name":"descriptor_name",
          "type":"String",
-         "nullable":false,
+         "nullable":true,
          "index":false
       },
       {
@@ -184,13 +184,13 @@
       {
          "name":"subschool__id",
          "type":"Long",
-         "nullable":false,
+         "nullable":true,
          "index":false
       },
       {
          "name":"subschool_name",
          "type":"String",
-         "nullable":false,
+         "nullable":true,
          "index":false
       }
    ]
