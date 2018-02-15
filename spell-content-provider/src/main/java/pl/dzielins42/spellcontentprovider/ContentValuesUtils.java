@@ -20,10 +20,6 @@ import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsB
 import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsContentValues;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsBean;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsContentValues;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsBean;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsContentValues;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolContentValues;
 
 public class ContentValuesUtils {
 
@@ -79,6 +75,7 @@ public class ContentValuesUtils {
 
         SchoolContentValues contentValues = new SchoolContentValues();
         contentValues.putName(bean.getName());
+        contentValues.putParentId(bean.getParentId());
 
         return contentValues;
     }
@@ -107,17 +104,6 @@ public class ContentValuesUtils {
         contentValues.putShortDescriptionPlain(bean.getShortDescriptionPlain());
         contentValues.putSpellResistance(bean.getSpellResistance());
         contentValues.putTarget(bean.getTarget());
-
-        return contentValues;
-    }
-
-    public static SubschoolContentValues beanToContentValues(@NonNull SubschoolBean bean) {
-        if (bean == null) {
-            throw new IllegalArgumentException("bean cannot be null");
-        }
-
-        SubschoolContentValues contentValues = new SubschoolContentValues();
-        contentValues.putName(bean.getName());
         contentValues.putSchoolId(bean.getSchoolId());
 
         return contentValues;
@@ -157,19 +143,6 @@ public class ContentValuesUtils {
         SpellsToDescriptorsContentValues contentValues = new SpellsToDescriptorsContentValues();
         contentValues.putDescriptorId(bean.getDescriptorId());
         contentValues.putSpellId(bean.getSpellId());
-
-        return contentValues;
-    }
-
-    public static SpellsToSchoolsContentValues beanToContentValues(@NonNull SpellsToSchoolsBean bean) {
-        if (bean == null) {
-            throw new IllegalArgumentException("bean cannot be null");
-        }
-
-        SpellsToSchoolsContentValues contentValues = new SpellsToSchoolsContentValues();
-        contentValues.putFrSchoolId(bean.getFrSchoolId());
-        contentValues.putFrSpellId(bean.getFrSpellId());
-        contentValues.putFrSubschoolId(bean.getFrSubschoolId());
 
         return contentValues;
     }

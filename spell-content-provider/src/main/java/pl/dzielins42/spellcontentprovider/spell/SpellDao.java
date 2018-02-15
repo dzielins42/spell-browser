@@ -22,7 +22,6 @@ import pl.dzielins42.spellcontentprovider.component.ComponentDao;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
-import pl.dzielins42.spellcontentprovider.school.SchoolDao;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseDao;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseSelection;
 import pl.dzielins42.spellcontentprovider.spellcomposite.SpellCompositeBean;
@@ -30,8 +29,6 @@ import pl.dzielins42.spellcontentprovider.spellcomposite.SpellCompositeDao;
 import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesDao;
 import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsDao;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsDao;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsDao;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolDao;
 
 public class SpellDao implements Dao<SpellBean, SpellSelection> {
 
@@ -47,21 +44,15 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
     @NonNull
     protected final RulebookDao mRulebookDao;
     @NonNull
-    protected final SchoolDao mSchoolDao;
-    @NonNull
     protected final SpellBaseDao mSpellBaseDao;
     @NonNull
     protected final SpellCompositeDao mSpellCompositeDao;
-    @NonNull
-    protected final SubschoolDao mSubschoolDao;
     @NonNull
     protected final SpellsToCharacterClassesDao mSpellsToCharacterClassesDao;
     @NonNull
     protected final SpellsToComponentsDao mSpellsToComponentsDao;
     @NonNull
     protected final SpellsToDescriptorsDao mSpellsToDescriptorsDao;
-    @NonNull
-    protected final SpellsToSchoolsDao mSpellsToSchoolsDao;
 
     public SpellDao(
             @NonNull Context context,
@@ -69,28 +60,22 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
             @NonNull ComponentDao componentDao,
             @NonNull DescriptorDao descriptorDao,
             @NonNull RulebookDao rulebookDao,
-            @NonNull SchoolDao schoolDao,
             @NonNull SpellBaseDao spellBaseDao,
             @NonNull SpellCompositeDao spellCompositeDao,
-            @NonNull SubschoolDao subschoolDao,
             @NonNull SpellsToCharacterClassesDao spellsToCharacterClassesDao,
             @NonNull SpellsToComponentsDao spellsToComponentsDao,
-            @NonNull SpellsToDescriptorsDao spellsToDescriptorsDao,
-            @NonNull SpellsToSchoolsDao spellsToSchoolsDao
+            @NonNull SpellsToDescriptorsDao spellsToDescriptorsDao
     ) {
         mContext = context;
         mCharacterClassDao = characterClassDao;
         mComponentDao = componentDao;
         mDescriptorDao = descriptorDao;
         mRulebookDao = rulebookDao;
-        mSchoolDao = schoolDao;
         mSpellBaseDao = spellBaseDao;
         mSpellCompositeDao = spellCompositeDao;
-        mSubschoolDao = subschoolDao;
         mSpellsToCharacterClassesDao = spellsToCharacterClassesDao;
         mSpellsToComponentsDao = spellsToComponentsDao;
         mSpellsToDescriptorsDao = spellsToDescriptorsDao;
-        mSpellsToSchoolsDao = spellsToSchoolsDao;
     }
 
     @NonNull

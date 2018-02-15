@@ -5,6 +5,12 @@
          "type":"String",
          "nullable":false,
          "index":false
+      },
+      {
+         "name":"parent_id",
+         "type":"Long",
+         "nullable":true,
+         "index":false
       }
    ]
 }

@@ -25,6 +25,30 @@
          "index":false
       },
       {
+         "name":"school_main_type_id",
+         "type":"Long",
+         "nullable":false,
+         "index":false
+      },
+      {
+         "name":"school_main_type_name",
+         "type":"String",
+         "nullable":false,
+         "index":false
+      },
+      {
+         "name":"school_sub_type_id",
+         "type":"Long",
+         "nullable":true,
+         "index":false
+      },
+      {
+         "name":"school_sub_type_name",
+         "type":"String",
+         "nullable":true,
+         "index":false
+      },
+      {
          "name":"spell_page",
          "type":"Integer",
          "nullable":false,
@@ -165,30 +189,6 @@
       },
       {
          "name":"descriptor_name",
-         "type":"String",
-         "nullable":true,
-         "index":false
-      },
-      {
-         "name":"school__id",
-         "type":"Long",
-         "nullable":false,
-         "index":false
-      },
-      {
-         "name":"school_name",
-         "type":"String",
-         "nullable":false,
-         "index":false
-      },
-      {
-         "name":"subschool__id",
-         "type":"Long",
-         "nullable":true,
-         "index":false
-      },
-      {
-         "name":"subschool_name",
          "type":"String",
          "nullable":true,
          "index":false

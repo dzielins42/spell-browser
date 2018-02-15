@@ -7,6 +7,16 @@
          "index":false
       },
       {
+        "name":"school_id",
+        "type":"Long",
+        "nullable":false,
+        "index":false,
+        "foreignKey":{
+           "table":"school",
+           "onDelete":"CASCADE"
+        }
+      },
+      {
          "name":"rulebook_id",
          "type":"Long",
          "nullable":false,

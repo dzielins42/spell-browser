@@ -1,10 +1,16 @@
 package pl.dzielins42.spellcontentprovider.school;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import java.util.List;
+
 import pl.dzielins42.spellcontentprovider.SimpleDaoTest;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class SchoolDaoTest
@@ -37,13 +43,33 @@ public class SchoolDaoTest
     }
 
     @Override
-    protected void modifyBean(SchoolBean schoolBean) {
-        schoolBean.setName(schoolBean.getName() + "_changed");
+    protected void modifyBean(SchoolBean SchoolBean) {
+        SchoolBean.setName(SchoolBean.getName() + "_changed");
     }
 
     @Override
     protected SchoolDao dao() {
         return new SchoolDao(RuntimeEnvironment.application);
+    }
+
+    @Test
+    public void remove_cascade() throws Exception {
+        SchoolBean parent = SchoolBean.newInstance(0,"Parent",null);
+        long parentId = mDao.save(parent).blockingFirst();
+        SchoolBean child = SchoolBean.newInstance(0,"Child",parentId);
+        long childId = mDao.save(child).blockingFirst();
+
+        SchoolSelection byParentIdSelection = new SchoolSelection().parentId(parentId);
+        List<SchoolBean> queryResult;
+        queryResult = mDao.get(byParentIdSelection).blockingFirst();
+
+        assertTrue(!queryResult.isEmpty());
+        assertEquals(queryResult.size(),1);
+        assertEquals(queryResult.get(0).getId(), childId);
+
+        mDao.remove(parent).blockingFirst();
+        queryResult = mDao.get(byParentIdSelection).blockingFirst();
+        assertTrue(queryResult.isEmpty());
     }
 
 }

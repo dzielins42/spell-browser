@@ -2,6 +2,7 @@ package pl.dzielins42.spellcontentprovider.spell;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import org.junit.Ignore;
 import org.robolectric.RuntimeEnvironment;
 
 import java.util.List;
@@ -19,9 +20,7 @@ import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookColumns;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
-import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolColumns;
-import pl.dzielins42.spellcontentprovider.school.SchoolDao;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseBean;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseColumns;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseDao;
@@ -35,15 +34,10 @@ import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsD
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsBean;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsColumns;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsDao;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsBean;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsColumns;
-import pl.dzielins42.spellcontentprovider.spellstoschools.SpellsToSchoolsDao;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolColumns;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolDao;
 
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 public class SpellDaoTest extends AbsDaoTest {
 
     private SpellDao mDao;
@@ -52,9 +46,7 @@ public class SpellDaoTest extends AbsDaoTest {
     private ComponentBean[] mTestComponentBeans;
     private DescriptorBean[] mTestDescriptorBeans;
     private RulebookBean[] mTestRulebookBeans;
-    private SchoolBean[] mTestSchoolBeans;
     private SpellBaseBean[] mTestSpellBaseBeans;
-    private SubschoolBean[] mTestSubschoolBeans;
 
     private SpellBean[] mTestSpellBeans;
 
@@ -65,28 +57,22 @@ public class SpellDaoTest extends AbsDaoTest {
         ComponentDao componentDao = new ComponentDao(RuntimeEnvironment.application);
         DescriptorDao descriptorDao = new DescriptorDao(RuntimeEnvironment.application);
         RulebookDao rulebookDao = new RulebookDao(RuntimeEnvironment.application);
-        SchoolDao schoolDao = new SchoolDao(RuntimeEnvironment.application);
         SpellBaseDao spellBaseDao = new SpellBaseDao(RuntimeEnvironment.application);
         SpellCompositeDao spellCompositeDao = new SpellCompositeDao(RuntimeEnvironment.application);
-        SubschoolDao subschoolDao = new SubschoolDao(RuntimeEnvironment.application);
         SpellsToCharacterClassesDao spellsToCharacterClassesDao = new SpellsToCharacterClassesDao(RuntimeEnvironment.application);
         SpellsToComponentsDao spellsToComponentsDao = new SpellsToComponentsDao(RuntimeEnvironment.application);
         SpellsToDescriptorsDao spellsToDescriptorsDao = new SpellsToDescriptorsDao(RuntimeEnvironment.application);
-        SpellsToSchoolsDao spellsToSchoolsDao = new SpellsToSchoolsDao(RuntimeEnvironment.application);
         mDao = new SpellDao(
                 RuntimeEnvironment.application,
                 characterClassDao,
                 componentDao,
                 descriptorDao,
                 rulebookDao,
-                schoolDao,
                 spellBaseDao,
                 spellCompositeDao,
-                subschoolDao,
                 spellsToCharacterClassesDao,
                 spellsToComponentsDao,
-                spellsToDescriptorsDao,
-                spellsToSchoolsDao
+                spellsToDescriptorsDao
         );
 
         initDatabase();
@@ -163,12 +149,9 @@ public class SpellDaoTest extends AbsDaoTest {
         db.execSQL("DELETE FROM " + RulebookColumns.TABLE_NAME + ";");
         db.execSQL("DELETE FROM " + SchoolColumns.TABLE_NAME + ";");
         db.execSQL("DELETE FROM " + SpellBaseColumns.TABLE_NAME + ";");
-        db.execSQL("DELETE FROM " + SubschoolColumns.TABLE_NAME + ";");
-
         db.execSQL("DELETE FROM " + SpellsToCharacterClassesColumns.TABLE_NAME + ";");
         db.execSQL("DELETE FROM " + SpellsToComponentsColumns.TABLE_NAME + ";");
         db.execSQL("DELETE FROM " + SpellsToDescriptorsColumns.TABLE_NAME + ";");
-        db.execSQL("DELETE FROM " + SpellsToSchoolsColumns.TABLE_NAME + ";");
     }
 
     private void initDatabase() {
@@ -203,29 +186,6 @@ public class SpellDaoTest extends AbsDaoTest {
         };
         for (RulebookBean bean : mTestRulebookBeans) {
             mDao.mRulebookDao.save(bean).blockingFirst();
-        }
-        mTestSchoolBeans = new SchoolBean[]{
-                SchoolBean.newBuilder().name("School1").build(),
-                SchoolBean.newBuilder().name("School2").build(),
-                SchoolBean.newBuilder().name("School3").build(),
-        };
-        for (SchoolBean bean : mTestSchoolBeans) {
-            mDao.mSchoolDao.save(bean).blockingFirst();
-        }
-        mTestSubschoolBeans = new SubschoolBean[]{
-                SubschoolBean.newBuilder().name("Subschool1").schoolId(mTestSchoolBeans[0].getId
-                        ()).build(),
-                SubschoolBean.newBuilder().name("Subschool2").schoolId(mTestSchoolBeans[0].getId
-                        ()).build(),
-                SubschoolBean.newBuilder().name("Subschool3").schoolId(mTestSchoolBeans[1].getId
-                        ()).build(),
-                SubschoolBean.newBuilder().name("Subschool4").schoolId(mTestSchoolBeans[0].getId
-                        ()).build(),
-                SubschoolBean.newBuilder().name("Subschool5").schoolId(mTestSchoolBeans[2].getId
-                        ()).build(),
-        };
-        for (SubschoolBean bean : mTestSubschoolBeans) {
-            mDao.mSubschoolDao.save(bean).blockingFirst();
         }
 
         mTestSpellBaseBeans = new SpellBaseBean[]{
@@ -388,34 +348,6 @@ public class SpellDaoTest extends AbsDaoTest {
         };
         for (SpellsToDescriptorsBean bean : s2d) {
             mDao.mSpellsToDescriptorsDao.save(bean).blockingFirst();
-        }
-
-        SpellsToSchoolsBean[] s2s = new SpellsToSchoolsBean[] {
-                SpellsToSchoolsBean.newBuilder()
-                        .frSpellId(mTestSpellBaseBeans[0].getId())
-                        .frSchoolId(mTestSchoolBeans[0].getId())
-                        .build(),
-                SpellsToSchoolsBean.newBuilder()
-                        .frSpellId(mTestSpellBaseBeans[1].getId())
-                        .frSchoolId(mTestSubschoolBeans[0].getSchoolId())
-                        .frSubschoolId(mTestSubschoolBeans[0].getId())
-                        .build(),
-                SpellsToSchoolsBean.newBuilder()
-                        .frSpellId(mTestSpellBaseBeans[2].getId())
-                        .frSchoolId(mTestSchoolBeans[1].getId())
-                        .build(),
-                SpellsToSchoolsBean.newBuilder()
-                        .frSpellId(mTestSpellBaseBeans[3].getId())
-                        .frSchoolId(mTestSchoolBeans[2].getId())
-                        .build(),
-                SpellsToSchoolsBean.newBuilder()
-                        .frSpellId(mTestSpellBaseBeans[4].getId())
-                        .frSchoolId(mTestSubschoolBeans[2].getSchoolId())
-                        .frSubschoolId(mTestSubschoolBeans[2].getId())
-                        .build(),
-        };
-        for (SpellsToSchoolsBean bean : s2s) {
-            mDao.mSpellsToSchoolsDao.save(bean).blockingFirst();
         }
     }
 

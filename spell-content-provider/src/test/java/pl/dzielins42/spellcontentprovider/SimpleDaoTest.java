@@ -14,11 +14,12 @@ import static org.junit.Assert.assertTrue;
 public abstract class SimpleDaoTest<
         BEAN,
         SELECTION extends AbstractSelection,
-        DAO extends AbsDao<BEAN, SELECTION>,
+        DAO extends Dao<BEAN, SELECTION>,
         COLUMNS extends BaseColumns
         > extends AbsDaoTest {
 
     protected DAO mDao;
+    protected BEAN[] mTestBeans;
 
     public SimpleDaoTest() {
         super();
@@ -33,6 +34,7 @@ public abstract class SimpleDaoTest<
     public void setUp() throws Exception {
         super.setUp();
         mDao = dao();
+        mTestBeans = testBeans();
     }
 
     @Override
@@ -43,7 +45,7 @@ public abstract class SimpleDaoTest<
 
     @Override
     public void save_insert() throws Exception {
-        BEAN bean = testBeans()[0];
+        BEAN bean = mTestBeans[0];
         final long id = mDao.save(bean).blockingFirst();
 
         SQLiteDatabase db = getReadableDatabase();
@@ -64,7 +66,7 @@ public abstract class SimpleDaoTest<
 
     @Override
     public void save_update() throws Exception {
-        BEAN bean = testBeans()[0];
+        BEAN bean = mTestBeans[0];
         final long id = mDao.save(bean).blockingFirst();
         modifyBean(bean);
         mDao.save(bean).blockingFirst();
@@ -107,14 +109,14 @@ public abstract class SimpleDaoTest<
         SELECTION selection = selectionForThreeTestBeans();
         final int removedCount = mDao.remove(selection).blockingFirst();
         assertEquals(3, removedCount);
-        assertEquals(testBeans().length - removedCount, countRows());
+        assertEquals(mTestBeans.length - removedCount, countRows());
         List<BEAN> querryResult = mDao.get(selection).blockingFirst();
         assertTrue(querryResult.isEmpty());
     }
 
     @Override
     public void remove_bean() throws Exception {
-        BEAN bean = testBeans()[0];
+        BEAN bean = mTestBeans[0];
         mDao.save(bean).blockingFirst();
         final boolean result = mDao.remove(bean).blockingFirst();
         assertTrue(result);
@@ -137,7 +139,7 @@ public abstract class SimpleDaoTest<
     public void count_all() throws Exception {
         insertTestBeans();
         int count = mDao.count().blockingFirst();
-        assertEquals(testBeans().length, count);
+        assertEquals(mTestBeans.length, count);
     }
 
     @Override
@@ -148,8 +150,8 @@ public abstract class SimpleDaoTest<
     }
 
     protected void insertTestBeans() {
-        for (int i = 0; i < testBeans().length; i++) {
-            mDao.save(testBeans()[i]).blockingFirst();
+        for (int i = 0; i < mTestBeans.length; i++) {
+            mDao.save(mTestBeans[i]).blockingFirst();
         }
     }
 
