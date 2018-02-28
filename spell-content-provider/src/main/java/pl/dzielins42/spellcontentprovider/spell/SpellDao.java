@@ -3,10 +3,12 @@ package pl.dzielins42.spellcontentprovider.spell;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +19,13 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import pl.dzielins42.spellcontentprovider.Dao;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassDao;
+import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassWithLevelBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentDao;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
+import pl.dzielins42.spellcontentprovider.school.SchoolDao;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseDao;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseSelection;
 import pl.dzielins42.spellcontentprovider.spellcomposite.SpellCompositeBean;
@@ -44,6 +48,8 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
     @NonNull
     protected final RulebookDao mRulebookDao;
     @NonNull
+    protected final SchoolDao mSchoolDao;
+    @NonNull
     protected final SpellBaseDao mSpellBaseDao;
     @NonNull
     protected final SpellCompositeDao mSpellCompositeDao;
@@ -60,6 +66,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
             @NonNull ComponentDao componentDao,
             @NonNull DescriptorDao descriptorDao,
             @NonNull RulebookDao rulebookDao,
+            @NonNull SchoolDao schoolDao,
             @NonNull SpellBaseDao spellBaseDao,
             @NonNull SpellCompositeDao spellCompositeDao,
             @NonNull SpellsToCharacterClassesDao spellsToCharacterClassesDao,
@@ -71,6 +78,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
         mComponentDao = componentDao;
         mDescriptorDao = descriptorDao;
         mRulebookDao = rulebookDao;
+        mSchoolDao = schoolDao;
         mSpellBaseDao = spellBaseDao;
         mSpellCompositeDao = spellCompositeDao;
         mSpellsToCharacterClassesDao = spellsToCharacterClassesDao;
@@ -133,7 +141,6 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
 
     @Override
     public Observable<List<SpellBean>> get(@NonNull SpellSelection selection) {
-        // TODO implement
         // This operation requires multiple steps:
         // - get data from spell_composite
         // - split data by id (spell_composite may contain multiple rows for single spell_base row)
@@ -143,7 +150,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
                     @Override
                     public ObservableSource<List<SpellBean>> apply(List<SpellCompositeBean> spellCompositeBeans) throws Exception {
                         Multimap<Long, SpellCompositeBean> mapById =
-                                MultimapBuilder.treeKeys().hashSetValues().build();
+                                MultimapBuilder.treeKeys().arrayListValues().build();
 
                         for (SpellCompositeBean spellCompositeBean : spellCompositeBeans) {
                             mapById.put(spellCompositeBean.getId(), spellCompositeBean);
@@ -163,41 +170,37 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
     }
 
     protected SpellBean merge(Collection<SpellCompositeBean> beans) {
-        SpellBean.Builder spellBeanBuilder = SpellBean.newBuilder();
+        Long id = null;
+        Long spellId = null;
+        String spellName = null;
+        Long rulebookId = null;
+        String rulebookName = null;
+        Long schoolId = null;
+        Long schoolMainTypeId = null;
+        String schoolMainTypeName = null;
+        Long schoolSubTypeId = null;
+        String schoolSubTypeName = null;
+        Integer spellPage = null;
+        String spellCastingTime = null;
+        String spellRange = null;
+        String spellTarget = null;
+        String spellEffect = null;
+        String spellArea = null;
+        String spellDuration = null;
+        String spellSavingThrow = null;
+        String spellSpellResistance = null;
+        String spellDescriptionPlain = null;
+        String spellDescriptionFormatted = null;
+        String spellShortDescriptionPlain = null;
+        String spellShortDescriptionFormatted = null;
+        String spellFlavourTextPlain = null;
+        String spellFlavourTextFormatted = null;
+        Boolean spellIsRitual = null;
 
-        Long id=null;
-        Long spellId=null;
-        String spellName=null;
-        Long rulebookId=null;
-        String rulebookName=null;
-        Integer spellPage=null;
-        String spellCastingTime=null;
-        String spellRange=null;
-        String spellTarget=null;
-        String spellEffect=null;
-        String spellArea=null;
-        String spellDuration=null;
-        String spellSavingThrow=null;
-        String spellSpellResistance=null;
-        String spellDescriptionPlain=null;
-        String spellDescriptionFormatted=null;
-        String spellShortDescriptionPlain=null;
-        String spellShortDescriptionFormatted=null;
-        String spellFlavourTextPlain=null;
-        String spellFlavourTextFormatted=null;
-        Boolean spellIsRitual=null;
-
-        Long characterClassId=null;
-        String characterClassName=null;
-        Integer characterClassLevel=null;
-        String characterClassExtra=null;
         Set<ComponentBean> components = new HashSet<>();
         Set<DescriptorBean> descriptors = new HashSet<>();
-        Long shoolId=null;
-        String schoolName=null;
-        Long subschoolId=null;
-        String subschoolName=null;
-        
+        Set<CharacterClassWithLevelBean> characterClasses = new HashSet<>();
+
         for (SpellCompositeBean bean : beans) {
             // Simple fields
 
@@ -215,6 +218,11 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
                     throw new IllegalStateException("'spellId' inconsistency");
                 }
             }
+
+            if (spellId != id) {
+                throw new IllegalStateException("'id' and 'spellId' inconsistency");
+            }
+
             if (spellName == null) {
                 spellName = bean.getSpellName();
             } else {
@@ -236,6 +244,41 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
                     throw new IllegalStateException("'rulebookName' inconsistency");
                 }
             }
+            if (schoolId == null) {
+                schoolId = bean.getSchoolId();
+            } else {
+                if (bean.getSchoolId() != schoolId) {
+                    throw new IllegalStateException("'schoolId' inconsistency");
+                }
+            }
+            if (schoolMainTypeId == null) {
+                schoolMainTypeId = bean.getSchoolLevel1Id();
+            } else {
+                if (bean.getSchoolLevel1Id() != schoolMainTypeId) {
+                    throw new IllegalStateException("'schoolMainTypeId' inconsistency");
+                }
+            }
+            if (schoolMainTypeName == null) {
+                schoolMainTypeName = bean.getSchoolLevel1Name();
+            } else {
+                if (!TextUtils.equals(bean.getSchoolLevel1Name(), schoolMainTypeName)) {
+                    throw new IllegalStateException("'schoolMainTypeName' inconsistency");
+                }
+            }
+            if (schoolSubTypeId == null) {
+                schoolSubTypeId = bean.getSchoolLevel2Id();
+            } else {
+                if (bean.getSchoolLevel2Id() != schoolSubTypeId) {
+                    throw new IllegalStateException("'schoolSubTypeId' inconsistency");
+                }
+            }
+            if (schoolSubTypeName == null) {
+                schoolSubTypeName = bean.getSchoolLevel2Name();
+            } else {
+                if (!TextUtils.equals(bean.getSchoolLevel2Name(), schoolSubTypeName)) {
+                    throw new IllegalStateException("'schoolSubTypeName' inconsistency");
+                }
+            }
             if (spellPage == null) {
                 spellPage = bean.getSpellPage();
             } else {
@@ -246,98 +289,98 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
             if (spellCastingTime == null) {
                 spellCastingTime = bean.getSpellCastingTime();
             } else {
-                if (!spellCastingTime.equals(bean.getSpellCastingTime())) {
+                if (!TextUtils.equals(spellCastingTime, bean.getSpellCastingTime())) {
                     throw new IllegalStateException("'spellCastingTime' inconsistency");
                 }
             }
             if (spellRange == null) {
                 spellRange = bean.getSpellRange();
             } else {
-                if (!spellRange.equals(bean.getSpellRange())) {
+                if (!TextUtils.equals(spellRange, bean.getSpellRange())) {
                     throw new IllegalStateException("'spellRange' inconsistency");
                 }
             }
             if (spellTarget == null) {
                 spellTarget = bean.getSpellTarget();
             } else {
-                if (!spellTarget.equals(bean.getSpellTarget())) {
+                if (!TextUtils.equals(spellTarget, bean.getSpellTarget())) {
                     throw new IllegalStateException("'spellTarget' inconsistency");
                 }
             }
             if (spellEffect == null) {
                 spellEffect = bean.getSpellEffect();
             } else {
-                if (!spellEffect.equals(bean.getSpellEffect())) {
+                if (!TextUtils.equals(spellEffect, bean.getSpellEffect())) {
                     throw new IllegalStateException("'spellEffect' inconsistency");
                 }
             }
             if (spellArea == null) {
                 spellArea = bean.getSpellArea();
             } else {
-                if (!spellArea.equals(bean.getSpellArea())) {
+                if (!TextUtils.equals(spellArea, bean.getSpellArea())) {
                     throw new IllegalStateException("'spellArea' inconsistency");
                 }
             }
             if (spellDuration == null) {
                 spellDuration = bean.getSpellDuration();
             } else {
-                if (!spellDuration.equals(bean.getSpellDuration())) {
+                if (!TextUtils.equals(spellDuration, bean.getSpellDuration())) {
                     throw new IllegalStateException("'spellDuration' inconsistency");
                 }
             }
             if (spellSavingThrow == null) {
                 spellSavingThrow = bean.getSpellSavingThrow();
             } else {
-                if (!spellSavingThrow.equals(bean.getSpellSavingThrow())) {
+                if (!TextUtils.equals(spellSavingThrow, bean.getSpellSavingThrow())) {
                     throw new IllegalStateException("'spellSavingThrow' inconsistency");
                 }
             }
             if (spellSpellResistance == null) {
                 spellSpellResistance = bean.getSpellSpellResistance();
             } else {
-                if (!spellSpellResistance.equals(bean.getSpellSpellResistance())) {
+                if (!TextUtils.equals(spellSpellResistance, bean.getSpellSpellResistance())) {
                     throw new IllegalStateException("'spellSpellResistance' inconsistency");
                 }
             }
             if (spellDescriptionPlain == null) {
                 spellDescriptionPlain = bean.getSpellDescriptionPlain();
             } else {
-                if (!spellDescriptionPlain.equals(bean.getSpellDescriptionPlain())) {
+                if (!TextUtils.equals(spellDescriptionPlain, bean.getSpellDescriptionPlain())) {
                     throw new IllegalStateException("'spellDescriptionPlain' inconsistency");
                 }
             }
             if (spellDescriptionFormatted == null) {
                 spellDescriptionFormatted = bean.getSpellDescriptionFormatted();
             } else {
-                if (!spellDescriptionFormatted.equals(bean.getSpellDescriptionFormatted())) {
+                if (!TextUtils.equals(spellDescriptionFormatted, bean.getSpellDescriptionFormatted())) {
                     throw new IllegalStateException("'spellDescriptionFormatted' inconsistency");
                 }
             }
             if (spellShortDescriptionPlain == null) {
                 spellShortDescriptionPlain = bean.getSpellShortDescriptionPlain();
             } else {
-                if (!spellShortDescriptionPlain.equals(bean.getSpellShortDescriptionPlain())) {
+                if (!TextUtils.equals(spellShortDescriptionPlain, bean.getSpellShortDescriptionPlain())) {
                     throw new IllegalStateException("'spellShortDescriptionPlain' inconsistency");
                 }
             }
             if (spellShortDescriptionFormatted == null) {
                 spellShortDescriptionFormatted = bean.getSpellShortDescriptionFormatted();
             } else {
-                if (!spellShortDescriptionFormatted.equals(bean.getSpellShortDescriptionFormatted())) {
+                if (!TextUtils.equals(spellShortDescriptionFormatted, bean.getSpellShortDescriptionFormatted())) {
                     throw new IllegalStateException("'spellShortDescriptionFormatted' inconsistency");
                 }
             }
             if (spellFlavourTextPlain == null) {
                 spellFlavourTextPlain = bean.getSpellFlavourTextPlain();
             } else {
-                if (!spellFlavourTextPlain.equals(bean.getSpellFlavourTextPlain())) {
+                if (!TextUtils.equals(spellFlavourTextPlain, bean.getSpellFlavourTextPlain())) {
                     throw new IllegalStateException("'spellFlavourTextPlain' inconsistency");
                 }
             }
             if (spellFlavourTextFormatted == null) {
                 spellFlavourTextFormatted = bean.getSpellFlavourTextFormatted();
             } else {
-                if (!spellFlavourTextFormatted.equals(bean.getSpellFlavourTextFormatted())) {
+                if (!TextUtils.equals(spellFlavourTextFormatted, bean.getSpellFlavourTextFormatted())) {
                     throw new IllegalStateException("'spellFlavourTextFormatted' inconsistency");
                 }
             }
@@ -350,49 +393,61 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
             }
 
             // Character class + level + extra
+            characterClasses.add(CharacterClassWithLevelBean.builder()
+                                         .classId(bean.getCharacterClassId())
+                                         .className(bean.getCharacterClassName())
+                                         .level(bean.getCharacterClassLevel())
+                                         .extra(bean.getCharacterClassExtra())
+                                         .build()
+            );
 
             // Components
             if (bean.getComponentId() != 0 && bean.getComponentName() != null) {
                 components.add(ComponentBean.newInstance(
-                        bean.getComponentId(), bean.getComponentName(), null
+                        bean.getComponentId(), bean.getComponentName(), bean.getComponentExtra()
                 ));
             }
 
             // Descriptors
-            if (bean.getDescriptorId() != 0 && bean.getDescriptorName() != null) {
+            if (bean.getDescriptorId() != null && bean.getDescriptorId() != 0 && bean.getDescriptorName() != null) {
                 descriptors.add(DescriptorBean.newInstance(
                         bean.getDescriptorId(), bean.getDescriptorName()
                 ));
             }
-
-            // Schools + subschools
-
         }
 
-        spellBeanBuilder
+        return SpellBean.builder()
                 .id(id)
-                .spellId(spellId)
-                .spellName(spellName)
+                .name(spellName)
                 .rulebookId(rulebookId)
                 .rulebookName(rulebookName)
-                .spellPage(spellPage)
-                .spellCastingTime(spellCastingTime)
-                .spellRange(spellRange)
-                .spellTarget(spellTarget)
-                .spellEffect(spellEffect)
-                .spellArea(spellArea)
-                .spellDuration(spellDuration)
-                .spellSavingThrow(spellSavingThrow)
-                .spellSpellResistance(spellSpellResistance)
-                .spellDescriptionPlain(spellDescriptionPlain)
-                .spellDescriptionFormatted(spellDescriptionFormatted)
-                .spellShortDescriptionPlain(spellShortDescriptionPlain)
-                .spellShortDescriptionFormatted(spellShortDescriptionFormatted)
-                .spellFlavourTextPlain(spellFlavourTextPlain)
-                .spellFlavourTextFormatted(spellFlavourTextFormatted)
-                .spellIsRitual(spellIsRitual);
 
-        return spellBeanBuilder.build();
+                .schoolId(schoolId)
+                .schoolMainTypeId(schoolMainTypeId)
+                .schoolMainTypeName(schoolMainTypeName)
+                .subschoolSubTypeId(schoolSubTypeId)
+                .subschoolSubTypeName(schoolSubTypeName)
+
+                .page(spellPage)
+                .castingTime(spellCastingTime)
+                .range(spellRange)
+                .target(spellTarget)
+                .effect(spellEffect)
+                .area(spellArea)
+                .duration(spellDuration)
+                .savingThrow(spellSavingThrow)
+                .spellResistance(spellSpellResistance)
+                .descriptionPlain(spellDescriptionPlain)
+                .descriptionFormatted(spellDescriptionFormatted)
+                .shortDescriptionPlain(spellShortDescriptionPlain)
+                .shortDescriptionFormatted(spellShortDescriptionFormatted)
+                .flavourTextPlain(spellFlavourTextPlain)
+                .flavourTextFormatted(spellFlavourTextFormatted)
+                .isRitual(spellIsRitual)
+                .components(new ArrayList(components))
+                .descriptors(new ArrayList(descriptors))
+                .characterClasses(new ArrayList(characterClasses))
+                .build();
     }
 
     @Override
@@ -401,6 +456,21 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
         // This operation requires multiple steps:
         // - check if new data is required in other tables, insert if needed
         // - save to spell_base
+
+        // Save school(s), components, descriptors and character classes
+        // It is assumed that higher layer takes care of data consistency, so if spellBean
+        // contains for example existing descriptor but with changed name, it will be overwritten
+        // for this and other records
+
+        /*
+        List<ObservableSource<Long>> o1 = new ArrayList<>();
+        for (DescriptorBean descriptorBean:spellBean.getDescriptors()){
+            o1.add(mDescriptorDao.save(descriptorBean));
+        }
+        for(ComponentBean componentBean:spellBean.getComponents()){
+            o1.add(mComponentDao.save(componentBean));
+        }
+        */
         return null;
     }
 

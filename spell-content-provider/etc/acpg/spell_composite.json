@@ -25,25 +25,31 @@
          "index":false
       },
       {
-         "name":"school_main_type_id",
+         "name":"school_id",
          "type":"Long",
          "nullable":false,
          "index":false
       },
       {
-         "name":"school_main_type_name",
+         "name":"school_level1_id",
+         "type":"Long",
+         "nullable":false,
+         "index":false
+      },
+      {
+         "name":"school_level1_name",
          "type":"String",
          "nullable":false,
          "index":false
       },
       {
-         "name":"school_sub_type_id",
+         "name":"school_level2_id",
          "type":"Long",
          "nullable":true,
          "index":false
       },
       {
-         "name":"school_sub_type_name",
+         "name":"school_level2_name",
          "type":"String",
          "nullable":true,
          "index":false
@@ -180,6 +186,12 @@
          "type":"String",
          "nullable":false,
          "index":false
+      },
+      {
+        "name":"component_extra",
+        "type":"String",
+        "nullable":true,
+        "index":false
       },
       {
          "name":"descriptor__id",
