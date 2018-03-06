@@ -15,6 +15,7 @@ import lombok.experimental.Accessors;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassWithLevelBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
+import pl.dzielins42.spellcontentprovider.component.ComponentWithExtraBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseModel;
 import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesBean;
@@ -46,7 +47,7 @@ public class SpellBean {
 
     private List<CharacterClassWithLevelBean> mCharacterClasses;
 
-    private List<ComponentBean> mComponents;
+    private List<ComponentWithExtraBean> mComponents;
 
     private List<DescriptorBean> mDescriptors;
 

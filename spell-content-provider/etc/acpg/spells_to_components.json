@@ -19,12 +19,18 @@
             "table":"component",
             "onDelete":"CASCADE"
          }
+      },
+      {
+         "name":"extra",
+         "type":"String",
+         "nullable":true,
+         "index":false
       }
    ],
    "constraints":[
       {
-         "name":"unique_pair",
-         "definition":"UNIQUE (spell_id, component_id) ON CONFLICT IGNORE"
+         "name":"unique_triple",
+         "definition":"UNIQUE (spell_id, component_id, extra) ON CONFLICT IGNORE"
       }
    ]
 }

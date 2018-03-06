@@ -22,6 +22,7 @@ import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassDao;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassWithLevelBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentDao;
+import pl.dzielins42.spellcontentprovider.component.ComponentWithExtraBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
@@ -197,7 +198,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
         String spellFlavourTextFormatted = null;
         Boolean spellIsRitual = null;
 
-        Set<ComponentBean> components = new HashSet<>();
+        Set<ComponentWithExtraBean> components = new HashSet<>();
         Set<DescriptorBean> descriptors = new HashSet<>();
         Set<CharacterClassWithLevelBean> characterClasses = new HashSet<>();
 
@@ -403,9 +404,12 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
 
             // Components
             if (bean.getComponentId() != 0 && bean.getComponentName() != null) {
-                components.add(ComponentBean.newInstance(
-                        bean.getComponentId(), bean.getComponentName(), bean.getComponentExtra()
-                ));
+                components.add(ComponentWithExtraBean.builder()
+                                       .id(bean.getComponentId())
+                                       .name(bean.getComponentName())
+                                       .extra(bean.getComponentExtra())
+                                       .build()
+                );
             }
 
             // Descriptors

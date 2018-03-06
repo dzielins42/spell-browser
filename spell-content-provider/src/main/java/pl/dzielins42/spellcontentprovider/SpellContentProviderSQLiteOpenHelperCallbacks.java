@@ -130,7 +130,7 @@ public class SpellContentProviderSQLiteOpenHelperCallbacks extends BaseSQLiteOpe
         aliasedColumns.add(createAlias(SpellsToCharacterClassesColumns.TABLE_NAME, SpellsToCharacterClassesColumns.EXTRA, SpellCompositeColumns.CHARACTER_CLASS_EXTRA));
         aliasedColumns.add(createAlias(ComponentColumns.TABLE_NAME, ComponentColumns._ID, SpellCompositeColumns.COMPONENT__ID));
         aliasedColumns.add(createAlias(ComponentColumns.TABLE_NAME, ComponentColumns.NAME, SpellCompositeColumns.COMPONENT_NAME));
-        aliasedColumns.add(createAlias(ComponentColumns.TABLE_NAME, ComponentColumns.EXTRA, SpellCompositeColumns.COMPONENT_EXTRA));
+        aliasedColumns.add(createAlias(SpellsToComponentsColumns.TABLE_NAME, SpellsToComponentsColumns.EXTRA, SpellCompositeColumns.COMPONENT_EXTRA));
         aliasedColumns.add(createAlias(DescriptorColumns.TABLE_NAME, DescriptorColumns._ID, SpellCompositeColumns.DESCRIPTOR__ID));
         aliasedColumns.add(createAlias(DescriptorColumns.TABLE_NAME, DescriptorColumns.NAME, SpellCompositeColumns.DESCRIPTOR_NAME));
 

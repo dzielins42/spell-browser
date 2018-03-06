@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
@@ -21,6 +22,7 @@ import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassWithLevel
 import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentColumns;
 import pl.dzielins42.spellcontentprovider.component.ComponentDao;
+import pl.dzielins42.spellcontentprovider.component.ComponentWithExtraBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorColumns;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
@@ -59,7 +61,7 @@ public class SpellDaoTest extends AbsDaoTest {
     private SpellBaseBean[] mTestSpellBaseBeans;
 
     private Multimap<Integer, Integer> mSpells2Descriptors;
-    private Multimap<Integer, Integer> mSpells2Components;
+    private Multimap<Integer, Pair<Integer, String>> mSpells2Components;
     private Multimap<Integer, Triple<Integer, Integer, String>> mSpells2CharacterClasses;
 
     private SpellBean[] mTestSpellBeans;
@@ -170,17 +172,21 @@ public class SpellDaoTest extends AbsDaoTest {
     @Test
     public void get_1_compare_components() throws Exception {
         SpellBaseBean baseBean = mTestSpellBaseBeans[0];
-        Collection<Integer> componentIndices = mSpells2Components.get(0);
+        Collection<Pair<Integer, String>> componentData = mSpells2Components.get(0);
 
         SpellSelection selection = new SpellSelection();
         selection.id(baseBean.getId());
         List<SpellBean> getResult = mDao.get(selection).blockingFirst();
         SpellBean resultBean = getResult.get(0);
 
-        assertEquals(componentIndices.size(), resultBean.getDescriptors().size());
+        assertEquals(componentData.size(), resultBean.getDescriptors().size());
 
-        for (Integer componentIndex : componentIndices) {
-            final ComponentBean componentBean = mTestComponentBeans[componentIndex];
+        for (Pair<Integer, String> dataItem : componentData) {
+            final ComponentWithExtraBean componentBean = ComponentWithExtraBean.builder()
+                    .id(mTestComponentBeans[dataItem.getLeft()].getId())
+                    .name(mTestComponentBeans[dataItem.getLeft()].getName())
+                    .extra(dataItem.getRight())
+                    .build();
             assertTrue(resultBean.getComponents().contains(componentBean));
         }
     }
@@ -282,7 +288,7 @@ public class SpellDaoTest extends AbsDaoTest {
 
         mTestComponentBeans = new ComponentBean[]{
                 ComponentBean.newBuilder().name("Component1").build(),
-                ComponentBean.newBuilder().name("Component2").extra("Extra2").build(),
+                ComponentBean.newBuilder().name("Component2").build(),
                 ComponentBean.newBuilder().name("Component3").build(),
         };
         for (ComponentBean bean : mTestComponentBeans) {
@@ -397,18 +403,19 @@ public class SpellDaoTest extends AbsDaoTest {
         }
 
         mSpells2Components = MultimapBuilder.hashKeys().hashSetValues().build();
-        mSpells2Components.put(0, 0);
-        mSpells2Components.put(0, 1);
-        mSpells2Components.put(1, 2);
-        mSpells2Components.put(2, 0);
-        mSpells2Components.put(2, 1);
-        mSpells2Components.put(2, 2);
-        mSpells2Components.put(3, 1);
-        mSpells2Components.put(4, 2);
-        for (Map.Entry<Integer, Integer> entry : mSpells2Components.entries()) {
+        mSpells2Components.put(0, Pair.<Integer, String>of(0, null));
+        mSpells2Components.put(0, Pair.of(1, "Extra1"));
+        mSpells2Components.put(1, Pair.<Integer, String>of(2, null));
+        mSpells2Components.put(2, Pair.<Integer, String>of(0, null));
+        mSpells2Components.put(2, Pair.of(1, "Extra2"));
+        mSpells2Components.put(2, Pair.<Integer, String>of(2, null));
+        mSpells2Components.put(3, Pair.of(1, "Extra1"));
+        mSpells2Components.put(4, Pair.<Integer, String>of(2, null));
+        for (Map.Entry<Integer, Pair<Integer,String>> entry : mSpells2Components.entries()) {
             SpellsToComponentsBean bean = SpellsToComponentsBean.newBuilder()
                     .spellId(mTestSpellBaseBeans[entry.getKey()].getId())
-                    .componentId(mTestDescriptorBeans[entry.getValue()].getId())
+                    .componentId(mTestComponentBeans[entry.getValue().getLeft()].getId())
+                    .extra(entry.getValue().getRight())
                     .build();
             mDao.mSpellsToComponentsDao.save(bean).blockingFirst();
         }

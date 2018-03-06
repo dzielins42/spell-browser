@@ -41,7 +41,6 @@ public class ContentValuesUtils {
 
         ComponentContentValues contentValues = new ComponentContentValues();
         contentValues.putName(bean.getName());
-        contentValues.putExtra(bean.getExtra());
 
         return contentValues;
     }
@@ -131,6 +130,7 @@ public class ContentValuesUtils {
         SpellsToComponentsContentValues contentValues = new SpellsToComponentsContentValues();
         contentValues.putComponentId(bean.getComponentId());
         contentValues.putSpellId(bean.getSpellId());
+        contentValues.putExtra(bean.getExtra());
 
         return contentValues;
     }
