@@ -16,21 +16,27 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import pl.dzielins42.spellcontentprovider.Dao;
+import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassDao;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassWithLevelBean;
-import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentDao;
 import pl.dzielins42.spellcontentprovider.component.ComponentWithExtraBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
+import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
+import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolDao;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseBean;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseDao;
 import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseSelection;
 import pl.dzielins42.spellcontentprovider.spellcomposite.SpellCompositeBean;
 import pl.dzielins42.spellcontentprovider.spellcomposite.SpellCompositeDao;
+import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesBean;
 import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesDao;
 import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsDao;
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsDao;
@@ -429,8 +435,8 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
                 .schoolId(schoolId)
                 .schoolMainTypeId(schoolMainTypeId)
                 .schoolMainTypeName(schoolMainTypeName)
-                .subschoolSubTypeId(schoolSubTypeId)
-                .subschoolSubTypeName(schoolSubTypeName)
+                .schoolSubTypeId(schoolSubTypeId)
+                .schoolSubTypeName(schoolSubTypeName)
 
                 .page(spellPage)
                 .castingTime(spellCastingTime)
@@ -455,7 +461,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
     }
 
     @Override
-    public Observable<Long> save(@NonNull SpellBean spellBean) {
+    public Observable<Long> save(@NonNull final SpellBean spellBean) {
         // TODO implement
         // This operation requires multiple steps:
         // - check if new data is required in other tables, insert if needed
@@ -467,6 +473,43 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
         // for this and other records
 
         /*
+        List<Observable<Long>> firstPhase = new ArrayList<>();
+        // Prepare schools saving
+        final SchoolBean schoolMainType = SchoolBean.newInstance(
+                spellBean.getSchoolMainTypeId(),
+                spellBean.getSchoolMainTypeName(),
+                null
+        );
+        final boolean hasSubType = spellBean.getSchoolSubTypeId() != null
+                && !TextUtils.isEmpty(spellBean.getSchoolSubTypeName());
+        final SchoolBean schoolSubType = !hasSubType ? null : SchoolBean.newInstance(
+                spellBean.getSchoolSubTypeId(),
+                spellBean.getSchoolSubTypeName(),
+                spellBean.getSchoolMainTypeId()
+        );
+        Observable<Long> saveSchool = mSchoolDao.save(schoolMainType);
+        if (hasSubType) {
+            saveSchool = saveSchool.concatWith(mSchoolDao.save(schoolSubType));
+        }
+        firstPhase.add(saveSchool);
+        // Prepare descriptors saving
+        for (DescriptorBean descriptorBean : spellBean.getDescriptors()) {
+            firstPhase.add(mDescriptorDao.save(descriptorBean));
+        }
+        // Prepare components saving
+        for (ComponentWithExtraBean componentWithExtraBean : spellBean.getComponents()) {
+            firstPhase.add(mComponentDao.save(ComponentBean.newInstance(
+                    componentWithExtraBean.getId(), componentWithExtraBean.getName()
+            )));
+        }
+        // Prepare character class saving
+        for (CharacterClassWithLevelBean characterClassBean : spellBean.getCharacterClasses()) {
+            firstPhase.add(mCharacterClassDao.save(CharacterClassBean.newInstance(
+                    characterClassBean.getClassId(), characterClassBean.getClassName()
+            )));
+        }
+        */
+        /*
         List<ObservableSource<Long>> o1 = new ArrayList<>();
         for (DescriptorBean descriptorBean:spellBean.getDescriptors()){
             o1.add(mDescriptorDao.save(descriptorBean));
@@ -475,7 +518,165 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
             o1.add(mComponentDao.save(componentBean));
         }
         */
-        return null;
+
+        final SavingContext savingContext = new SavingContext();
+
+        final Observable<Long> saveObservable = Observable.just(1L);
+
+        // 1. Prepare school(s) and rulebook saving
+        final SchoolBean schoolMainType = SchoolBean.newInstance(
+                spellBean.getSchoolMainTypeId(),
+                spellBean.getSchoolMainTypeName(),
+                null
+        );
+        final boolean hasSubType = spellBean.getSchoolSubTypeId() != null
+                && !TextUtils.isEmpty(spellBean.getSchoolSubTypeName());
+        Observable<Boolean> saveSchool = mSchoolDao.save(schoolMainType)
+                .map(new Function<Long, Boolean>() {
+                    @Override
+                    public Boolean apply(Long schoolMainTypeId) throws Exception {
+                        savingContext.schoolMainTypeId = schoolMainTypeId;
+                        return true;
+                    }
+                });
+        if (hasSubType) {
+            saveSchool = saveSchool.flatMap(new Function<Boolean, ObservableSource<Boolean>>() {
+                @Override
+                public ObservableSource<Boolean> apply(Boolean bool) throws Exception {
+                    final SchoolBean schoolSubType = SchoolBean.newInstance(
+                            spellBean.getSchoolSubTypeId(),
+                            spellBean.getSchoolSubTypeName(),
+                            savingContext.schoolMainTypeId
+                    );
+
+                    return mSchoolDao.save(schoolSubType)
+                            .map(new Function<Long, Boolean>() {
+                                @Override
+                                public Boolean apply(Long schoolSubTypeId) throws Exception {
+                                    savingContext.schoolSubTypeId = schoolSubTypeId;
+                                    return true;
+                                }
+                            });
+                }
+            });
+        }
+        final RulebookBean rulebook = RulebookBean.newInstance(
+                spellBean.getRulebookId(),
+                spellBean.getRulebookName()
+        );
+        Observable<Boolean> saveRulebook = mRulebookDao.save(rulebook)
+                .map(new Function<Long, Boolean>() {
+                    @Override
+                    public Boolean apply(Long rulebookId) throws Exception {
+                        savingContext.rulebookId = rulebookId;
+                        return true;
+                    }
+                });
+
+        // 2. Prepare base spell saving
+        // Using school and ruelbook ids
+        Observable<Long> saveBaseSpell =
+                Observable.zip(
+                        saveSchool,
+                        saveRulebook,
+                        new BiFunction<Boolean, Boolean, Boolean>() {
+                            @Override
+                            public Boolean apply(
+                                    Boolean schoolSaved,
+                                    Boolean rulebookSaved
+                            ) throws Exception {
+                                return true;
+                            }
+                        }
+                ).flatMap(new Function<Boolean, ObservableSource<Long>>() {
+                    @Override
+                    public ObservableSource<Long> apply(
+                            Boolean schoolAndRulebookSaved
+                    ) throws Exception {
+                        long schoolId = (savingContext.schoolSubTypeId != null && savingContext.schoolSubTypeId != 0) ? savingContext.schoolSubTypeId : savingContext.schoolMainTypeId;
+                        final SpellBaseBean spellBase = SpellBaseBean.newBuilder()
+                                .schoolId(schoolId)
+                                .spellResistance(spellBean.getSpellResistance())
+                                .savingThrow(spellBean.getSavingThrow())
+                                .range(spellBean.getRange())
+                                .page(spellBean.getPage())
+                                .name(spellBean.getName())
+                                .area(spellBean.getArea())
+                                .castingTime(spellBean.getCastingTime())
+                                .target(spellBean.getTarget())
+                                .effect(spellBean.getEffect())
+                                .duration(spellBean.getDuration())
+                                .rulebookId(savingContext.rulebookId)
+                                .descriptionFormatted(spellBean.getDescriptionFormatted())
+                                .descriptionPlain(spellBean.getDescriptionPlain())
+                                .flavourTextFormatted(spellBean.getFlavourTextFormatted())
+                                .flavourTextPlain(spellBean.getFlavourTextPlain())
+                                .id(spellBean.getId())
+                                .isRitual(spellBean.isRitual())
+                                .shortDescriptionFormatted(spellBean.getShortDescriptionFormatted())
+                                .shortDescriptionPlain(spellBean.getShortDescriptionPlain())
+                                .build();
+
+                        return mSpellBaseDao.save(spellBase);
+                    }
+                });
+
+        // 3. Prepare character classes saving
+        Single<List<Long>> saveCharacterClasses= Observable.merge(
+                getSaveObservablesForCharacterClasses(spellBean)
+        ).toList();
+
+        // 4. Prepare joining base spell with character classes
+        Observable<Boolean> saving = Observable.zip(saveBaseSpell, saveCharacterClasses.toObservable(), new BiFunction<Long, List<Long>, Boolean>() {
+            @Override
+            public Boolean apply(Long baseSpellId, List<Long> characterClassesIds) throws Exception {
+                savingContext.baseSpellId = baseSpellId;
+                savingContext.characterClassesIds = characterClassesIds;
+                return true;
+            }
+        })
+                .flatMap(new Function<Boolean, ObservableSource<Boolean>>() {
+                    @Override
+                    public ObservableSource<Boolean> apply(Boolean aBoolean) throws Exception {
+                        List<Observable<Long>> saveObservables = new ArrayList<>();
+                        // Spells to character classes
+                        for (int i = 0; i < spellBean.getCharacterClasses().size(); i++) {
+                            saveObservables.add(mSpellsToCharacterClassesDao.save(
+                                    SpellsToCharacterClassesBean.newBuilder()
+                                            .spellId(savingContext.baseSpellId)
+                                            .characterClassId(savingContext.characterClassesIds.get(i))
+                                            .level(spellBean.getCharacterClasses().get(i).getLevel())
+                                            .extra(spellBean.getCharacterClasses().get(i).getExtra())
+                                            .build()
+                            ));
+                        }
+
+                        return Observable.zip(saveObservables, new Function<Object[], Boolean>() {
+                            @Override
+                            public Boolean apply(Object[] objects) throws Exception {
+                                return true;
+                            }
+                        });
+                    }
+                });
+
+        return saving.map(new Function<Boolean, Long>() {
+            @Override
+            public Long apply(Boolean aBoolean) throws Exception {
+                return savingContext.baseSpellId;
+            }
+        });
+    }
+
+    private List<Observable<Long>> getSaveObservablesForCharacterClasses(SpellBean spellBean) {
+        List<Observable<Long>> list = new ArrayList<>(spellBean.getCharacterClasses().size());
+        for (CharacterClassWithLevelBean characterClassBean : spellBean.getCharacterClasses()) {
+            list.add(mCharacterClassDao.save(CharacterClassBean.newInstance(
+                    characterClassBean.getClassId(), characterClassBean.getClassName()
+            )));
+        }
+
+        return list;
     }
 
     @Override
@@ -489,4 +690,16 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
         // Simply count via SpellCompositeDao
         return mSpellCompositeDao.count(selection);
     }
+
+    /**
+     * Class holding various data related to complex process of saving
+     */
+    private static class SavingContext {
+        Long schoolMainTypeId;
+        Long schoolSubTypeId;
+        Long rulebookId;
+        Long baseSpellId;
+        List<Long> characterClassesIds;
+    }
+
 }

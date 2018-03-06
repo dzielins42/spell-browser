@@ -54,7 +54,7 @@ public class SpellBean {
     private long mSchoolId;
     private long mSchoolMainTypeId;
     private String mSchoolMainTypeName;
-    private Long mSubschoolSubTypeId;
-    private String mSubschoolSubTypeName;
+    private Long mSchoolSubTypeId;
+    private String mSchoolSubTypeName;
 
 }

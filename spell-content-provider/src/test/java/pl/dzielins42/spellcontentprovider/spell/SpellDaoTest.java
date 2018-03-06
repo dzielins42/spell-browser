@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +105,31 @@ public class SpellDaoTest extends AbsDaoTest {
 
     @Override
     public void save_insert() throws Exception {
+        CharacterClassWithLevelBean characterClassWithLevelBean = CharacterClassWithLevelBean.builder()
+                .className("NewClass1")
+                .level(1)
+                .extra(null)
+                .build();
+        SpellBean bean = SpellBean.builder()
+                .name("Fireball of Sudden Death")
+                .rulebookName("NewRulebook1")
+                .page(42)
+                .castingTime("1 minute")
+                .range("100 ft.")
+                .target("-")
+                .effect("Death")
+                .area("20 ft.")
+                .duration("-")
+                .savingThrow("-")
+                .spellResistance("-")
+                .schoolMainTypeName("NewSchool1")
+                .schoolSubTypeName("NewSubSchool1")
+                .characterClasses(Arrays.asList(characterClassWithLevelBean))
+                .build();
 
+        long saveResult = mDao.save(bean).blockingFirst();
+
+        System.out.println(saveResult);
     }
 
     @Override
