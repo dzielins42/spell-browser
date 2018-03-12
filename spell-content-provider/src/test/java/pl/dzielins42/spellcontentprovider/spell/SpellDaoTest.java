@@ -48,6 +48,8 @@ import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptor
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsDao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -106,36 +108,87 @@ public class SpellDaoTest extends AbsDaoTest {
 
     @Override
     public void save_insert() throws Exception {
-        CharacterClassWithLevelBean characterClassWithLevelBean = CharacterClassWithLevelBean.builder()
-                .className("NewClass1")
-                .level(1)
-                .extra(null)
-                .build();
-        SpellBean bean = SpellBean.builder()
-                .name("Fireball of Sudden Death")
-                .rulebookName("NewRulebook1")
-                .page(42)
-                .castingTime("1 minute")
-                .range("100 ft.")
-                .target("-")
-                .effect("Death")
-                .area("20 ft.")
-                .duration("-")
-                .savingThrow("-")
-                .spellResistance("-")
-                .schoolMainTypeName("NewSchool1")
-                .schoolSubTypeName("NewSubSchool1")
-                .characterClasses(Arrays.asList(characterClassWithLevelBean))
-                .build();
+        SpellBean bean = getPresetBuilder().build();
 
-        //long saveResult = mDao.save(bean).blockingGet();
+        Long saveResult = mDao.save(bean).blockingGet();
 
-        //System.out.println(saveResult);
+        assertNotNull(saveResult);
+        assertEquals(mTestSpellBaseBeans.length + 1, mDao.count().blockingGet().intValue());
+        assertEquals(mTestSpellBaseBeans.length + 1, mDao.mSpellBaseDao.count().blockingGet().intValue());
+
+        // Assert that no school rulebook etc. has been created
+        assertEquals(mTestSchoolBeans.length, mDao.mSchoolDao.count().blockingGet().intValue());
+        assertEquals(mTestRulebookBeans.length, mDao.mRulebookDao.count().blockingGet().intValue());
+        assertEquals(mTestCharacterClassBeans.length, mDao.mCharacterClassDao.count().blockingGet().intValue());
+        assertEquals(mTestDescriptorBeans.length, mDao.mDescriptorDao.count().blockingGet().intValue());
+        assertEquals(mTestComponentBeans.length, mDao.mComponentDao.count().blockingGet().intValue());
     }
 
     @Override
     public void save_update() throws Exception {
+        SpellBean bean = getPresetBuilder().build();
 
+        Long insertId = mDao.save(bean).blockingGet();
+
+        bean.setName(bean.getName()+"_modified");
+
+        Long updateId = mDao.save(bean).blockingGet();
+
+        assertEquals(insertId, updateId);
+
+        SpellSelection selection = new SpellSelection();
+        selection.id(insertId);
+        SpellBean retrievedBean = mDao.get(selection).blockingFirst().get(0);
+
+        assertNotNull(retrievedBean);
+        assertEquals(bean, retrievedBean);
+    }
+
+    @Test
+    public void save_new_descriptor() throws Exception {
+        DescriptorBean descriptorBean = DescriptorBean.newBuilder().name("NewDescriptor1").build();
+        SpellBean bean = getPresetBuilder()
+                .descriptors(Arrays.asList(descriptorBean))
+                .build();
+
+        mDao.save(bean).blockingGet();
+
+        assertEquals(mTestDescriptorBeans.length + 1, mDao.mDescriptorDao.count().blockingGet().intValue());
+        assertNotEquals(0, bean.getDescriptors().get(0).getId());
+    }
+
+    @Test
+    public void save_new_component() throws Exception {
+        ComponentWithExtraBean componentWithExtraBean = ComponentWithExtraBean.builder()
+                .name("NewComponent1")
+                .extra(null)
+                .build();
+        SpellBean bean = getPresetBuilder()
+                .components(Arrays.asList(componentWithExtraBean))
+                .build();
+
+        mDao.save(bean).blockingGet();
+
+        assertEquals(mTestComponentBeans.length + 1, mDao.mComponentDao.count().blockingGet().intValue());
+        assertNotEquals(0, bean.getComponents().get(0).getId());
+    }
+
+    @Test
+    public void save_new_class() throws Exception {
+        CharacterClassWithLevelBean characterClassWithLevelBean =
+                CharacterClassWithLevelBean.builder()
+                        .name("NewCharacterClass1")
+                        .level(1)
+                        .extra(null)
+                        .build();
+        SpellBean bean = getPresetBuilder()
+                .characterClasses(Arrays.asList(characterClassWithLevelBean))
+                .build();
+
+        mDao.save(bean).blockingGet();
+
+        assertEquals(mTestCharacterClassBeans.length + 1, mDao.mCharacterClassDao.count().blockingGet().intValue());
+        assertNotEquals(0, bean.getCharacterClasses().get(0).getId());
     }
 
     @Override
@@ -232,8 +285,8 @@ public class SpellDaoTest extends AbsDaoTest {
         for (Triple<Integer, Integer, String> dataItem : ccData) {
             final CharacterClassBean ccBean = mTestCharacterClassBeans[dataItem.getLeft()];
             final CharacterClassWithLevelBean ccwlBean = CharacterClassWithLevelBean.builder()
-                    .classId(ccBean.getId())
-                    .className(ccBean.getName())
+                    .id(ccBean.getId())
+                    .name(ccBean.getName())
                     .level(dataItem.getMiddle())
                     .extra(dataItem.getRight())
                     .build();
@@ -300,6 +353,42 @@ public class SpellDaoTest extends AbsDaoTest {
         db.execSQL("DELETE FROM " + SpellsToCharacterClassesColumns.TABLE_NAME + ";");
         db.execSQL("DELETE FROM " + SpellsToComponentsColumns.TABLE_NAME + ";");
         db.execSQL("DELETE FROM " + SpellsToDescriptorsColumns.TABLE_NAME + ";");
+    }
+
+    private SpellBean.SpellBeanBuilder getPresetBuilder() {
+        CharacterClassWithLevelBean characterClassWithLevelBean =
+                CharacterClassWithLevelBean.builder()
+                        .id(mTestCharacterClassBeans[0].getId())
+                        .name(mTestCharacterClassBeans[0].getName())
+                        .level(1)
+                        .extra(null)
+                        .build();
+        ComponentWithExtraBean componentWithExtraBean =
+                ComponentWithExtraBean.builder()
+                        .id(mTestComponentBeans[0].getId())
+                        .name(mTestComponentBeans[0].getName())
+                        .extra(null)
+                        .build();
+
+        return SpellBean.builder()
+                .name("Fireball of Sudden Death")
+                .rulebookId(mTestRulebookBeans[0].getId())
+                .rulebookName(mTestRulebookBeans[0].getName())
+                .page(42)
+                .castingTime("1 minute")
+                .range("100 ft.")
+                .target("-")
+                .effect("Death")
+                .area("20 ft.")
+                .duration("-")
+                .savingThrow("-")
+                .spellResistance("-")
+                .schoolId(mTestSchoolBeans[0].getId())
+                .schoolMainTypeId(mTestSchoolBeans[0].getId())
+                .schoolMainTypeName(mTestSchoolBeans[0].getName())
+                .descriptors(Arrays.asList(mTestDescriptorBeans[0]))
+                .components(Arrays.asList(componentWithExtraBean))
+                .characterClasses(Arrays.asList(characterClassWithLevelBean));
     }
 
     private void initDatabase() {

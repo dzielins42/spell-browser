@@ -1,24 +1,13 @@
 package pl.dzielins42.spellcontentprovider.spell;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import org.apache.commons.lang3.tuple.Triple;
-
 import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
-import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassBean;
 import pl.dzielins42.spellcontentprovider.characterclass.CharacterClassWithLevelBean;
-import pl.dzielins42.spellcontentprovider.component.ComponentBean;
 import pl.dzielins42.spellcontentprovider.component.ComponentWithExtraBean;
 import pl.dzielins42.spellcontentprovider.descriptor.DescriptorBean;
-import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseModel;
-import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesBean;
 
 @Accessors(prefix = "m")
 @Data
@@ -57,4 +46,11 @@ public class SpellBean {
     private Long mSchoolSubTypeId;
     private String mSchoolSubTypeName;
 
+    public boolean hasDescriptors(){
+        return mDescriptors != null && !mDescriptors.isEmpty();
+    }
+
+    public boolean hasComponents(){
+        return mComponents != null && !mComponents.isEmpty();
+    }
 }
