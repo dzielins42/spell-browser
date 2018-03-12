@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import pl.dzielins42.spellcontentprovider.base.AbstractSelection;
 
 public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection>
@@ -34,8 +36,8 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection>
     }
 
     @Override
-    public Observable<Integer> remove(@NonNull final SELECTION selection) {
-        return Observable.fromCallable(new Callable<Integer>() {
+    public Single<Integer> remove(@NonNull final SELECTION selection) {
+        return Single.fromCallable(new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
                 return removeInternal(selection);
@@ -54,18 +56,25 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection>
     }
 
     @Override
-    public Observable<Boolean> remove(@NonNull final BEAN bean) {
-        return Observable.fromCallable(new Callable<Boolean>() {
+    public Completable remove(@NonNull final BEAN bean) {
+        return Completable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return removeInternal(bean);
+                final boolean result = removeInternal(bean);
+                if (!result) {
+                    throw new IllegalStateException(
+                            "removing of " + String.valueOf(bean) + " failed"
+                    );
+                }
+
+                return result;
             }
         });
     }
 
     @Override
-    public Observable<Long> save(@NonNull final BEAN bean) {
-        return Observable.fromCallable(new Callable<Long>() {
+    public Single<Long> save(@NonNull final BEAN bean) {
+        return Single.fromCallable(new Callable<Long>() {
             @Override
             public Long call() throws Exception {
                 return saveInternal(bean);
@@ -74,14 +83,14 @@ public abstract class AbsDao<BEAN, SELECTION extends AbstractSelection>
     }
 
     @Override
-    public Observable<Integer> count() {
+    public Single<Integer> count() {
         SELECTION selection = instantiateSelectAll();
         return count(selection);
     }
 
     @Override
-    public Observable<Integer> count(@NonNull final SELECTION selection) {
-        return Observable.fromCallable(new Callable<Integer>() {
+    public Single<Integer> count(@NonNull final SELECTION selection) {
+        return Single.fromCallable(new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
                 return selection.count(getContentResolver());

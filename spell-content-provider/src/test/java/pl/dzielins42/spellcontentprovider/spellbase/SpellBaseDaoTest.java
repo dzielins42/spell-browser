@@ -42,11 +42,11 @@ public class SpellBaseDaoTest
         // Spell requires rulebook
         RulebookDao rulebookDao = new RulebookDao(RuntimeEnvironment.application);
         mRulebookId =
-                rulebookDao.save(RulebookBean.newBuilder().name("Test1").build()).blockingFirst();
+                rulebookDao.save(RulebookBean.newBuilder().name("Test1").build()).blockingGet();
         // Spell requires school
         SchoolDao schoolDao = new SchoolDao(RuntimeEnvironment.application);
         mSchoolId =
-                schoolDao.save(SchoolBean.newBuilder().name("School1").build()).blockingFirst();
+                schoolDao.save(SchoolBean.newBuilder().name("School1").build()).blockingGet();
 
         return new SpellBaseBean[]{
                 SpellBaseBean.newBuilder()
@@ -144,7 +144,7 @@ public class SpellBaseDaoTest
     public void remove_cascade_rulebook() throws Exception {
         insertTestBeans();
         RulebookDao rulebookDao = new RulebookDao(RuntimeEnvironment.application);
-        rulebookDao.remove(new RulebookSelection().id(mRulebookId)).blockingFirst();
+        rulebookDao.remove(new RulebookSelection().id(mRulebookId)).blockingGet();
         List<SpellBaseBean> querryResult = mDao.get(new SpellBaseSelection()).blockingFirst();
         assertTrue(querryResult == null | querryResult.isEmpty());
     }
@@ -153,7 +153,7 @@ public class SpellBaseDaoTest
     public void remove_cascade_school() throws Exception {
         insertTestBeans();
         SchoolDao schoolDao = new SchoolDao(RuntimeEnvironment.application);
-        schoolDao.remove(new SchoolSelection().id(mSchoolId)).blockingFirst();
+        schoolDao.remove(new SchoolSelection().id(mSchoolId)).blockingGet();
         List<SpellBaseBean> querryResult = mDao.get(new SpellBaseSelection()).blockingFirst();
         assertTrue(querryResult == null | querryResult.isEmpty());
     }

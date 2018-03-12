@@ -48,6 +48,7 @@ import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptor
 import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsDao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SpellDaoTest extends AbsDaoTest {
@@ -127,9 +128,9 @@ public class SpellDaoTest extends AbsDaoTest {
                 .characterClasses(Arrays.asList(characterClassWithLevelBean))
                 .build();
 
-        long saveResult = mDao.save(bean).blockingFirst();
+        //long saveResult = mDao.save(bean).blockingGet();
 
-        System.out.println(saveResult);
+        //System.out.println(saveResult);
     }
 
     @Override
@@ -253,10 +254,10 @@ public class SpellDaoTest extends AbsDaoTest {
     public void remove_selection() throws Exception {
         SpellSelection selection = new SpellSelection();
         selection.spellName("Spell1", "Spell2", "Spell3");
-        int removeResult = mDao.remove(selection).blockingFirst();
+        int removeResult = mDao.remove(selection).blockingGet();
 
         assertEquals(3, removeResult);
-        assertEquals(mTestSpellBaseBeans.length - 3, (int) mDao.count().blockingFirst());
+        assertEquals(mTestSpellBaseBeans.length - 3, (int) mDao.count().blockingGet());
     }
 
     @Override
@@ -266,18 +267,18 @@ public class SpellDaoTest extends AbsDaoTest {
         List<SpellBean> getResult = mDao.get(selection).blockingFirst();
         SpellBean resultBean = getResult.get(0);
 
-        boolean removeResult = mDao.remove(resultBean).blockingFirst();
-        assertTrue(removeResult);
-        assertEquals(mTestSpellBaseBeans.length - 1, (int) mDao.count().blockingFirst());
+        Throwable exception = mDao.remove(resultBean).blockingGet();
+        assertNull(exception);
+        assertEquals(mTestSpellBaseBeans.length - 1, (int) mDao.count().blockingGet());
     }
 
     @Override
     public void count_all() throws Exception {
         assertEquals(
-                mTestSpellBaseBeans.length, (int) mDao.count().blockingFirst()
+                mTestSpellBaseBeans.length, (int) mDao.count().blockingGet()
         );
         assertEquals(
-                mTestSpellBaseBeans.length, (int) mDao.count(new SpellSelection()).blockingFirst()
+                mTestSpellBaseBeans.length, (int) mDao.count(new SpellSelection()).blockingGet()
         );
     }
 
@@ -285,7 +286,7 @@ public class SpellDaoTest extends AbsDaoTest {
     public void count_selection() throws Exception {
         SpellSelection selection = new SpellSelection();
         selection.spellName("Spell1", "Spell2", "Spell3");
-        assertEquals(3, (int) mDao.count(selection).blockingFirst());
+        assertEquals(3, (int) mDao.count(selection).blockingGet());
     }
 
     @Override
@@ -308,7 +309,7 @@ public class SpellDaoTest extends AbsDaoTest {
                 CharacterClassBean.newBuilder().name("CharacterClass3").build(),
         };
         for (CharacterClassBean bean : mTestCharacterClassBeans) {
-            mDao.mCharacterClassDao.save(bean).blockingFirst();
+            mDao.mCharacterClassDao.save(bean).blockingGet();
         }
 
         mTestComponentBeans = new ComponentBean[]{
@@ -317,7 +318,7 @@ public class SpellDaoTest extends AbsDaoTest {
                 ComponentBean.newBuilder().name("Component3").build(),
         };
         for (ComponentBean bean : mTestComponentBeans) {
-            mDao.mComponentDao.save(bean).blockingFirst();
+            mDao.mComponentDao.save(bean).blockingGet();
         }
 
         mTestDescriptorBeans = new DescriptorBean[]{
@@ -326,7 +327,7 @@ public class SpellDaoTest extends AbsDaoTest {
                 DescriptorBean.newBuilder().name("Descriptor3").build(),
         };
         for (DescriptorBean bean : mTestDescriptorBeans) {
-            mDao.mDescriptorDao.save(bean).blockingFirst();
+            mDao.mDescriptorDao.save(bean).blockingGet();
         }
 
         mTestRulebookBeans = new RulebookBean[]{
@@ -335,7 +336,7 @@ public class SpellDaoTest extends AbsDaoTest {
                 RulebookBean.newBuilder().name("Rulebook3").build(),
         };
         for (RulebookBean bean : mTestRulebookBeans) {
-            mDao.mRulebookDao.save(bean).blockingFirst();
+            mDao.mRulebookDao.save(bean).blockingGet();
         }
 
         mTestSchoolBeans = new SchoolBean[]{
@@ -343,10 +344,10 @@ public class SpellDaoTest extends AbsDaoTest {
                 SchoolBean.newBuilder().name("School2").build(),
                 null,
         };
-        mDao.mSchoolDao.save(mTestSchoolBeans[0]).blockingFirst();
-        mDao.mSchoolDao.save(mTestSchoolBeans[1]).blockingFirst();
+        mDao.mSchoolDao.save(mTestSchoolBeans[0]).blockingGet();
+        mDao.mSchoolDao.save(mTestSchoolBeans[1]).blockingGet();
         mTestSchoolBeans[2] = SchoolBean.newBuilder().name("School3").parentId(mTestSchoolBeans[0].getId()).build();
-        mDao.mSchoolDao.save(mTestSchoolBeans[2]).blockingFirst();
+        mDao.mSchoolDao.save(mTestSchoolBeans[2]).blockingGet();
 
         mTestSpellBaseBeans = new SpellBaseBean[]{
                 SpellBaseBean.newBuilder()
@@ -406,7 +407,7 @@ public class SpellDaoTest extends AbsDaoTest {
                         .build(),
         };
         for (SpellBaseBean bean : mTestSpellBaseBeans) {
-            mDao.mSpellBaseDao.save(bean).blockingFirst();
+            mDao.mSpellBaseDao.save(bean).blockingGet();
         }
 
         mSpells2CharacterClasses  = MultimapBuilder.hashKeys().hashSetValues().build();
@@ -424,7 +425,7 @@ public class SpellDaoTest extends AbsDaoTest {
                     .level(entry.getValue().getMiddle())
                     .extra(entry.getValue().getRight())
                     .build();
-            mDao.mSpellsToCharacterClassesDao.save(bean).blockingFirst();
+            mDao.mSpellsToCharacterClassesDao.save(bean).blockingGet();
         }
 
         mSpells2Components = MultimapBuilder.hashKeys().hashSetValues().build();
@@ -442,7 +443,7 @@ public class SpellDaoTest extends AbsDaoTest {
                     .componentId(mTestComponentBeans[entry.getValue().getLeft()].getId())
                     .extra(entry.getValue().getRight())
                     .build();
-            mDao.mSpellsToComponentsDao.save(bean).blockingFirst();
+            mDao.mSpellsToComponentsDao.save(bean).blockingGet();
         }
 
         mSpells2Descriptors = MultimapBuilder.hashKeys().hashSetValues().build();
@@ -456,7 +457,7 @@ public class SpellDaoTest extends AbsDaoTest {
                     .spellId(mTestSpellBaseBeans[entry.getKey()].getId())
                     .descriptorId(mTestDescriptorBeans[entry.getValue()].getId())
                     .build();
-            mDao.mSpellsToDescriptorsDao.save(bean).blockingFirst();
+            mDao.mSpellsToDescriptorsDao.save(bean).blockingGet();
         }
     }
 

@@ -14,9 +14,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import pl.dzielins42.spellcontentprovider.Dao;
@@ -104,18 +106,18 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
     }
 
     @Override
-    public Observable<Boolean> remove(@NonNull SpellBean spellBean) {
+    public Completable remove(@NonNull SpellBean spellBean) {
         // Simply remove from spell_base via SpellBaseDao
         return mSpellBaseDao.remove(new SpellBaseSelection().id(spellBean.getId())).map(new Function<Integer, Boolean>() {
             @Override
             public Boolean apply(Integer integer) throws Exception {
                 return integer == 1;
             }
-        });
+        }).toCompletable();
     }
 
     @Override
-    public Observable<Integer> remove(@NonNull SpellSelection selection) {
+    public Single<Integer> remove(@NonNull SpellSelection selection) {
         // Execute selection on SpellCompositeDao to get ids of spells to remove via SpellBaseDao
         return mSpellCompositeDao.get(selection)
                 .flatMap(new Function<List<SpellCompositeBean>, ObservableSource<Long>>() {
@@ -131,10 +133,10 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
                 })
                 .distinct()
                 .toList()
-                .toObservable()
-                .flatMap(new Function<List<Long>, ObservableSource<Integer>>() {
+                .flatMap(new Function<List<Long>, SingleSource<? extends Integer>>() {
                     @Override
-                    public ObservableSource<Integer> apply(List<Long> idsList) throws Exception {
+                    public SingleSource<? extends Integer> apply(List<Long> idsList) throws
+                            Exception {
                         long[] idsArray = new long[idsList.size()];
                         SpellBaseSelection inSelection = new SpellBaseSelection();
                         for (int i = 0; i < idsList.size(); i++) {
@@ -461,7 +463,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
     }
 
     @Override
-    public Observable<Long> save(@NonNull final SpellBean spellBean) {
+    public Single<Long> save(@NonNull final SpellBean spellBean) {
         // TODO implement
         // This operation requires multiple steps:
         // - check if new data is required in other tables, insert if needed
@@ -519,6 +521,7 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
         }
         */
 
+        /*
         final SavingContext savingContext = new SavingContext();
 
         final Observable<Long> saveObservable = Observable.just(1L);
@@ -666,8 +669,11 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
                 return savingContext.baseSpellId;
             }
         });
+        */
+        return null;
     }
 
+    /*
     private List<Observable<Long>> getSaveObservablesForCharacterClasses(SpellBean spellBean) {
         List<Observable<Long>> list = new ArrayList<>(spellBean.getCharacterClasses().size());
         for (CharacterClassWithLevelBean characterClassBean : spellBean.getCharacterClasses()) {
@@ -678,15 +684,16 @@ public class SpellDao implements Dao<SpellBean, SpellSelection> {
 
         return list;
     }
+    */
 
     @Override
-    public Observable<Integer> count() {
+    public Single<Integer> count() {
         // Simply count via SpellBaseDao
         return mSpellBaseDao.count();
     }
 
     @Override
-    public Observable<Integer> count(@NonNull SpellSelection selection) {
+    public Single<Integer> count(@NonNull SpellSelection selection) {
         // Simply count via SpellCompositeDao
         return mSpellCompositeDao.count(selection);
     }

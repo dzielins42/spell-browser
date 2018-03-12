@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
 import io.reactivex.functions.Function;
 import pl.dzielins42.spellcontentprovider.AbsDao;
 
@@ -63,7 +64,7 @@ public class SpellCompositeDao extends AbsDao<SpellCompositeBean, SpellComposite
 
     // TODO test this case!
     @Override
-    public Observable<Integer> count(@NonNull final SpellCompositeSelection selection) {
+    public Single<Integer> count(@NonNull final SpellCompositeSelection selection) {
         // Simple count won't work as spell_composite is a database view and same spell (from
         // spell_base) may occur multiple times in spell_composite
         // We need to count distinct ids
@@ -85,8 +86,7 @@ public class SpellCompositeDao extends AbsDao<SpellCompositeBean, SpellComposite
                     public Integer apply(Long aLong) throws Exception {
                         return aLong.intValue();
                     }
-                })
-                .toObservable();
+                });
     }
 
 }

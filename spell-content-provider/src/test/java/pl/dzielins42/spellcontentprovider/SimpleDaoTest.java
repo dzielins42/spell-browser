@@ -9,6 +9,7 @@ import java.util.List;
 import pl.dzielins42.spellcontentprovider.base.AbstractSelection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public abstract class SimpleDaoTest<
@@ -46,7 +47,7 @@ public abstract class SimpleDaoTest<
     @Override
     public void save_insert() throws Exception {
         BEAN bean = mTestBeans[0];
-        final long id = mDao.save(bean).blockingFirst();
+        final long id = mDao.save(bean).blockingGet();
 
         SQLiteDatabase db = getReadableDatabase();
         assertEquals(
@@ -67,9 +68,9 @@ public abstract class SimpleDaoTest<
     @Override
     public void save_update() throws Exception {
         BEAN bean = mTestBeans[0];
-        final long id = mDao.save(bean).blockingFirst();
+        final long id = mDao.save(bean).blockingGet();
         modifyBean(bean);
-        mDao.save(bean).blockingFirst();
+        mDao.save(bean).blockingGet();
 
         SQLiteDatabase db = getReadableDatabase();
         assertEquals(
@@ -107,7 +108,7 @@ public abstract class SimpleDaoTest<
     public void remove_selection() throws Exception {
         insertTestBeans();
         SELECTION selection = selectionForThreeTestBeans();
-        final int removedCount = mDao.remove(selection).blockingFirst();
+        final int removedCount = mDao.remove(selection).blockingGet();
         assertEquals(3, removedCount);
         assertEquals(mTestBeans.length - removedCount, countRows());
         List<BEAN> querryResult = mDao.get(selection).blockingFirst();
@@ -117,9 +118,9 @@ public abstract class SimpleDaoTest<
     @Override
     public void remove_bean() throws Exception {
         BEAN bean = mTestBeans[0];
-        mDao.save(bean).blockingFirst();
-        final boolean result = mDao.remove(bean).blockingFirst();
-        assertTrue(result);
+        mDao.save(bean).blockingGet();
+        Throwable exception = mDao.remove(bean).blockingGet();
+        assertNull(exception);
 
         SQLiteDatabase db = getReadableDatabase();
         assertEquals(
@@ -138,20 +139,20 @@ public abstract class SimpleDaoTest<
     @Override
     public void count_all() throws Exception {
         insertTestBeans();
-        int count = mDao.count().blockingFirst();
+        int count = mDao.count().blockingGet();
         assertEquals(mTestBeans.length, count);
     }
 
     @Override
     public void count_selection() throws Exception {
         insertTestBeans();
-        int count = mDao.count(selectionForThreeTestBeans()).blockingFirst();
+        int count = mDao.count(selectionForThreeTestBeans()).blockingGet();
         assertEquals(3, count);
     }
 
     protected void insertTestBeans() {
         for (int i = 0; i < mTestBeans.length; i++) {
-            mDao.save(mTestBeans[i]).blockingFirst();
+            mDao.save(mTestBeans[i]).blockingGet();
         }
     }
 

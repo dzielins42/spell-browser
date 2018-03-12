@@ -55,9 +55,9 @@ public class SchoolDaoTest
     @Test
     public void remove_cascade() throws Exception {
         SchoolBean parent = SchoolBean.newInstance(0,"Parent",null);
-        long parentId = mDao.save(parent).blockingFirst();
+        long parentId = mDao.save(parent).blockingGet();
         SchoolBean child = SchoolBean.newInstance(0,"Child",parentId);
-        long childId = mDao.save(child).blockingFirst();
+        long childId = mDao.save(child).blockingGet();
 
         SchoolSelection byParentIdSelection = new SchoolSelection().parentId(parentId);
         List<SchoolBean> queryResult;
@@ -67,7 +67,7 @@ public class SchoolDaoTest
         assertEquals(queryResult.size(),1);
         assertEquals(queryResult.get(0).getId(), childId);
 
-        mDao.remove(parent).blockingFirst();
+        mDao.remove(parent).blockingGet();
         queryResult = mDao.get(byParentIdSelection).blockingFirst();
         assertTrue(queryResult.isEmpty());
     }
