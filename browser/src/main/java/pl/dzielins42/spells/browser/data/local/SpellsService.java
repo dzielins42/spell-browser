@@ -16,10 +16,8 @@ import pl.dzielins42.spellcontentprovider.rulebook.RulebookBean;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
 import pl.dzielins42.spellcontentprovider.school.SchoolBean;
 import pl.dzielins42.spellcontentprovider.school.SchoolDao;
+import pl.dzielins42.spellcontentprovider.spell.SpellBean;
 import pl.dzielins42.spellcontentprovider.spell.SpellDao;
-import pl.dzielins42.spellcontentprovider.spell.composite.CompositeSpellBean;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolBean;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolDao;
 
 @Singleton
 public class SpellsService {
@@ -30,7 +28,6 @@ public class SpellsService {
     private final RulebookDao mRulebookDao;
     private final SchoolDao mSchoolDao;
     private final SpellDao mSpellDao;
-    private final SubschoolDao mSubschoolDao;
 
 
     @Inject
@@ -40,8 +37,7 @@ public class SpellsService {
             DescriptorDao descriptorDao,
             RulebookDao rulebookDao,
             SchoolDao schoolDao,
-            SpellDao spellDao,
-            SubschoolDao subschoolDao
+            SpellDao spellDao
     ) {
         mCharacterClassDao = characterClassDao;
         mComponentDao = componentDao;
@@ -49,7 +45,6 @@ public class SpellsService {
         mRulebookDao = rulebookDao;
         mSchoolDao = schoolDao;
         mSpellDao = spellDao;
-        mSubschoolDao = subschoolDao;
     }
 
     public Observable<List<CharacterClassBean>> getAllCharacterClasses(){
@@ -72,11 +67,7 @@ public class SpellsService {
         return Observable.never();
     }
 
-    public Observable<List<SubschoolBean>> getAllSubschools(){
-        return Observable.never();
-    }
-
-    public Observable<List<CompositeSpellBean>> getAllSpells(){
+    public Observable<List<SpellBean>> getAllSpells(){
         return Observable.never();
     }
 

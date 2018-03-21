@@ -40,7 +40,7 @@ public class SpellListFragment
 
     @Inject
     FragmentHelloService mFragmentHelloService;
-    //@Inject
+    @Inject
     SpellListPresenter mPresenter;
 
     private OnListFragmentInteractionListener mListener;

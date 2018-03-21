@@ -13,7 +13,11 @@ import pl.dzielins42.spellcontentprovider.descriptor.DescriptorDao;
 import pl.dzielins42.spellcontentprovider.rulebook.RulebookDao;
 import pl.dzielins42.spellcontentprovider.school.SchoolDao;
 import pl.dzielins42.spellcontentprovider.spell.SpellDao;
-import pl.dzielins42.spellcontentprovider.subschool.SubschoolDao;
+import pl.dzielins42.spellcontentprovider.spellbase.SpellBaseDao;
+import pl.dzielins42.spellcontentprovider.spellcomposite.SpellCompositeDao;
+import pl.dzielins42.spellcontentprovider.spellstocharacterclasses.SpellsToCharacterClassesDao;
+import pl.dzielins42.spellcontentprovider.spellstocomponents.SpellsToComponentsDao;
+import pl.dzielins42.spellcontentprovider.spellstodescriptors.SpellsToDescriptorsDao;
 import pl.dzielins42.spells.browser.data.local.ActivityHelloService;
 import pl.dzielins42.spells.browser.data.local.AppHelloService;
 import pl.dzielins42.spells.browser.data.local.FragmentHelloService;
@@ -77,14 +81,62 @@ public class AppModule {
 
     @Singleton
     @Provides
-    SpellDao provideSpellDao(Context context) {
-        return new SpellDao(context);
+    SpellBaseDao provideSpellBaseDao(Context context) {
+        return new SpellBaseDao(context);
     }
 
     @Singleton
     @Provides
-    SubschoolDao provideSubschoolDao(Context context) {
-        return new SubschoolDao(context);
+    SpellCompositeDao provideSpellCompositeDao(Context context) {
+        return new SpellCompositeDao(context);
+    }
+
+    @Singleton
+    @Provides
+    SpellsToCharacterClassesDao provideSpellsToCharacterClassesDao(Context context) {
+        return new SpellsToCharacterClassesDao(context);
+    }
+
+    @Singleton
+    @Provides
+    SpellsToComponentsDao provideSpellsToComponentsDao(Context context) {
+        return new SpellsToComponentsDao(context);
+    }
+
+    @Singleton
+    @Provides
+    SpellsToDescriptorsDao provideSpellsToDescriptorsDao(Context context) {
+        return new SpellsToDescriptorsDao(context);
+    }
+
+    @Singleton
+    @Provides
+    SpellDao provideSpellDao(
+            Context context,
+            CharacterClassDao characterClassDao,
+            ComponentDao componentDao,
+            DescriptorDao descriptorDao,
+            RulebookDao rulebookDao,
+            SchoolDao schoolDao,
+            SpellBaseDao spellBaseDao,
+            SpellCompositeDao spellCompositeDao,
+            SpellsToCharacterClassesDao spellsToCharacterClassesDao,
+            SpellsToComponentsDao spellsToComponentsDao,
+            SpellsToDescriptorsDao spellsToDescriptorsDao
+    ) {
+        return new SpellDao(
+                context,
+                characterClassDao,
+                componentDao,
+                descriptorDao,
+                rulebookDao,
+                schoolDao,
+                spellBaseDao,
+                spellCompositeDao,
+                spellsToCharacterClassesDao,
+                spellsToComponentsDao,
+                spellsToDescriptorsDao
+        );
     }
 
 }
